@@ -1,0 +1,44 @@
+# B-Side Market Research & Property Intelligence
+
+Fact-check, edit and publish B-Side market reports. Sibling service to `bside-hunter`, same
+architecture (Express + JSON-file store + hand-written static frontend, shared cookie auth).
+
+**Status: wired into the B-Side Universe portal catalogue and `docker-compose.prod.yml` at the
+code level; not yet deployed to the production server.** See
+`bside-universe/README.md` → "Rolling out Market Research to production" for the one-time
+SSH/deploy-key checklist still needed to actually bring it up on OVH.
+
+## Setup
+
+```
+npm install
+cp .env.example .env   # set AUTH_SECRET to the same value as the other B-Side services
+npm start               # http://localhost:3400
+```
+
+On first boot with an empty `data/reports.json`, the app imports the original supplied report
+(`src/seed/report-v1-original.html`) as published v1, then tries to run the AI fact-check engine
+once to generate the seeded draft v2. That step needs `GEMINI_API_KEY` set in `.env` — without
+it, the server still starts fine with just v1 published; use the "Run fact-check" button in the
+app once a key is configured to generate the first draft.
+
+## How it works
+
+- **Fact-check** (`src/factcheck.js`): calls Gemini with Google Search grounding to check every
+  material figure in the report against live sources, following the source hierarchy in
+  `bside-universe/B-SIDE-APPS-GUIDELINES.md`. Returns a cited ledger; a plain-code step then
+  applies "updated" figures and inserts "uncertain" disclaimers into the html. Always produces a
+  new **draft** — never publishes on its own.
+- **Editor** (`public/editor.js`): a constrained WYSIWYG editor. The report renders in an
+  isolated same-origin iframe carrying its own stylesheet, so editing is pixel-identical to the
+  published page. Styling is limited to a fixed whitelist of the report's own CSS classes — no
+  free colour/font controls, no inline `style=`, pasted content is stripped to plain text.
+- **Versions** (`src/db.js`): each report is a lineage of versions (`published` /
+  `superseded` / `draft`). Publishing a draft supersedes (never deletes) the prior published
+  version and opens a fresh draft automatically. Every version stays viewable at
+  `/reports/:slug/v/:n`, with a version-history bar linking between them.
+
+## Known v1 gaps
+
+- No `client`-role scoping — only `admin`/`hunter` can view or act on reports.
+- Not yet deployed to production (see Status above).

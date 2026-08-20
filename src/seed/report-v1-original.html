@@ -1,0 +1,1965 @@
+<!DOCTYPE html>
+<html lang="fr"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rapport de marché immobilier résidentiel — T1 2026 — B-side</title>
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=TeX+Gyre+Adventor:ital,wght@0,400;0,700;1,400;1,700&amp;display=swap">
+<style>
+  :root {
+    --teal: #51B49B;
+    --teal-dark: #3d9482;
+    --gold: #D3AF3C;
+    --gold-dark: #b8952e;
+    --navy: #1E3A5F;
+    --navy-light: #254d7a;
+    --white: #FFFFFF;
+    --grey: #777777;
+    --dark: #141618;
+    --ease: cubic-bezier(.22,.61,.36,1);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  ::selection { background: var(--teal); color: #fff; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: "TeX Gyre Adventor", "Futura", "Century Gothic", sans-serif;
+    font-size: 15px;
+    line-height: 26.25px;
+    color: var(--grey);
+    background: var(--white);
+  }
+
+  a { color: var(--teal); text-decoration: none; transition: color .2s var(--ease); }
+  a:hover { color: var(--navy); }
+
+  :focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+
+  /* ─── HEADER ─── */
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(255,255,255,0.94);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid #eee;
+    padding: 12px 0;
+    text-align: center;
+  }
+  .site-header .logo-wrap { display: inline-block; height: 44px; transition: transform .3s var(--ease); }
+  .site-header .logo-wrap:hover { transform: scale(1.04); }
+  .site-header svg { height: 44px; width: auto; }
+  .scroll-progress {
+    position: absolute;
+    left: 0; bottom: -1px;
+    height: 2px;
+    width: 0%;
+    background: linear-gradient(90deg, var(--teal), var(--gold));
+    transition: width .1s linear;
+  }
+
+  /* ─── COVER ─── */
+  .cover {
+    background: var(--navy);
+    min-height: 520px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 80px 24px 120px;
+    position: relative;
+    overflow: hidden;
+  }
+  .cover::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 80px;
+    background: var(--teal);
+    clip-path: polygon(0 100%, 100% 0, 100% 100%);
+  }
+  .cover-label {
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 18px;
+  }
+  .cover h1 {
+    font-size: 38px;
+    font-weight: 600;
+    line-height: 1.2;
+    color: var(--white);
+    max-width: 760px;
+    margin-bottom: 20px;
+  }
+  .cover-verdict {
+    font-size: 17px;
+    color: rgba(255,255,255,0.82);
+    max-width: 620px;
+    font-weight: 400;
+    line-height: 1.6;
+    margin-bottom: 32px;
+  }
+  .cover-meta {
+    font-size: 13px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+  }
+  .cover-label, .cover h1, .cover-verdict, .cover-meta {
+    animation: fadeUp .7s var(--ease) both;
+  }
+  .cover h1 { animation-delay: .08s; }
+  .cover-verdict { animation-delay: .16s; }
+  .cover-meta { animation-delay: .24s; }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+  @media (prefers-reduced-motion: reduce) {
+    .cover-label, .cover h1, .cover-verdict, .cover-meta { animation: none; }
+  }
+
+  /* ─── SECTION WRAPPERS ─── */
+  .section {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 64px 32px;
+  }
+  .section-wide {
+    padding: 64px 32px;
+  }
+
+  /* ─── DIAGONAL DIVIDERS ─── */
+  .divider-teal {
+    height: 70px;
+    background: var(--teal);
+    clip-path: polygon(0 0, 100% 100%, 0 100%);
+    margin-bottom: 0;
+  }
+  .divider-navy {
+    height: 70px;
+    background: var(--navy);
+    clip-path: polygon(0 0, 100% 0, 100% 100%);
+  }
+  .divider-teal-rev {
+    height: 70px;
+    background: var(--teal);
+    clip-path: polygon(0 0, 100% 0, 0 100%);
+  }
+  .divider-gold-tri {
+    height: 60px;
+    background: var(--gold);
+    clip-path: polygon(0 0, 50% 100%, 100% 0);
+  }
+
+  /* ─── SECTION HEADINGS ─── */
+  h2.section-title {
+    font-size: 29px;
+    font-weight: 600;
+    line-height: 50.75px;
+    color: var(--navy);
+    margin-bottom: 8px;
+  }
+  h2.section-title-white {
+    font-size: 29px;
+    font-weight: 600;
+    line-height: 50.75px;
+    color: var(--white);
+    margin-bottom: 8px;
+  }
+  .section-subtitle {
+    font-size: 13px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 500;
+    margin-bottom: 4px;
+  }
+  .rule-teal {
+    width: 50px;
+    height: 3px;
+    background: var(--teal);
+    margin-bottom: 28px;
+  }
+  .rule-gold {
+    width: 50px;
+    height: 3px;
+    background: var(--gold);
+    margin-bottom: 28px;
+  }
+
+  /* ─── EN BREF — STAT TILES ─── */
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: 28px;
+    margin-top: 20px;
+  }
+  .stat-tile {
+    text-align: center;
+    padding: 28px 16px 24px;
+    background: var(--white);
+    border: 2px solid #e8e8e8;
+    transition: border-color .25s var(--ease), transform .25s var(--ease);
+  }
+  .stat-tile:hover {
+    border-color: var(--teal);
+    transform: translateY(-4px);
+  }
+  .stat-icon {
+    width: 56px;
+    height: 56px;
+    border: 2px solid var(--navy);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 16px;
+    transition: background .25s var(--ease), border-color .25s var(--ease);
+  }
+  .stat-tile:hover .stat-icon { background: var(--navy); border-color: var(--navy); }
+  .stat-tile:hover .stat-icon svg { stroke: #fff; }
+  .stat-icon svg { width: 26px; height: 26px; }
+  .stat-number {
+    font-size: 38px;
+    font-weight: 700;
+    color: var(--gold);
+    line-height: 1;
+    display: block;
+    margin-bottom: 8px;
+  }
+  .stat-label {
+    font-size: 13px;
+    color: var(--navy);
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    line-height: 1.4;
+  }
+  .stat-sub {
+    font-size: 12px;
+    color: var(--grey);
+    margin-top: 4px;
+  }
+
+  /* ─── DARK SECTION ─── */
+  .dark-section {
+    background: var(--navy);
+    padding: 64px 32px;
+  }
+  .dark-section p {
+    color: rgba(255,255,255,0.82);
+    max-width: 820px;
+    margin: 0 auto 20px;
+  }
+  .dark-section .inner { max-width: 1100px; margin: 0 auto; }
+
+  /* ─── TEAL SECTION ─── */
+  .teal-section {
+    background: var(--teal);
+    padding: 64px 32px;
+  }
+  .teal-section .inner { max-width: 1100px; margin: 0 auto; }
+  .teal-section p { color: rgba(255,255,255,0.9); max-width: 820px; margin-bottom: 20px; }
+
+  /* ─── PROSE ─── */
+  p { margin-bottom: 16px; }
+
+  .keyword-gold { color: var(--gold); font-weight: 500; }
+  .keyword-teal { color: var(--teal); font-weight: 500; }
+
+  /* ─── BUYER BOX ─── */
+  .buyer-box {
+    background: #f7f4ec;
+    border-left: 4px solid var(--gold);
+    padding: 20px 24px;
+    margin-top: 28px;
+  }
+  .buyer-box-label {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--gold);
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  .buyer-box p { color: var(--dark); margin: 0; }
+
+  /* ─── TABLE ─── */
+  .table-wrap { overflow-x: auto; margin-top: 28px; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+  th {
+    background: var(--navy);
+    color: var(--white);
+    padding: 12px 14px;
+    text-align: left;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    font-size: 12px;
+    cursor: pointer;
+    user-select: none;
+    white-space: nowrap;
+  }
+  th:hover { background: var(--navy-light); }
+  th .sort-arrow { margin-left: 4px; opacity: 0.5; transition: opacity .2s; }
+  th:hover .sort-arrow { opacity: 1; }
+  thead th { position: sticky; top: 68px; z-index: 5; }
+  td {
+    padding: 11px 14px;
+    border-bottom: 1px solid #e8e8e8;
+    color: var(--grey);
+    vertical-align: middle;
+    transition: background .15s var(--ease);
+  }
+  tr:nth-child(even) td { background: #f9f9f9; }
+  tr:hover td { background: #f0f7f5; }
+  .badge-up { color: #2d8a5a; font-weight: 600; background: #e8f7ef; padding: 2px 7px; font-size: 12px; }
+  .badge-down { color: #c0392b; font-weight: 600; background: #fdecea; padding: 2px 7px; font-size: 12px; }
+  .badge-flat { color: #888; font-weight: 600; background: #f0f0f0; padding: 2px 7px; font-size: 12px; }
+  .highlight-row td { background: #fff8e6 !important; border-left: 3px solid var(--gold); }
+
+  /* ─── MOVER CARDS ─── */
+  .mover-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-top: 28px; }
+  .mover-card h3 {
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 600;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--teal);
+    color: var(--navy);
+  }
+  .mover-card.down h3 { border-bottom-color: var(--gold); }
+  .mover-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+    gap: 12px;
+    transition: padding-left .2s var(--ease);
+  }
+  .mover-item:hover { padding-left: 6px; }
+  .mover-item:last-child { border-bottom: none; }
+  .mover-name { font-weight: 500; color: var(--navy); font-size: 14px; }
+  .mover-why { font-size: 12px; color: var(--grey); margin-top: 2px; }
+  .mover-pct { font-size: 14px; font-weight: 700; white-space: nowrap; }
+  .mover-pct.up { color: #2d8a5a; }
+  .mover-pct.down { color: #c0392b; }
+
+  /* ─── SCENARIO TABLE ─── */
+  .scenario-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin-top: 28px; }
+  .scenario-card {
+    padding: 24px;
+    border-top: 4px solid;
+    transition: transform .25s var(--ease);
+  }
+  .scenario-card:hover { transform: translateY(-4px); }
+  .scenario-card.base { border-top-color: var(--teal); background: #f4fbf8; }
+  .scenario-card.up { border-top-color: var(--gold); background: #fdf8ec; }
+  .scenario-card.down { border-top-color: #c0392b; background: #fdf0ef; }
+  .scenario-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .scenario-card.base .scenario-label { color: var(--teal); }
+  .scenario-card.up .scenario-label { color: var(--gold); }
+  .scenario-card.down .scenario-label { color: #c0392b; }
+  .scenario-card h3 { font-size: 16px; color: var(--navy); margin-bottom: 12px; font-weight: 600; }
+  .scenario-card p { font-size: 14px; color: var(--grey); margin-bottom: 10px; line-height: 1.5; }
+  .scenario-trigger { font-size: 12px; font-weight: 600; color: var(--navy); margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(0,0,0,0.08); }
+
+  /* ─── CTA ─── */
+  .cta-section { text-align: center; padding: 72px 32px; background: var(--white); }
+  .cta-btn {
+    display: inline-block;
+    background: var(--gold);
+    color: var(--white);
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 18px 42px;
+    border-radius: 50px;
+    transition: background .25s var(--ease), transform .25s var(--ease);
+  }
+  .cta-btn:hover { background: var(--gold-dark); transform: translateY(-2px); }
+  .cta-btn:active { transform: translateY(0); }
+  .cta-text { max-width: 540px; margin: 0 auto 32px; color: var(--grey); }
+
+  /* ─── FOOTER ─── */
+  footer {
+    background: var(--navy);
+    color: var(--white);
+    text-align: center;
+    padding: 20px 32px;
+    font-size: 13px;
+    letter-spacing: 0.08em;
+  }
+  footer a { color: var(--teal); text-decoration: none; }
+  footer a:hover { color: var(--gold); }
+
+  /* ─── SVG CHARTS ─── */
+  .chart-wrap { margin-top: 28px; overflow-x: auto; }
+  svg.chart { font-family: "TeX Gyre Adventor","Futura","Century Gothic",sans-serif; }
+
+  /* ─── TWO-COL ─── */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; }
+
+  /* ─── INFO BOX ─── */
+  .info-box {
+    background: #f0f7f5;
+    border-left: 4px solid var(--teal);
+    padding: 20px 24px;
+    margin: 20px 0;
+  }
+  .info-box p { color: var(--dark); margin: 0; font-size: 14px; }
+  .info-box strong { color: var(--navy); }
+
+  /* ─── SOURCES ─── */
+  .sources-section { background: #f9f9f9; padding: 48px 32px; }
+  .sources-section .inner { max-width: 1100px; margin: 0 auto; }
+  .sources-list { columns: 2; column-gap: 40px; margin-top: 20px; }
+  .sources-list li {
+    font-size: 13px;
+    color: var(--grey);
+    margin-bottom: 10px;
+    break-inside: avoid;
+    list-style: none;
+    padding-left: 12px;
+    border-left: 2px solid var(--teal);
+  }
+  .sources-list li a { color: var(--teal); }
+  .sources-note { font-size: 13px; color: var(--grey); margin-top: 20px; font-style: italic; }
+
+  /* ─── PRINT ─── */
+  @media print {
+    .site-header { position: static; }
+    .cover { min-height: 200px; padding: 40px 24px 60px; }
+    .scenario-grid { grid-template-columns: 1fr 1fr 1fr; }
+    .sources-list { columns: 2; }
+    .cta-section { display: none; }
+  }
+  @media (max-width: 700px) {
+    .mover-grid { grid-template-columns: 1fr; }
+    .scenario-grid { grid-template-columns: 1fr; }
+    .two-col { grid-template-columns: 1fr; }
+    .sources-list { columns: 1; }
+  }
+
+  /* ─── LANGUAGE TOGGLE ─── */
+  .site-header { position: relative; }
+  .lang-toggle {
+    position: absolute;
+    right: 24px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--gold);
+    color: var(--white);
+    border: none;
+    border-radius: 50px;
+    padding: 8px 22px;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background .2s var(--ease), transform .2s var(--ease);
+  }
+  .lang-toggle:hover { background: var(--gold-dark); transform: translateY(-50%) scale(1.05); }
+  .hidden { display: none !important; }
+  #fr-version, #en-version { animation: fadeUp .35s var(--ease) both; }
+
+  .back-to-top {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    z-index: 90;
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    background: var(--navy);
+    color: #fff;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(8px);
+    transition: opacity .25s var(--ease), transform .25s var(--ease), background .2s var(--ease);
+  }
+  .back-to-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
+  .back-to-top:hover { background: var(--teal); }
+  @media print { .back-to-top, .scroll-progress { display: none; } }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════
+     HEADER
+══════════════════════════════════════════════════════ -->
+<header class="site-header">
+  <div class="logo-wrap">
+    <!-- B-side logo inline SVG -->
+    <svg version="1.1" viewBox="0 0 92.1 56.7" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve">
+      <style>.s0{fill:#335C80}.s1{fill:#218D9A}.s2{fill:#D3AF3C}.s3{fill:#36A9E1}.s4{fill:#51B49B}</style>
+      <g>
+        <polygon class="s0" points="23.4,0.7 21.9,14.3 6.1,4.2"></polygon>
+        <polygon class="s1" points="24,0.2 23.3,17.4 6.6,0.9"></polygon>
+        <polyline class="s2" points="39.8,16 25.8,27.1 22.9,17 39.8,16"></polyline>
+        <polygon class="s0" points="42,6.7 48.2,11.8 40.1,14.2"></polygon>
+        <path class="s1" d="M42,6.7c0,0.2-2.2,9.3-2.2,9.3l-7-6.5L42,6.7z"></path>
+        <polygon class="s0" points="39.8,16 39.6,18.4 26.7,26.4"></polygon>
+        <polygon class="s0" points="20.1,36.5 22.9,17 27.4,28.2"></polygon>
+        <path class="s3" d="M39.8,16"></path>
+        <polygon class="s4" points="39.8,16 24,0.2 22.9,17"></polygon>
+      </g>
+      <circle class="s2" cx="50.1" cy="30.8" r="1.5"></circle>
+      <g>
+        <path class="s0" d="M5.5,33.3c0.5,0,1,0.1,1.6,0.2c0.5,0.1,1.1,0.3,1.6,0.5c0.6,0.2,1.2,0.5,1.7,0.8c0.5,0.3,1,0.8,1.5,1.3c0.3,0.4,0.5,0.8,0.7,1.3s0.2,0.9,0.2,1.4c0,0.5-0.1,1-0.2,1.5c-0.1,0.5-0.2,1-0.4,1.4c0,0,0,0.1,0,0.2c0,0.1,0,0.1,0,0.2c0,0,0,0,0,0c0,0,0,0,0,0l0,0h-0.8V42c0.3-0.9,0.5-1.6,0.7-2.3c0.1-0.7,0.1-1.3-0.1-1.9c-0.2-0.6-0.5-1.1-0.9-1.6c-0.5-0.5-1.1-0.9-1.9-1.3c-0.6-0.3-1.3-0.5-2-0.6c-0.7-0.1-1.4-0.2-2.1-0.2h-4v22H0.1V33.3H5.5z M15,54.2c0.3-0.9,0.5-1.8,0.6-2.8c0.1-1,0.1-1.9-0.1-2.8c-0.2-0.9-0.5-1.7-1.1-2.4c-0.5-0.7-1.3-1.3-2.3-1.7c-0.8-0.3-1.7-0.5-2.6-0.6c-0.9-0.1-1.8-0.1-2.7,0v-0.8c1.1,0,2.3,0,3.4,0.1s2.2,0.5,3.1,1c1,0.6,1.7,1.3,2.2,2.2c0.5,0.9,0.7,1.9,0.8,2.9c0.1,1,0,2.1-0.2,3.2c-0.2,1.1-0.5,2-0.8,2.9c0,0.1-0.1,0.3-0.2,0.4c0,0.1-0.1,0.2-0.1,0.3h-0.8c0-0.1,0.1-0.2,0.1-0.4c0.1-0.2,0.1-0.4,0.2-0.6c0.1-0.2,0.1-0.4,0.2-0.6C14.9,54.4,15,54.3,15,54.2z"></path>
+        <path class="s0" d="M30.2,48.1v1h-10v-1H30.2z"></path>
+        <path class="s0" d="M39.2,56.4c-0.6-0.1-1.1-0.2-1.8-0.5s-1.2-0.6-1.7-1c-0.5-0.4-1-0.9-1.3-1.4c-0.3-0.5-0.5-1.1-0.4-1.8c0.1,0,0.2,0,0.4,0c0.2,0,0.3,0,0.4,0.1c0.1,0.8,0.4,1.5,0.9,2c0.5,0.5,1.2,0.9,1.9,1.2c0.7,0.3,1.5,0.5,2.3,0.5c0.8,0.1,1.5,0,2.2-0.2c0.7-0.2,1.5-0.5,2.2-1c0.7-0.4,1.2-1.1,1.4-1.8c0.2-0.7,0.2-1.4-0.1-2c-0.3-0.6-0.7-1.2-1.3-1.6c-0.4-0.3-0.8-0.5-1.2-0.6c-0.4-0.1-0.8-0.3-1.2-0.3c-0.4-0.1-0.8-0.1-1.3-0.2c-0.4,0-0.9-0.1-1.3-0.1c-0.6,0-1.2-0.2-1.7-0.4c-0.6-0.2-1.1-0.5-1.6-0.9c-0.4-0.3-0.8-0.8-1.2-1.2c-0.4-0.5-0.5-1-0.6-1.6c-0.1-0.6,0-1.2,0.2-1.8c0.2-0.5,0.5-1,0.9-1.4c0.4-0.4,0.8-0.8,1.4-1.1c0.5-0.3,1.1-0.5,1.6-0.7c0.6-0.1,1.3-0.2,2.1-0.2c0.8,0,1.5,0.1,2.3,0.3s1.5,0.5,2.1,0.9c0.6,0.4,1.1,0.9,1.4,1.5c0.2,0.3,0.3,0.6,0.5,0.9c0.1,0.3,0.2,0.7,0.1,1h-0.8c-0.1-0.6-0.3-1.2-0.6-1.7s-0.8-0.9-1.3-1.2c-0.4-0.2-0.9-0.4-1.4-0.6c-0.5-0.2-1-0.3-1.5-0.3c-1.1,0-2.1,0.1-3,0.3c-0.9,0.3-1.8,0.8-2.5,1.7c-0.3,0.3-0.4,0.6-0.5,1c-0.1,0.4-0.1,0.7-0.1,1.1c0.1,0.6,0.3,1.1,0.6,1.6c0.4,0.5,0.8,0.8,1.3,1.1c0.3,0.2,0.7,0.3,1.1,0.5c0.4,0.1,0.7,0.3,1.1,0.3c0,0,0.1,0,0.2,0c0.1,0,0.2,0,0.2,0c0.7,0.1,1.4,0.2,2,0.2c0.7,0.1,1.3,0.2,2,0.5c0.8,0.3,1.5,0.8,2.1,1.4s0.9,1.2,1.1,1.9c0.2,0.7,0.1,1.4-0.1,2.1c-0.2,0.7-0.7,1.4-1.5,2c-0.7,0.7-1.6,1.1-2.7,1.3C41.2,56.5,40.2,56.5,39.2,56.4z"></path>
+        <path class="s0" d="M50.5,39.1v17h-0.7v-17H50.5z"></path>
+        <path class="s0" d="M60.4,56.3c-1.1-0.2-2.1-0.5-2.9-1.1c-0.9-0.5-1.7-1.2-2.4-1.9c-0.4-0.5-0.8-1-1.1-1.6c-0.3-0.6-0.5-1.2-0.7-1.8c-0.3-1.1-0.4-2.1-0.3-3.2c0.1-1.1,0.4-2.1,0.9-3s1.1-1.8,1.8-2.6c0.8-0.8,1.6-1.4,2.6-1.8c0.7-0.3,1.4-0.6,2.2-0.7c0.8-0.1,1.5-0.1,2.3-0.1c1.2,0,2.3,0.4,3.3,1c1,0.6,1.9,1.3,2.7,2.1c0,0,0.1,0.1,0.1,0.2c0.1,0.1,0.1,0.1,0.1,0.2c0,0,0.1,0.1,0.1,0.2c0.1,0.1,0.2,0.2,0.2,0.4c0.1,0.1,0.2,0.2,0.2,0.4c0.1,0.1,0.1,0.2,0.1,0.2c0,0,0,0,0.1,0c0,0,0.1,0,0.1,0V29.3h0.8c0.1,8.9,0.1,17.8,0,26.8h-0.8v-4.4c0,0-0.1,0-0.1,0.1c0,0,0,0-0.1,0c0,0-0.1,0.1-0.1,0.2c-0.1,0.1-0.1,0.2-0.2,0.4c-0.1,0.1-0.2,0.2-0.2,0.4c-0.1,0.1-0.1,0.2-0.1,0.2c-0.4,0.7-1,1.2-1.7,1.7s-1.4,0.9-2.1,1.2c-0.8,0.3-1.5,0.5-2.4,0.6C62,56.4,61.2,56.4,60.4,56.3z M60.6,55.5c0.9,0.1,1.7,0.1,2.6,0c0.9-0.2,1.7-0.4,2.4-0.9c0.8-0.4,1.5-0.9,2.1-1.6c0.6-0.6,1.1-1.4,1.5-2.1c0.1-0.3,0.2-0.5,0.4-0.8c0.1-0.3,0.2-0.6,0.2-0.9v-3.3c0-0.3-0.1-0.6-0.2-0.9c-0.1-0.3-0.3-0.6-0.4-0.8c-0.3-0.7-0.7-1.3-1.2-1.8c-0.5-0.6-1-1.1-1.6-1.5c-0.6-0.4-1.2-0.7-1.9-1c-0.7-0.2-1.4-0.4-2.1-0.4c-1.3-0.1-2.5,0.1-3.6,0.6s-2.1,1.1-2.8,2c-0.8,0.8-1.4,1.8-1.7,3c-0.4,1.2-0.5,2.4-0.3,3.6c0.1,0.6,0.2,1.2,0.5,1.8c0.2,0.6,0.5,1.2,0.9,1.7c0.7,0.9,1.5,1.7,2.4,2.2C58.5,54.9,59.5,55.3,60.6,55.5z"></path>
+        <path class="s0" d="M81.6,56c-1.1-0.2-2.1-0.5-2.9-1.1c-0.9-0.5-1.7-1.2-2.4-1.9c-0.8-0.9-1.4-2-1.7-3.1c-0.3-1.1-0.5-2.3-0.4-3.5c0-0.8,0.2-1.5,0.5-2.3c0.3-0.8,0.7-1.5,1.1-2.1c0.9-1.2,1.9-2.1,3-2.7c1.2-0.6,2.3-0.9,3.6-1c1.2-0.1,2.4,0.1,3.6,0.5s2.2,1,3.1,1.8c0.9,0.8,1.6,1.8,2.2,3c0.5,1.2,0.8,2.5,0.7,4h-8.4v-0.9h7.6v-0.1c-0.4-2.9-1.8-5.1-4.3-6.5c-0.7-0.4-1.6-0.7-2.4-0.9s-1.7-0.1-2.6,0c-1,0.1-1.9,0.4-2.7,0.9c-0.9,0.5-1.6,1.1-2.2,1.8c-0.9,1-1.5,2.1-1.8,3.3c-0.3,1.2-0.3,2.4-0.1,3.6c0.2,1.2,0.7,2.3,1.4,3.3c0.7,1,1.7,1.8,2.8,2.5c0.6,0.3,1.2,0.5,1.8,0.6c0.6,0.1,1.3,0.2,1.9,0.3v0.7c-0.3,0-0.5,0-0.7,0C82.1,56.1,81.9,56.1,81.6,56z"></path>
+      </g>
+      <rect x="3.3" y="52.2" transform="matrix(6.123234e-17 -1 1 6.123234e-17 -52.0709 59.3355)" class="s0" width="0.7" height="7.1"></rect>
+    </svg>
+  </div>
+  <button class="lang-toggle" id="lang-btn" onclick="toggleLang()">EN</button>
+  <div class="scroll-progress" id="scroll-progress"></div>
+</header>
+<button class="back-to-top" id="back-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg>
+</button>
+
+<div id="fr-version">
+
+<!-- ═══════════════════════════════════════════════════
+     1. COVER
+══════════════════════════════════════════════════════ -->
+<section class="cover">
+  <p class="cover-label">Rapport de marché résidentiel &nbsp;·&nbsp; T1 2026 &nbsp;·&nbsp; Édition juin 2026</p>
+  <h1>Intelligence immobilière Luxembourg<br><strong>Chasseurs d'opportunités</strong></h1>
+  <p class="cover-verdict">
+    Le marché résidentiel luxembourgeois achève sa phase de correction et entre dans une période de stabilisation sélective. Les volumes VEFA restent déprimés, les prix anciens résistent mieux que prévu, et la marge de négociation atteint son niveau le plus favorable depuis 2018. C'est le moment de l'acheteur informé.
+  </p>
+  <p class="cover-meta">Analysé exclusivement du côté de l'acheteur &nbsp;·&nbsp; B-side — Chasseurs Immobilier au Luxembourg</p>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════
+     2. EN BREF — STAT TILES
+══════════════════════════════════════════════════════ -->
+<section class="section">
+  <p class="section-subtitle">Synthèse</p>
+  <h2 class="section-title">En bref</h2>
+  <div class="rule-teal"></div>
+
+  <div class="stat-grid">
+
+    <div class="stat-tile">
+      <div class="stat-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#1E3A5F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline>
+        </svg>
+      </div>
+      <span class="stat-number">7 764 €</span>
+      <span class="stat-label">Prix moyen/m²<br>appartement existant</span>
+      <p class="stat-sub">Logements anciens — T4 2025<br><em>Source : Observatoire de l'Habitat</em></p>
+    </div>
+
+    <div class="stat-tile">
+      <div class="stat-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#1E3A5F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="22 17 13.5 8.5 8.5 13.5 2 7"></polyline><polyline points="16 17 22 17 22 11"></polyline>
+        </svg>
+      </div>
+      <span class="stat-number">+1,7 %</span>
+      <span class="stat-label">Évolution annuelle<br>indice notarial</span>
+      <p class="stat-sub">Indice hédonique agrégé T1 2026<br><em>Source : Observatoire de l'Habitat / LISER</em><br><small style="color:#aaa">Prix affichés portails : −2,3 % (Immotop)</small></p>
+    </div>
+
+    <div class="stat-tile">
+      <div class="stat-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#1E3A5F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="18" height="18" rx="2"></rect><path d="M3 9h18M9 21V9"></path>
+        </svg>
+      </div>
+      <span class="stat-number">207</span>
+      <span class="stat-label">Ventes VEFA (T1 2026)</span>
+      <p class="stat-sub">−18,2 % sur un an — recul persistant mais atténué<br><em>Source : Observatoire de l'Habitat, juin 2026</em></p>
+    </div>
+
+    <div class="stat-tile">
+      <div class="stat-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#1E3A5F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle><path d="M16 8l-4 4-4-4m8 8l-4-4-4 4"></path>
+        </svg>
+      </div>
+      <span class="stat-number">4–8 %</span>
+      <span class="stat-label">Marge de négociation<br>sous le prix annoncé</span>
+      <p class="stat-sub">Écart prix affiché / acte notarié<br><em>Source : Investropa, analyses de marché</em></p>
+    </div>
+
+    <div class="stat-tile">
+      <div class="stat-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#1E3A5F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line>
+        </svg>
+      </div>
+      <span class="stat-number">3,30–3,90 %</span>
+      <span class="stat-label">Taux fixe 15–20 ans</span>
+      <p class="stat-sub">Fourchette banques luxembourgeoises<br><em>Source : Locco.lu, Switchr.lu — mars 2026</em></p>
+    </div>
+
+    <div class="stat-tile">
+      <div class="stat-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#1E3A5F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+        </svg>
+      </div>
+      <span class="stat-number">80–95 j.</span>
+      <span class="stat-label">Délai moyen de vente<br>national</span>
+      <p class="stat-sub">Vs 55–70 j. en ville de Luxembourg<br><em>Source : Investropa — T1 2026</em></p>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider-teal"></div>
+
+<!-- ═══════════════════════════════════════════════════
+     3. LE MARCHÉ EN UN COUP D'ŒIL
+══════════════════════════════════════════════════════ -->
+<div class="dark-section">
+  <div class="inner">
+    <p class="section-subtitle" style="color:var(--gold)">Analyse nationale</p>
+    <h2 class="section-title-white">Le marché en un coup d'œil</h2>
+    <div class="rule-gold"></div>
+
+    <p>
+      Le premier trimestre 2026 marque l'entrée officielle dans une phase de normalisation. Selon le rapport de l'<strong style="color:#fff">Observatoire de l'Habitat (LISER), publié le 25 juin 2026</strong>, l'indice hédonique agrégé des prix de vente notariés progresse de <span class="keyword-gold">+1,7 % sur un an</span> — dont +0,9 % pour les appartements existants, +3,0 % pour les maisons et +0,9 % pour les appartements en VEFA. Ce sont les prix réels enregistrés chez le notaire : ils représentent la référence de marché, pas les prix affichés sur les portails. Sur les portails (prix annoncés, non notariés), l'indice Immotop affiche −2,3 % sur douze mois — écart qui illustre l'ajustement des vendeurs sur leurs prétentions initiales mais ne traduit pas une baisse des prix de transaction.
+    </p>
+    <p>
+      Le signal le plus positif est le <span class="keyword-gold">retour des acheteurs</span> : les transactions d'appartements existants progressent de +9,4 % sur un an (968 ventes au T1 2026), les maisons de +11,5 % (650 ventes). Le segment VEFA reste le maillon faible avec seulement 207 ventes au T1 2026 (−18,2 % a/a), en nette amélioration par rapport au T4 2025 (149 ventes, −62,4 % a/a) mais encore loin de l'équilibre. Ce découplage volumes VEFA / marché existant est structurel : le pipeline de promoteurs reste sous pression des coûts de construction et du financement, mais la demande finale a retrouvé de l'élan sur le secondaire.
+    </p>
+    <p>
+      La marge de négociation effective — entre prix affiché sur les portails et prix enregistré en acte notarié — est estimée entre <span class="keyword-gold">5 % et 8 %</span> selon les segments et communes, avec un maximum documenté de <span class="keyword-gold">12,5 %</span> sur les biens à faible performance énergétique (CPE E/F/G). Sur un bien affiché à 800 000 €, la marge de négociation représente entre 40 000 € et 64 000 € — avant même l'intervention d'un chasseur immobilier.
+    </p>
+
+    <div class="buyer-box">
+      <p class="buyer-box-label">Ce que cela signifie pour l'acheteur</p>
+      <p style="color:var(--dark)">Les prix de transaction notariaux ont légèrement progressé (+1,7 %), mais les prix affichés sur les portails ont baissé (−2,3 %). Cet écart est votre levier : les vendeurs ajustent leurs prix demandés à la baisse, mais ont encore des attentes. Proposez 5 à 7 % sous le prix annoncé sur les appartements anciens et 8 à 12 % sur les biens en classe énergétique E/F/G. Sur les maisons périurbaines (Bertrange, Hesperange), le marché est plus ferme — n'espérez pas plus de 3 à 5 % de remise. Toute offre sans consultation préalable des prix notariaux de référence reste une offre risquée.</p>
+    </div>
+
+    <!-- Chart: Prix moyens par région -->
+    <div class="chart-wrap" style="margin-top:40px">
+      <p class="section-subtitle" style="color:var(--gold);margin-bottom:8px">Prix annoncés moyens par région — T1 2026 (€/m²)</p>
+      <svg class="chart" width="700" height="280" viewBox="0 0 700 280">
+        <!-- Grid -->
+        <line x1="80" y1="20" x2="80" y2="220" stroke="#334f6e" stroke-width="1"></line>
+        <line x1="80" y1="220" x2="680" y2="220" stroke="#334f6e" stroke-width="1"></line>
+        <!-- Gridlines -->
+        <line x1="80" y1="170" x2="680" y2="170" stroke="#334f6e" stroke-width="0.5" stroke-dasharray="4,4"></line>
+        <line x1="80" y1="120" x2="680" y2="120" stroke="#334f6e" stroke-width="0.5" stroke-dasharray="4,4"></line>
+        <line x1="80" y1="70" x2="680" y2="70" stroke="#334f6e" stroke-width="0.5" stroke-dasharray="4,4"></line>
+        <line x1="80" y1="20" x2="680" y2="20" stroke="#334f6e" stroke-width="0.5" stroke-dasharray="4,4"></line>
+        <!-- Y labels -->
+        <text x="74" y="224" fill="#aac" font-size="11" text-anchor="end">0</text>
+        <text x="74" y="174" fill="#aac" font-size="11" text-anchor="end">2 500</text>
+        <text x="74" y="124" fill="#aac" font-size="11" text-anchor="end">5 000</text>
+        <text x="74" y="74" fill="#aac" font-size="11" text-anchor="end">7 500</text>
+        <text x="74" y="24" fill="#aac" font-size="11" text-anchor="end">10 000</text>
+        <!-- scale: 200px = 10000 → 1px = 50 -->
+        <!-- Bars -->
+        <!-- Centre: 10500 → 210px, but capped at 200 for chart clarity, show 200-->
+        <rect x="100" y="20" width="80" height="200" fill="#51B49B"></rect>
+        <text x="140" y="15" fill="#D3AF3C" font-size="12" text-anchor="middle" font-weight="700">10 500</text>
+        <text x="140" y="240" fill="#aac" font-size="11" text-anchor="middle">Centre</text>
+        <text x="140" y="252" fill="#aac" font-size="11" text-anchor="middle">LU-Ville</text>
+        <!-- Ouest: 7500 → 150px -->
+        <rect x="205" y="70" width="80" height="150" fill="#51B49B"></rect>
+        <text x="245" y="65" fill="#D3AF3C" font-size="12" text-anchor="middle" font-weight="700">7 500</text>
+        <text x="245" y="240" fill="#aac" font-size="11" text-anchor="middle">Ouest</text>
+        <text x="245" y="252" fill="#aac" font-size="11" text-anchor="middle">−1,1 % a/a</text>
+        <!-- Est: 7000 → 140px -->
+        <rect x="310" y="80" width="80" height="140" fill="#51B49B"></rect>
+        <text x="350" y="75" fill="#D3AF3C" font-size="12" text-anchor="middle" font-weight="700">7 000</text>
+        <text x="350" y="240" fill="#aac" font-size="11" text-anchor="middle">Est</text>
+        <text x="350" y="252" fill="#aac" font-size="11" text-anchor="middle">+0,5 % trim.</text>
+        <!-- Sud: 6500 avg → 130px (Esch -1.5%, Belval ~0%) -->
+        <rect x="415" y="90" width="80" height="130" fill="#51B49B" opacity="0.75"></rect>
+        <text x="455" y="85" fill="#D3AF3C" font-size="12" text-anchor="middle" font-weight="700">6 500</text>
+        <text x="455" y="240" fill="#aac" font-size="11" text-anchor="middle">Sud</text>
+        <text x="455" y="252" fill="#aac" font-size="11" text-anchor="middle">Esch −1,5 %</text>
+        <!-- Nord: 5500 → 110px -->
+        <rect x="520" y="110" width="80" height="110" fill="#51B49B" opacity="0.65"></rect>
+        <text x="560" y="105" fill="#D3AF3C" font-size="12" text-anchor="middle" font-weight="700">5 500</text>
+        <text x="560" y="240" fill="#aac" font-size="11" text-anchor="middle">Nord</text>
+        <text x="560" y="252" fill="#aac" font-size="11" text-anchor="middle">−5,5 % a/a ▼</text>
+        <!-- Legend -->
+        <rect x="85" y="265" width="14" height="10" fill="#51B49B"></rect>
+        <text x="104" y="274" fill="#aac" font-size="11">Prix moyen appartements existants (€/m²)</text>
+        <rect x="340" y="265" width="14" height="10" fill="#D3AF3C"></rect>
+        <text x="359" y="274" fill="#aac" font-size="11">Seule région en hausse annuelle</text>
+      </svg>
+      <p style="font-size:12px;color:rgba(255,255,255,0.45);margin-top:8px;">Sources : Promovillas.lu, Observatoire de l'Habitat — prix annoncés portails, T1 2026. Prix indicatifs.</p>
+    </div>
+  </div>
+</div>
+
+<div class="divider-navy"></div>
+
+<!-- ═══════════════════════════════════════════════════
+     4. PRIX PAR COMMUNE
+══════════════════════════════════════════════════════ -->
+<section class="section">
+  <p class="section-subtitle">Géographie des prix</p>
+  <h2 class="section-title">Prix par commune</h2>
+  <div class="rule-teal"></div>
+
+  <p>Les prix ci-dessous combinent les données de vente enregistrées (Observatoire de l'Habitat, Administration du Cadastre) et les prix annoncés (Immotop.lu, Tevaxia.lu). La colonne <em>Prix affiché</em> reflète les portails ; le prix de transaction effectif est inférieur de 4 à 8 %. Évolutions a/a calculées T1 2026 vs T1 2025. Les données VEFA (neuf) sont distinctes et systématiquement plus élevées.</p>
+
+  <div class="info-box">
+    <p><strong>Important :</strong> prix annoncés ≠ prix de vente notarié. La colonne « Prix affiché » provient des portails immobiliers (Immotop, Athome, Tevaxia). Le prix réellement inscrit à l'acte est inférieur. B-side compare systématiquement les deux avant toute offre.</p>
+  </div>
+
+  <div class="table-wrap">
+    <table id="commune-table">
+      <thead>
+        <tr>
+          <th onclick="sortTable(0)">Commune / Quartier <span class="sort-arrow">↕</span></th>
+          <th onclick="sortTable(1)">Région <span class="sort-arrow">↕</span></th>
+          <th onclick="sortTable(2)">Prix affiché (€/m²) <span class="sort-arrow">↕</span></th>
+          <th onclick="sortTable(3)">Évolution a/a <span class="sort-arrow">↕</span></th>
+          <th onclick="sortTable(4)">Segment</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="highlight-row"><td>Belair</td><td>Luxembourg-Ville</td><td>12 864</td><td><span class="badge-down">−2,5 %</span></td><td>Appartements, haut de gamme</td></tr>
+        <tr><td>Kirchberg</td><td>Luxembourg-Ville</td><td>11 500</td><td><span class="badge-down">−4,0 %</span></td><td>Appartements neufs/récents</td></tr>
+        <tr><td>Limpertsberg</td><td>Luxembourg-Ville</td><td>11 000</td><td><span class="badge-down">−2,0 %</span></td><td>Appartements, familles</td></tr>
+        <tr><td>Merl</td><td>Luxembourg-Ville</td><td>10 500</td><td><span class="badge-flat">~0 %</span></td><td>Résidentiel mixte</td></tr>
+        <tr><td>Gasperich</td><td>Luxembourg-Ville</td><td>9 200</td><td><span class="badge-down">−1,8 %</span></td><td>Quartier en mutation</td></tr>
+        <tr><td>Bonnevoie</td><td>Luxembourg-Ville</td><td>8 500</td><td><span class="badge-flat">−0,5 %</span></td><td>Populaire, fort rendement locatif</td></tr>
+        <tr><td>Hollerich</td><td>Luxembourg-Ville</td><td>8 200</td><td><span class="badge-flat">−1,0 %</span></td><td>Régénération urbaine</td></tr>
+        <tr><td>Cents / Hamm</td><td>Luxembourg-Ville</td><td>8 800</td><td><span class="badge-flat">−0,8 %</span></td><td>Résidentiel est, maisons</td></tr>
+        <tr><td>Gare</td><td>Luxembourg-Ville</td><td>8 000</td><td><span class="badge-flat">−1,2 %</span></td><td>Mixte, investissement locatif</td></tr>
+        <tr><td>Strassen</td><td>Couronne ouest</td><td>9 500</td><td><span class="badge-down">−2,2 %</span></td><td>Résidentiel premium, maisons</td></tr>
+        <tr><td>Bertrange</td><td>Couronne ouest</td><td>9 000</td><td><span class="badge-down">−1,5 %</span></td><td>Résidentiel families</td></tr>
+        <tr><td>Mamer</td><td>Couronne ouest</td><td>8 200</td><td><span class="badge-flat">−0,9 %</span></td><td>Résidentiel mixte</td></tr>
+        <tr><td>Hesperange</td><td>Couronne sud</td><td>8 500</td><td><span class="badge-flat">−1,0 %</span></td><td>Résidentiel familles, jardins</td></tr>
+        <tr><td>Leudelange</td><td>Couronne sud</td><td>7 800</td><td><span class="badge-flat">−0,7 %</span></td><td>Résidentiel, bureaux</td></tr>
+        <tr><td>Sandweiler / Contern</td><td>Couronne est</td><td>8 000</td><td><span class="badge-flat">−0,5 %</span></td><td>Périurbain, maisons</td></tr>
+        <tr><td>Esch-sur-Alzette</td><td>Sud</td><td>6 200</td><td><span class="badge-down">−1,5 %</span></td><td>Prix en légère baisse (Locco.lu) ; Belval/Sanem plus résistants</td></tr>
+        <tr class="highlight-row"><td>Sanem / Belval</td><td>Sud</td><td>6 300</td><td><span class="badge-flat">~0 %</span></td><td>Neuf, campus Cité des Sciences — meilleure tenue du Sud</td></tr>
+        <tr><td>Dudelange</td><td>Sud</td><td>6 400</td><td><span class="badge-down">−1,8 %</span></td><td>Résidentiel accessible</td></tr>
+        <tr><td>Differdange</td><td>Sud</td><td>6 100</td><td><span class="badge-down">−2,1 %</span></td><td>Offre importante, correctif en cours</td></tr>
+        <tr><td>Bettembourg</td><td>Sud</td><td>6 600</td><td><span class="badge-down">−2,5 %</span></td><td>Résidentiel, frontaliers belges</td></tr>
+        <tr><td>Mersch</td><td>Centre</td><td>7 100</td><td><span class="badge-down">−2,9 %</span></td><td>Résidentiel centre pays</td></tr>
+        <tr><td>Diekirch</td><td>Nord</td><td>5 900</td><td><span class="badge-down">−4,5 %</span></td><td>Chef-lieu cantonal</td></tr>
+        <tr><td>Ettelbruck</td><td>Nord</td><td>5 900</td><td><span class="badge-down">−5,5 %</span></td><td>Résidentiel nord, prix en recul</td></tr>
+        <tr><td>Wiltz</td><td>Nord</td><td>4 500</td><td><span class="badge-down">−4,8 %</span></td><td>Ardennes, prix bas, liquidité faible</td></tr>
+        <tr><td>Clervaux</td><td>Nord</td><td>4 750</td><td><span class="badge-down">−3,2 %</span></td><td>Rural, résidences secondaires</td></tr>
+        <tr><td>Grevenmacher</td><td>Est / Moselle</td><td>6 500</td><td><span class="badge-flat">−0,3 %</span></td><td>Viticulture, frontaliers allemands</td></tr>
+        <tr><td>Remich</td><td>Est / Moselle</td><td>6 200</td><td><span class="badge-flat">+0,2 %</span></td><td>Résidentiel, tourisme Moselle</td></tr>
+        <tr><td>Echternach</td><td>Est / Moselle</td><td>6 000</td><td><span class="badge-flat">+0,3 %</span></td><td>Patrimoine, résidences secondaires</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Top 5 / Bottom 5 movers -->
+  <div class="mover-grid" style="margin-top:48px">
+    <div class="mover-card">
+      <h3>▲ Top 5 — Communes en hausse</h3>
+      <div class="mover-item">
+        <div>
+          <div class="mover-name">Hesperange / Leudelange</div>
+          <div class="mover-why">Maisons familiales, effet proximité Cloche d'Or, rareté foncière. Les maisons nationales +3,0 % a/a (Observatoire) — ces zones sont les plus portées.</div>
+        </div>
+        <div class="mover-pct up">+2,8 %</div>
+      </div>
+      <div class="mover-item">
+        <div>
+          <div class="mover-name">Bertrange / Strassen</div>
+          <div class="mover-why">Forte demande familiale, écoles internationales, résidences premium. Segment maisons très actif, taux de rotation historiquement bas.</div>
+        </div>
+        <div class="mover-pct up">+2,5 %</div>
+      </div>
+      <div class="mover-item">
+        <div>
+          <div class="mover-name">Belair (LU-Ville)</div>
+          <div class="mover-why">Rareté absolue du foncier. Appartements prime — sous-offre structurelle, aucune livraison neuve significative en vue.</div>
+        </div>
+        <div class="mover-pct up">+2,4 %</div>
+      </div>
+      <div class="mover-item">
+        <div>
+          <div class="mover-name">Sanem / Belval</div>
+          <div class="mover-why">Quartier neuf mixte emploi/résidentiel. Demande soutenue par chercheurs et frontaliers. Tient mieux que le reste du Sud.</div>
+        </div>
+        <div class="mover-pct up">~0 %</div>
+      </div>
+      <div class="mover-item">
+        <div>
+          <div class="mover-name">Remich / Echternach</div>
+          <div class="mover-why">Moselle / Est — attractivité cross-border, stock très limité, prix stables à légère hausse sur les transactions notariales.</div>
+        </div>
+        <div class="mover-pct up">+0,2–0,3 %</div>
+      </div>
+    </div>
+
+    <div class="mover-card down">
+      <h3>▼ Top 5 — Communes en recul</h3>
+      <div class="mover-item">
+        <div>
+          <div class="mover-name">Ettelbruck</div>
+          <div class="mover-why">Nord sous pression démographique, manque de grands employeurs, temps de trajet vers la capitale. Stock en excès.</div>
+        </div>
+        <div class="mover-pct down">−5,5 %</div>
+      </div>
+      <div class="mover-item">
+        <div>
+          <div class="mover-name">Diekirch</div>
+          <div class="mover-why">Même dynamique qu'Ettelbruck. VEFA invendus, délais de vente &gt; 120 jours. Fort pouvoir de négociation acheteur.</div>
+        </div>
+        <div class="mover-pct down">−4,5 %</div>
+      </div>
+      <div class="mover-item">
+        <div>
+          <div class="mover-name">Wiltz</div>
+          <div class="mover-why">Zone rurale ardennaise, faible liquidité, très peu d'acquéreurs actifs. Discount structurel vs prix affichés.</div>
+        </div>
+        <div class="mover-pct down">−4,8 %</div>
+      </div>
+      <div class="mover-item">
+        <div>
+          <div class="mover-name">Kirchberg (LU-Ville)</div>
+          <div class="mover-why">Correction post-euphorie institutionnelle. Nombreux appartements neufs similaires en concurrence, acheteur choisi.</div>
+        </div>
+        <div class="mover-pct down">−4,0 %</div>
+      </div>
+      <div class="mover-item">
+        <div>
+          <div class="mover-name">Differdange</div>
+          <div class="mover-why">Stock important, marché peu liquide, correction de survalorisation 2021-2022. Opportunités pour investisseurs patients.</div>
+        </div>
+        <div class="mover-pct down">−2,1 %</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="buyer-box">
+    <p class="buyer-box-label">Ce que cela signifie pour l'acheteur</p>
+    <p style="color:var(--dark)">Kirchberg affiche les appartements les plus chers avec la moins bonne tenue a/a : trop de biens comparables en concurrence. Bonnevoie, Hollerich et Gare offrent le meilleur ratio prix d'entrée/rendement locatif. Dans le Sud, Esch-centre est en légère baisse (−1,5 %, Locco.lu) : c'est là que la marge de négociation est la plus forte. Belval/Sanem tient mieux grâce à l'emploi et aux infrastructures. Pour les maisons périurbaines (Bertrange, Hesperange, Strassen), le marché est ferme — les prix maisons ont progressé de +3,0 % a/a officiellement. Évitez Ettelbruck et Wiltz sans accompagnement : les délais de revente dépassent 6 mois.</p>
+  </div>
+</section>
+
+<div class="divider-teal-rev"></div>
+
+<!-- ═══════════════════════════════════════════════════
+     5. OFFRE ET PIPELINE
+══════════════════════════════════════════════════════ -->
+<div class="teal-section">
+  <div class="inner">
+    <p class="section-subtitle" style="color:var(--navy);">Marché de l'offre</p>
+    <h2 class="section-title-white">Offre et pipeline</h2>
+    <div class="rule-gold"></div>
+
+    <p>Le signal le plus important à surveiller n'est pas le prix — c'est le volume. Les <span style="color:var(--gold);font-weight:600">149 ventes VEFA</span> enregistrées au T4 2025 (−62,4 % sur un an, Observatoire de l'Habitat) représentent le niveau le plus bas depuis la crise financière de 2009. La cause est systémique : les promoteurs, confrontés à la hausse des coûts de construction et à la méfiance des banques finançant le neuf, ont suspendu ou reculé une part importante de leur pipeline. L'indice des prix de la construction résidentielle STATEC (Note SNT03-26, octobre 2025) affiche une tendance croissante qui pèse sur les marges promoteurs et renchérit mécaniquement le neuf.</p>
+
+    <p>Sur le marché secondaire, le stock de biens à la vente s'est accru sur les portails par rapport à 2023, mais le nombre de biens en adéquation avec la demande effective (surface, étage, performance énergétique) reste limité. Les biens notés D, E ou moins en classe énergétique subissent une décote additionnelle estimée à 5–10 % selon les acheteurs enquêtés. Le <span style="color:var(--gold);font-weight:600">délai de vente moyen</span> atteint 80 à 95 jours nationalement, contre 30 à 45 jours au pic de 2021. C'est un marché d'acheteurs en termes de temps de décision.</p>
+
+    <p>Le gouvernement a annoncé le <strong style="color:#fff">« Booster fir de Wunnengsbau »</strong> (16 juillet 2026), mobilisant 300 M€ supplémentaires via le programme étatique d'achat de VEFA, en sus des 480 M€ précédents (soit 780 M€ totaux pour ~830 logements accessibles sécurisés). Une obligation logement (Housing Bond) de 250 M€ sur l'épargne citoyenne est prévue début 2027. Ces mesures soutiennent la demande mais ne créent pas d'offre immédiate sur le marché libre.</p>
+
+    <div class="buyer-box" style="background:rgba(255,255,255,0.15);border-left-color:var(--navy)">
+      <p class="buyer-box-label" style="color:var(--navy)">Ce que cela signifie pour l'acheteur</p>
+      <p style="color:#fff">La compression du pipeline VEFA est votre alliée à moyen terme : il n'y aura pas d'afflux de livraisons en 2026-2027 pour peser sur les prix. Mais à court terme, le neuf offre encore des opportunités : des promoteurs en besoin de liquidités accordent des rabais ou des avantages (cuisine équipée, parking offert, frais de notaire pris en charge) non visibles sur le prix affiché. Demandez systématiquement ce que le promoteur peut inclure avant de négocier le prix.</p>
+    </div>
+  </div>
+</div>
+
+<div class="divider-navy"></div>
+
+<!-- ═══════════════════════════════════════════════════
+     6. FINANCEMENT ET POUVOIR D'ACHAT
+══════════════════════════════════════════════════════ -->
+<div class="dark-section">
+  <div class="inner">
+    <p class="section-subtitle" style="color:var(--gold)">Crédit &amp; Pouvoir d'achat</p>
+    <h2 class="section-title-white">Financement et pouvoir d'achat</h2>
+    <div class="rule-gold"></div>
+
+    <div class="two-col">
+      <div>
+        <p>La BCE a maintenu ses taux directeurs dans une fourchette accommodante depuis mi-2025. Selon les données BCL de janvier 2026 (Expatica / BCL), le taux variable moyen s'établit à <span class="keyword-gold">3,07 %</span>, dans une fourchette de 2,80 % à 3,25 % (EURIBOR + marge 1,0–1,5 %), et les <span class="keyword-gold">taux fixes 15–20 ans entre 3,27 % et 3,92 %</span> selon le profil emprunteur et le LTV (Locco.lu, Expatica/BCL — janvier 2026). Contrairement à une idée reçue, le taux variable est structurellement <em>inférieur</em> au taux fixe long ; une offre indiquant un taux variable &gt; 3,90 % sur ce marché serait à questionner.</p>
+
+        <p>La BCL et la CSSF maintiennent leur cadre macroprudentiel : le LTV s'échelonne de <strong style="color:#fff">80 % (investisseurs)</strong> à <strong style="color:#fff">90–100 % (primo-accédants selon profil)</strong>. Le taux d'effort (DSTI) <strong style="color:#fff">recommandé se situe entre 35 % et 45 %</strong> du revenu net mensuel, avec 35–40 % comme norme bancaire et 45 % accordé uniquement aux dossiers forts (source : Expatica/BCL, CSSF). La maturité standard est de 25–30 ans, certaines banques acceptant 35 ans pour les moins de 35 ans.</p>
+      </div>
+      <div>
+        <!-- Chart: Rates comparison -->
+        <svg class="chart" width="320" height="200" viewBox="0 0 320 200">
+          <text x="160" y="18" fill="#fff" font-size="13" text-anchor="middle" font-weight="600">Taux hypothécaires Luxembourg (mars 2026)</text>
+          <!-- Variable -->
+          <rect x="30" y="50" width="70" height="100" fill="#D3AF3C"></rect>
+          <text x="65" y="44" fill="#D3AF3C" font-size="11" text-anchor="middle" font-weight="700">2,80–3,25 %</text>
+          <text x="65" y="162" fill="#aac" font-size="11" text-anchor="middle">Variable</text>
+          <!-- Fixe 10 ans -->
+          <rect x="125" y="38" width="70" height="112" fill="#51B49B"></rect>
+          <text x="160" y="32" fill="#D3AF3C" font-size="11" text-anchor="middle" font-weight="700">3,10–3,65 %</text>
+          <text x="160" y="162" fill="#aac" font-size="11" text-anchor="middle">Fixe 10 ans</text>
+          <!-- Fixe 15-20 ans -->
+          <rect x="220" y="26" width="70" height="124" fill="#51B49B" opacity="0.75"></rect>
+          <text x="255" y="20" fill="#D3AF3C" font-size="11" text-anchor="middle" font-weight="700">3,30–3,90 %</text>
+          <text x="255" y="162" fill="#aac" font-size="11" text-anchor="middle">Fixe 15–20 ans</text>
+          <!-- Axis -->
+          <line x1="20" y1="150" x2="300" y2="150" stroke="#334f6e" stroke-width="1"></line>
+          <text x="160" y="185" fill="#aac" font-size="10" text-anchor="middle">Source : Locco.lu, Switchr.lu — mars 2026</text>
+        </svg>
+      </div>
+    </div>
+
+    <div style="margin-top:24px">
+      <p>En termes de <span class="keyword-gold">pouvoir d'achat immobilier</span>, un ménage médian luxembourgeois (revenu net ~5 200 €/mois selon STATEC 2024) peut emprunter environ 390 000–430 000 € sur 25 ans à 3,50 % avec un DSTI à 40 %. À 7 764 €/m² moyen, cela représente environ 50–55 m² de surface finançable — contre 65–70 m² en 2020 lorsque les taux étaient à 1,5 %. La surface accessible a reculé de 20–25 % en cinq ans sous l'effet combiné de la hausse des prix et des taux.</p>
+    </div>
+
+    <div class="buyer-box">
+      <p class="buyer-box-label">Ce que cela signifie pour l'acheteur</p>
+      <p style="color:var(--dark)">Comparez toujours taux fixe et variable avec une simulation sur 5 ans : le variable à ~3,07 % est avantageux à court terme si la BCE baisse encore d'ici fin 2026. Pour un horizon &gt; 10 ans, le fixe à 3,30–3,90 % donne la visibilité. Un DSTI de 35–40 % est la norme ; les banques peuvent aller à 45 % sur dossier solide, mais au-delà vous perdez en flexibilité si les taux remontent. Les banques négocient : un apport &gt; 30 % peut faire baisser le taux de 20–30 pb. Ne signez jamais sans au minimum 3 offres comparées.</p>
+    </div>
+  </div>
+</div>
+
+<div class="divider-teal"></div>
+
+<!-- ═══════════════════════════════════════════════════
+     7. FISCALITÉ ET CADRE LÉGAL
+══════════════════════════════════════════════════════ -->
+<section class="section">
+  <p class="section-subtitle">Réglementation &amp; Fiscalité</p>
+  <h2 class="section-title">Fiscalité et cadre légal</h2>
+  <div class="rule-teal"></div>
+  <p>Ce trimestre marque un tournant fiscal significatif — le meilleur paquet d'incitations pour l'acheteur depuis 2015. Chaque mesure est quantifiée ci-dessous.</p>
+
+  <div class="stat-grid" style="grid-template-columns:repeat(auto-fit,minmax(220px,1fr));margin-bottom:32px">
+    <div class="stat-tile">
+      <span class="stat-number" style="font-size:28px">40 000 €</span>
+      <span class="stat-label">Bëllegen Akt par personne</span>
+      <p class="stat-sub">Confirmé à 40 000 € par personne (80 000 € couple) pour T1 2026 — Guichet.lu, Tevaxia.lu, Sellect.lu. <em>Augmentation à 45 000 € annoncée « Booster » juillet 2026, en attente de vote législatif.</em></p>
+    </div>
+    <div class="stat-tile">
+      <span class="stat-number" style="font-size:28px">0 %</span>
+      <span class="stat-label">Droits sur la part construction VEFA</span>
+      <p class="stat-sub">Pour tout VEFA ≤ 80 % d'avancement à la signature. Droits uniquement sur valeur terrain. Effectif depuis le 16 juillet 2026 (3 ans). <em>Source : Selfhome.lu — loi juillet 2026</em></p>
+    </div>
+    <div class="stat-tile">
+      <span class="stat-number" style="font-size:28px">8 %</span>
+      <span class="stat-label">TVA logement locatif social</span>
+      <p class="stat-sub">Réduit de 17 % à 8 % pour logements locatifs ≤ 120 m² avec plafond de loyer (médiane Observatoire). <em>Source : Gouvernement.lu — juillet 2026</em></p>
+    </div>
+    <div class="stat-tile">
+      <span class="stat-number" style="font-size:28px">6 %/an × 6 ans</span>
+      <span class="stat-label">Amortissement accéléré «&nbsp;3×6&nbsp;»</span>
+      <p class="stat-sub">36 % du bien en 6 ans. Plafond : 600 000 €. Obligatoire dès janvier 2027 ; les achats 2026 peuvent choisir. <em>Source : Selfhome.lu — régime 2026–2027</em></p>
+    </div>
+    <div class="stat-tile">
+      <span class="stat-number" style="font-size:28px">300 000 €</span>
+      <span class="stat-label">Aide étatique max. ≤ 35 ans</span>
+      <p class="stat-sub">Plafond aide à l'accession pour primo-accédants de moins de 35 ans (au moins un emprunteur). Plafond général relevé à 250 000 €. <em>Source : Gouvernement.lu — juillet 2026</em></p>
+    </div>
+    <div class="stat-tile">
+      <span class="stat-number" style="font-size:28px">4 %</span>
+      <span class="stat-label">Plafond rendement bailleur (loi bail)</span>
+      <p class="stat-sub">Réforme bail à usage d'habitation : loyer plafonné à 4 % du capital investi (TVA incluse). Indexation sur tranche STATEC. <em>Source : Gouvernement.lu — réglementation bail</em></p>
+    </div>
+  </div>
+
+  <div class="buyer-box">
+    <p class="buyer-box-label">Ce que cela signifie pour l'acheteur</p>
+    <p style="color:var(--dark)">Le Bëllegen Akt à 40 000 € par personne (80 000 € pour un couple) efface les droits d'enregistrement sur un achat primaire jusqu'à ~480 000 €. Si la hausse à 45 000 € annoncée en juillet 2026 est votée, le plafond monterait à ~640 000 €. Vérifiez l'état d'avancement de la loi avant la signature du compromis et ajoutez une clause suspensive si nécessaire. L'exemption VEFA sur la part construction (juillet 2026) rend le neuf considérablement plus compétitif pour la première fois depuis 3 ans : comparez le coût global neuf vs ancien avec ces nouveaux paramètres avant de trancher.</p>
+  </div>
+</section>
+
+<div class="divider-teal-rev"></div>
+
+<!-- ═══════════════════════════════════════════════════
+     8. LOCATION ET RENDEMENTS
+══════════════════════════════════════════════════════ -->
+<div class="dark-section">
+  <div class="inner">
+    <p class="section-subtitle" style="color:var(--gold)">Marché locatif</p>
+    <h2 class="section-title-white">Location et rendements</h2>
+    <div class="rule-gold"></div>
+
+    <p>Le marché locatif est structurellement sous tension : <span class="keyword-gold">30,94 €/m²/mois</span> en moyenne nationale (mars 2026, Locco.lu), en hausse de 6,65 à 7,23 % sur douze mois. La demande est principalement tirée par l'immigration professionnelle nette (~10 000 personnes/an) et une formation de ménages soutenue. Une annonce bien positionnée reçoit entre 15 et 20 candidatures dans les 48 heures — le délai de location effective est de 2 à 8 semaines.</p>
+
+    <div class="two-col">
+      <div>
+        <p><strong style="color:#fff">Loyers par secteur (€/m²/mois) :</strong></p>
+        <p>Luxembourg-Ville : 35,61 €/m² (Locco.lu). Kirchberg et Limpertsberg/Belair : 45–48 €/m² pour les résidences récentes. Bonnevoie, Eich, Gare : 28–32 €/m² — segment accessibles, forte rotation. Région Centre hors capitale : 33,97 €/m². Nord du pays : 19,76 €/m².</p>
+        <p>En dehors de la capitale, Esch-sur-Alzette tourne autour de 1 300–1 700 €/mois pour un T1, Differdange à 1 400–1 800 €/mois (demande soutenue par l'emploi Belval).</p>
+      </div>
+      <div>
+        <!-- Bar chart rents -->
+        <svg class="chart" width="300" height="220" viewBox="0 0 300 220">
+          <text x="150" y="16" fill="#fff" font-size="12" text-anchor="middle" font-weight="600">Loyers moyens (€/m²/mois)</text>
+          <!-- Scale: 50€ = 180px → 1px = 3.6 -->
+          <line x1="50" y1="190" x2="280" y2="190" stroke="#334f6e" stroke-width="1"></line>
+          <!-- Kirchberg: 48 → 173px -->
+          <rect x="55" y="17" width="38" height="173" fill="#D3AF3C"></rect>
+          <text x="74" y="12" fill="#D3AF3C" font-size="11" text-anchor="middle">48 €</text>
+          <text x="74" y="203" fill="#aac" font-size="9.5" text-anchor="middle">Kirchberg</text>
+          <!-- LU-Ville: 35.6 → 128px -->
+          <rect x="105" y="62" width="38" height="128" fill="#51B49B"></rect>
+          <text x="124" y="57" fill="#D3AF3C" font-size="11" text-anchor="middle">35,6 €</text>
+          <text x="124" y="203" fill="#aac" font-size="9.5" text-anchor="middle">LU-Ville</text>
+          <!-- Bonnevoie: 30 → 108px -->
+          <rect x="155" y="82" width="38" height="108" fill="#51B49B" opacity="0.75"></rect>
+          <text x="174" y="77" fill="#D3AF3C" font-size="11" text-anchor="middle">30 €</text>
+          <text x="174" y="203" fill="#aac" font-size="9.5" text-anchor="middle">Bonnevoie</text>
+          <!-- Esch: 22 → 79px -->
+          <rect x="205" y="111" width="38" height="79" fill="#51B49B" opacity="0.55"></rect>
+          <text x="224" y="106" fill="#D3AF3C" font-size="11" text-anchor="middle">22 €</text>
+          <text x="224" y="203" fill="#aac" font-size="9.5" text-anchor="middle">Esch-A.</text>
+          <!-- Nord: 19.8 → 71px -->
+          <rect x="255" y="119" width="30" height="71" fill="#51B49B" opacity="0.4"></rect>
+          <text x="270" y="114" fill="#D3AF3C" font-size="11" text-anchor="middle">19,8 €</text>
+          <text x="270" y="203" fill="#aac" font-size="9.5" text-anchor="middle">Nord</text>
+        </svg>
+      </div>
+    </div>
+
+    <p style="margin-top:20px"><strong style="color:#fff">Rendements bruts</strong> (rapport loyer annuel / prix d'achat) : les secteurs offrant les meilleurs rendements en 2026 sont Bonnevoie, Eich, Rollingergrund et Gare, avec des <span class="keyword-gold">rendements bruts de 5,0 à 6,0 %</span>. Kirchberg et Belair ne dépassent pas 3,5–4,5 % en raison des prix d'entrée élevés. Le plafonnement légal des loyers à 4 % du capital investi (bail à usage d'habitation) ne constitue pas un obstacle dans la plupart des cas actuels, mais limite les rendements futurs sur les biens achetés au prix fort 2021-2022. Les achats réalisés avec décote de 10–15 % peuvent structurellement dépasser ce plafond.</p>
+
+    <div class="buyer-box">
+      <p class="buyer-box-label">Ce que cela signifie pour l'acheteur</p>
+      <p style="color:var(--dark)">Le buy-to-let reste viable dans les secteurs accessibles : Bonnevoie, Gare et Eich offrent des rendements &gt; 5 % bruts sur des prix d'achat 8 000–9 000 €/m². Kirchberg à 11 500 €/m² avec un loyer de 45 €/m² génère moins de 4,7 % — insuffisant pour compenser le risque de vacance et les charges. Le calcul doit intégrer la classe énergétique : un bien F/G subira des obligations de rénovation (directive européenne EPBD) qui peuvent absorber 3–4 années de loyers.</p>
+    </div>
+  </div>
+</div>
+
+<div class="divider-navy"></div>
+
+<!-- ═══════════════════════════════════════════════════
+     9. CONTEXTE TRANSFRONTALIER
+══════════════════════════════════════════════════════ -->
+<section class="section">
+  <p class="section-subtitle">Marché de la Grande Région</p>
+  <h2 class="section-title">Contexte transfrontalier</h2>
+  <div class="rule-teal"></div>
+
+  <p>Environ <span class="keyword-teal">220 000 frontaliers</span> traversent quotidiennement la frontière pour travailler au Luxembourg (dont ~120 000 Français, ~50 000 Belges, ~50 000 Allemands — estimations BCL/STATEC 2025). Leur pouvoir d'achat immobilier — les salaires luxembourgeois, taxés au Luxembourg, appliqués aux prix immobiliers étrangers — crée un déport structurel de demande qui plafonne les prix de la ceinture sud et ouest luxembourgeoise.</p>
+
+  <!-- Chart: Cross-border price comparison -->
+  <div class="chart-wrap">
+    <svg class="chart" width="700" height="260" viewBox="0 0 700 260">
+      <text x="350" y="18" fill="#1E3A5F" font-size="14" text-anchor="middle" font-weight="600">Prix immobiliers comparés — Grande Région (€/m²) — 2026</text>
+      <!-- Scale: 13 000 = 190px → 1px = 14.6 -->
+      <line x1="60" y1="30" x2="60" y2="210" stroke="#ccc" stroke-width="1"></line>
+      <line x1="60" y1="210" x2="660" y2="210" stroke="#ccc" stroke-width="1"></line>
+      <!-- Gridlines -->
+      <line x1="60" y1="135" x2="660" y2="135" stroke="#eee" stroke-width="1" stroke-dasharray="4"></line><!-- 5000 -->
+      <line x1="60" y1="65" x2="660" y2="65" stroke="#eee" stroke-width="1" stroke-dasharray="4"></line><!-- 10000 -->
+      <text x="54" y="214" fill="#999" font-size="10" text-anchor="end">0</text>
+      <text x="54" y="139" fill="#999" font-size="10" text-anchor="end">5 000</text>
+      <text x="54" y="69" fill="#999" font-size="10" text-anchor="end">10 000</text>
+      <!-- Luxembourg-Ville: 11500 → 168px -->
+      <rect x="80" y="42" width="60" height="168" fill="#1E3A5F"></rect>
+      <text x="110" y="37" fill="#D3AF3C" font-size="11" text-anchor="middle" font-weight="700">11 500</text>
+      <text x="110" y="226" fill="#555" font-size="11" text-anchor="middle">LU-Ville</text>
+      <!-- Luxembourg Sud: 7000 → 102px -->
+      <rect x="160" y="108" width="60" height="102" fill="#1E3A5F" opacity="0.7"></rect>
+      <text x="190" y="103" fill="#D3AF3C" font-size="11" text-anchor="middle" font-weight="700">7 000</text>
+      <text x="190" y="226" fill="#555" font-size="11" text-anchor="middle">LU-Sud</text>
+      <!-- Arlon (BE): 2 500 → 37px -->
+      <rect x="240" y="173" width="60" height="37" fill="#51B49B"></rect>
+      <text x="270" y="168" fill="#51B49B" font-size="11" text-anchor="middle" font-weight="700">2 500</text>
+      <text x="270" y="226" fill="#555" font-size="11" text-anchor="middle">Arlon (BE)</text>
+      <!-- Thionville (FR): 2000 → 29px -->
+      <rect x="320" y="181" width="60" height="29" fill="#51B49B" opacity="0.7"></rect>
+      <text x="350" y="176" fill="#51B49B" font-size="11" text-anchor="middle" font-weight="700">2 000</text>
+      <text x="350" y="226" fill="#555" font-size="11" text-anchor="middle">Thionville (FR)</text>
+      <!-- Metz (FR): 2200 → 32px -->
+      <rect x="400" y="178" width="60" height="32" fill="#51B49B" opacity="0.55"></rect>
+      <text x="430" y="173" fill="#51B49B" font-size="11" text-anchor="middle" font-weight="700">2 200</text>
+      <text x="430" y="226" fill="#555" font-size="11" text-anchor="middle">Metz (FR)</text>
+      <!-- Trier (DE): 2700 → 39px -->
+      <rect x="480" y="171" width="60" height="39" fill="#51B49B" opacity="0.4"></rect>
+      <text x="510" y="166" fill="#51B49B" font-size="11" text-anchor="middle" font-weight="700">2 700</text>
+      <text x="510" y="226" fill="#555" font-size="11" text-anchor="middle">Trier (DE)</text>
+      <!-- Longwy/Audun: 1300 → 19px -->
+      <rect x="560" y="191" width="60" height="19" fill="#51B49B" opacity="0.35"></rect>
+      <text x="590" y="186" fill="#51B49B" font-size="11" text-anchor="middle" font-weight="700">1 300</text>
+      <text x="590" y="226" fill="#555" font-size="11" text-anchor="middle">Longwy (FR)</text>
+      <!-- Legend -->
+      <rect x="80" y="240" width="12" height="10" fill="#1E3A5F"></rect>
+      <text x="97" y="249" fill="#555" font-size="11">Luxembourg</text>
+      <rect x="190" y="240" width="12" height="10" fill="#51B49B"></rect>
+      <text x="207" y="249" fill="#555" font-size="11">Pays frontaliers</text>
+      <text x="350" y="249" fill="#999" font-size="10">Sources : lesfrontaliers.lu, kazaki.fr, Immotop.lu — 2026</text>
+    </svg>
+  </div>
+
+  <p style="margin-top:20px">Le différentiel de prix entre Luxembourg-Sud (~7 000 €/m²) et Thionville (2 000 €/m²) reste un facteur de <span class="keyword-teal">pression modératrice</span> sur les communes frontalières luxembourgeoises : un acheteur qui travaille à Belval peut choisir Thionville avec une économie de 60–70 % sur le prix d'achat, au prix d'un temps de trajet de 25–35 minutes. Cet arbitrage cap structurellement la valorisation des communes de l'extrême sud luxembourgeois (Pétange, Differdange). À l'inverse, Arlon (~2 500 €/m²) et Trier (~2 700 €/m²) continuent de bénéficier de l'attractivité des frontaliers luxembourgeois — ce qui soutient leurs marchés locatifs avec des rendements de 6–8 % bruts côté français.</p>
+
+  <div class="buyer-box">
+    <p class="buyer-box-label">Ce que cela signifie pour l'acheteur</p>
+    <p style="color:var(--dark)">Si votre lieu de travail est dans le Sud du pays (Belval, Esch, Pétange), comparez objectivement les communes luxembourgeoises frontalières avec le marché de Thionville ou Longwy avant de vous décider. Le calcul inclut : fiscalité des frontaliers, temps de trajet, qualité de vie et liquidité à la revente. Pour un investisseur pur, Thionville offre des rendements 6–8 % avec une clientèle locative premium (frontaliers solvables) inaccessibles au Luxembourg.</p>
+  </div>
+</section>
+
+<div class="divider-gold-tri"></div>
+
+<!-- ═══════════════════════════════════════════════════
+     10. PERSPECTIVES
+══════════════════════════════════════════════════════ -->
+<section class="section">
+  <p class="section-subtitle">Outlook 6–12 mois</p>
+  <h2 class="section-title">Perspectives</h2>
+  <div class="rule-teal"></div>
+  <p>Trois scénarios pour les 6 à 12 prochains mois, avec les déclencheurs à surveiller.</p>
+
+  <div class="scenario-grid">
+    <div class="scenario-card base">
+      <div class="scenario-label">Scénario de base · Probabilité ~60 %</div>
+      <h3>Stabilisation sélective</h3>
+      <p>Les prix anciens se maintiennent à ±2 % sur les douze mois, tirés par la demande d'expats et la pénurie de stocks de qualité. Le neuf finit son ajustement : le VEFA retrouve 250–350 transactions/trimestre grâce aux mesures fiscales de juillet 2026. Les taux hypothécaires restent entre 3,0 et 3,8 % (fixe 20 ans).</p>
+      <p>Les appartements efficients (classe A/B) et bien situés en capitale enregistrent +1 à +3 %. Les maisons en couronne et le nord peinent, délais de vente 90–120 jours.</p>
+      <div class="scenario-trigger">🔍 Signal à surveiller : Volumes de transactions VEFA T3 2026 — si &gt; 250, le scénario base est confirmé.</div>
+    </div>
+    <div class="scenario-card up">
+      <div class="scenario-label">Scénario haussier · Probabilité ~20 %</div>
+      <h3>Rebond accéléré</h3>
+      <p>Une baisse supplémentaire de 50 pb de la BCE fin 2026 ramène les taux variables sous 2,5 % et les fixes 20 ans sous 3,0 %. Combinée aux nouvelles incitations fiscales (Bëllegen Akt + exemption VEFA), la demande comprimée des deux dernières années se libère rapidement. Prix +4 à +6 % en ville de Luxembourg, les premiers achats se décident en moins de 3 semaines.</p>
+      <div class="scenario-trigger">🔍 Signal à surveiller : Décision BCE novembre 2026 — baisse &gt; 50 pb déclenche ce scénario.</div>
+    </div>
+    <div class="scenario-card down">
+      <div class="scenario-label">Scénario baissier · Probabilité ~20 %</div>
+      <h3>Correction prolongée</h3>
+      <p>Un choc externe — récession en zone euro, hausse du chômage au Luxembourg, durcissement des conditions de crédit BCE — provoque une vague de ventes contraintes. Le VEFA invendu continue de peser, des promoteurs déclarent des difficultés, les banques resserrent l'octroi. Prix −5 à −8 % complémentaires sur les communes secondaires. La ville de Luxembourg résiste mieux (−2 à −3 %).</p>
+      <div class="scenario-trigger">🔍 Signal à surveiller : Taux de chômage LU &gt; 6 % (STATEC) ou recul des recrutements dans la finance et l'IT.</div>
+    </div>
+  </div>
+
+  <div class="buyer-box" style="margin-top:32px">
+    <p class="buyer-box-label">Ce que cela signifie pour l'acheteur</p>
+    <p style="color:var(--dark)">Dans tous les scénarios, un achat résidentiel principal bien négocié (−5 à −8 % sous le prix affiché) réalisé au T2–T3 2026 est défendable. Le risque baissier supplémentaire est limité à −5 % au pire sur les actifs prime ; il est plus élevé sur les maisons en couronne nord. Ne déplacez pas la décision d'achat sur une attente de meilleur prix — le coût d'opportunité du loyer payé pendant l'attente dépasse généralement le gain hypothétique.</p>
+  </div>
+</section>
+
+<div class="divider-teal"></div>
+
+<!-- ═══════════════════════════════════════════════════
+     11. LA LECTURE B-SIDE
+══════════════════════════════════════════════════════ -->
+<div class="dark-section">
+  <div class="inner">
+    <p class="section-subtitle" style="color:var(--gold)">Playbook T1–T2 2026</p>
+    <h2 class="section-title-white">La lecture B-side</h2>
+    <div class="rule-gold"></div>
+
+    <p style="font-size:17px;color:#fff;line-height:1.7;max-width:800px;margin-bottom:28px">
+      <strong>Où est le levier de négociation ce trimestre ?</strong>
+    </p>
+
+    <p>Sur les appartements existants en ville de Luxembourg — sauf Belair et Limpertsberg where les vendeurs tiennent ferme — une offre à 5–7 % sous le prix affiché est aujourd'hui recevable, voire attendue. Sur Kirchberg, où le stock de biens comparables est important, <span class="keyword-gold">7 à 10 % de négociation</span> sont réalistes. Les vendeurs en situation contrainte (héritage, départ à l'étranger, divorce) peuvent descendre 10–12 % — identifiez-les par les biens en vente depuis &gt; 90 jours.</p>
+
+    <p>Sur les maisons en couronne ouest (Strassen, Bertrange, Hesperange), les prix affichés restent 8–10 % au-dessus des dernières transactions notariales de référence. N'achetez pas au premier prix : demandez les comparables cadastraux. Sur les communes du nord (Ettelbruck, Diekirch), la liquidité est faible — ce que vous gagnez à l'achat, vous le perdez potentiellement à la revente. Réservez ces zones à des acheteurs à horizon &gt; 10 ans.</p>
+
+    <p><strong style="color:#fff">Ce qu'il faut mettre dans une offre :</strong> une lettre de motivation personnalisée (le vendeur choisit souvent l'acheteur, pas seulement le prix), une attestation de financement bancaire, une date de signature notariale ferme dans les 3 mois. Ces trois éléments valent souvent autant que 2 % de remise supplémentaire.</p>
+
+    <p><strong style="color:#fff">Ce qu'il faut refuser :</strong> un bien en classe énergétique F ou G sans accord explicite sur une décote rénovation ou une clause suspensive travaux. Les obligations EPBD 2030–2033 sont réelles et chiffrables. N'achetez pas un problème énergétique au prix d'un actif sain.</p>
+
+    <p>Le <span class="keyword-gold">Bëllegen Akt à 40 000 €</span> (hausse à 45 000 € annoncée, en attente de vote) change déjà le calcul du coût total d'acquisition : intégrez-le dès la comparaison neuf vs ancien. Et si vous avez moins de 35 ans, l'aide étatique renforcée (jusqu'à 300 000 €) mérite d'être demandée à votre banque avant même la signature du compromis.</p>
+  </div>
+</div>
+
+<div class="divider-navy"></div>
+
+<!-- ═══════════════════════════════════════════════════
+     12. SOURCES ET MÉTHODOLOGIE
+══════════════════════════════════════════════════════ -->
+<div class="sources-section">
+  <div class="inner">
+    <p class="section-subtitle">Transparence</p>
+    <h2 class="section-title">Sources et méthodologie</h2>
+    <div class="rule-teal"></div>
+    <p>Chaque chiffre de ce rapport est sourcé et daté ci-dessous. B-side distingue systématiquement <strong>prix annoncés</strong> (portails, asking prices) et <strong>prix de vente notariés</strong> (acte enregistré). Les deux séries mesurent des choses différentes — les premières sont un outil de marketing, les secondes sont la réalité transactionnelle. Ne les comparez jamais sans le préciser.</p>
+
+    <ul class="sources-list">
+      <li><strong>Observatoire de l'Habitat / LISER</strong> — Rapport « Le marché immobilier résidentiel au 1er trimestre 2026 », publié juin 2026, logement.public.lu. Données de référence : prix de vente notariés, volumes de transactions VEFA et anciens. <a href="https://logement.public.lu/fr/observatoire-habitat/prix-de-vente.html" target="_blank">Prix de vente (Logement.lu)</a></li>
+      <li><strong>STATEC Luxembourg</strong> — Indice des prix de la construction résidentielle, Note SNT03-26 (octobre 2025). Données démographiques et tranche indiciaire. <a href="https://statistiques.public.lu/fr/actualites/2026/stn03-26-construction.html" target="_blank">statistiques.public.lu</a></li>
+      <li><strong>Immotop.lu</strong> — Prix annoncés national et communes, Q1 2026 (asking prices portail). Évolutions annuelles. <a href="https://www.immotop.lu/en/prix-immobilier/" target="_blank">immotop.lu</a></li>
+      <li><strong>Tevaxia.lu / Indices</strong> — Prix au m² par commune, tendances 98 communes luxembourgeoises, mars 2026. <a href="https://tevaxia.lu/indices" target="_blank">tevaxia.lu</a></li>
+      <li><strong>Selfhome.lu</strong> — Analyse prix immobilier Luxembourg 2026 ; Nouvelles mesures fiscales logement 2026 (Bëllegen Akt, VEFA, TVA, amortissement). <a href="https://www.selfhome.lu/en/prix-immobilier-luxembourg-2026/" target="_blank">selfhome.lu</a></li>
+      <li><strong>Investropa</strong> — Luxembourg Real Estate Market Analysis 2026 ; délais de vente, marge de négociation. <a href="https://investropa.com/blogs/news/luxembourg-real-estate-market" target="_blank">investropa.com</a></li>
+      <li><strong>Locco.lu</strong> — Loyer moyen par quartier, Luxembourg 2026 ; Guide hypothécaire Luxembourg 2026. <a href="https://locco.lu/en/blog/average-rent-by-neighborhood-2026" target="_blank">locco.lu</a></li>
+      <li><strong>Switchr.lu / Locco.lu</strong> — Taux hypothécaires bancaires, mars 2026 (taux fixes et variables, fourchettes). <a href="https://locco.lu/en/blog/luxembourg-mortgage-guide-2026" target="_blank">locco.lu — mortgage guide</a></li>
+      <li><strong>Promovillas.lu</strong> — Analyse régionale prix par zone T1 2026. <a href="https://promovillas.lu/en/news/26231" target="_blank">promovillas.lu</a></li>
+      <li><strong>Sellect.lu</strong> — Prix par commune, guide complet 2026. <a href="https://sellect.lu/en/news/property-prices-municipality-luxembourg-2026" target="_blank">sellect.lu</a></li>
+      <li><strong>Gouvernement.lu / Ministère du Logement</strong> — « Booster fir de Wunnengsbau » (juillet 2026) ; Bëllegen Akt ; aides primo-accédants. <a href="https://gouvernement.lu/fr/actualites/toutes_actualites/communiques/2026/07-juillet/16-meisch-roth-booster-wunnengsbau2.html" target="_blank">gouvernement.lu</a></li>
+      <li><strong>Netimmo.be / Lesfrontaliers.lu</strong> — Marché locatif luxembourgeois 2026 ; comparatif immobilier Grande Région. <a href="https://www.lesfrontaliers.lu/societe/comparatif-des-couts-immobiliers-ou-se-loger-aux-frontieres/" target="_blank">lesfrontaliers.lu</a></li>
+      <li><strong>Kazaki.fr</strong> — Thionville et l'effet frontalier luxembourgeois, prix et rendements 2026. <a href="https://www.kazaki.fr/blog/investir-thionville-2026-marche-immobilier" target="_blank">kazaki.fr</a></li>
+      <li><strong>Guichet.lu / Logement.lu</strong> — Paramètres fiscaux officiels : Bëllegen Akt, TVA logement, prêts bonifiés. <a href="https://guichet.public.lu/fr/citoyens/aides/logement-construction/aides-indirectes/credit-impot-actes-notaries.html" target="_blank">guichet.lu</a></li>
+    </ul>
+
+    <p class="sources-note">
+      <strong>Note méthodologique :</strong> Les prix « annoncés » (portails Immotop, Athome, Tevaxia) surestiment de 4 à 8 % les prix de vente enregistrés en acte notarié, tels que publiés par l'Observatoire de l'Habitat et l'Administration du Cadastre. Ce rapport cite explicitement la source pour chaque donnée. En l'absence de données notariales disponibles pour une commune au T1 2026 (données cadastrales publiées avec un trimestre de décalage), les prix portails sont utilisés avec indication. Les figures VEFA et volumes de transactions proviennent exclusivement de l'Observatoire de l'Habitat. Les projections sont des estimations fondées sur les indicateurs disponibles et ne constituent pas un conseil en investissement.
+    </p>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     13. CTA
+══════════════════════════════════════════════════════ -->
+<section class="cta-section">
+  <div class="logo-wrap" style="margin-bottom:24px">
+    <svg version="1.1" viewBox="0 0 92.1 56.7" height="40" xmlns="http://www.w3.org/2000/svg" xml:space="preserve">
+      <style>.c0{fill:#335C80}.c1{fill:#218D9A}.c2{fill:#D3AF3C}.c3{fill:#36A9E1}.c4{fill:#51B49B}</style>
+      <g><polygon class="c0" points="23.4,0.7 21.9,14.3 6.1,4.2"></polygon><polygon class="c1" points="24,0.2 23.3,17.4 6.6,0.9"></polygon><polyline class="c2" points="39.8,16 25.8,27.1 22.9,17 39.8,16"></polyline><polygon class="c0" points="42,6.7 48.2,11.8 40.1,14.2"></polygon><path class="c1" d="M42,6.7c0,0.2-2.2,9.3-2.2,9.3l-7-6.5L42,6.7z"></path><polygon class="c0" points="39.8,16 39.6,18.4 26.7,26.4"></polygon><polygon class="c0" points="20.1,36.5 22.9,17 27.4,28.2"></polygon><polygon class="c4" points="39.8,16 24,0.2 22.9,17"></polygon></g>
+      <circle class="c2" cx="50.1" cy="30.8" r="1.5"></circle>
+      <g><path class="c0" d="M5.5,33.3c0.5,0,1,0.1,1.6,0.2c0.5,0.1,1.1,0.3,1.6,0.5c0.6,0.2,1.2,0.5,1.7,0.8c0.5,0.3,1,0.8,1.5,1.3c0.3,0.4,0.5,0.8,0.7,1.3s0.2,0.9,0.2,1.4c0,0.5-0.1,1-0.2,1.5c-0.1,0.5-0.2,1-0.4,1.4c0,0,0,0.1,0,0.2c0,0.1,0,0.1,0,0.2l0,0h-0.8V42c0.3-0.9,0.5-1.6,0.7-2.3c0.1-0.7,0.1-1.3-0.1-1.9c-0.2-0.6-0.5-1.1-0.9-1.6c-0.5-0.5-1.1-0.9-1.9-1.3c-0.6-0.3-1.3-0.5-2-0.6c-0.7-0.1-1.4-0.2-2.1-0.2h-4v22H0.1V33.3H5.5z"></path><path class="c0" d="M30.2,48.1v1h-10v-1H30.2z"></path><path class="c0" d="M50.5,39.1v17h-0.7v-17H50.5z"></path></g>
+    </svg>
+  </div>
+  <p class="cta-text">
+    Ce rapport vous a donné le cadre. B-side vous donne le levier.<br>Décrivez-nous votre projet — commune, budget, usage — et nous analysons le marché pour vous, exclusivement de votre côté.
+  </p>
+  <a href="https://b-side.lu" target="_blank" class="cta-btn">DÉCRIVEZ-NOUS VOTRE RECHERCHE</a>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     FOOTER
+══════════════════════════════════════════════════════ -->
+<footer>
+  <span>+352 XX XX XX &nbsp;·&nbsp; <a href="mailto:contact@b-side.lu">contact@b-side.lu</a> &nbsp;·&nbsp; <a href="https://b-side.lu" target="_blank">b-side.lu</a> &nbsp;·&nbsp; B-side — Chasseurs Immobilier au Luxembourg</span>
+</footer>
+
+</div><!-- end fr-version -->
+
+<div id="en-version" class="hidden">
+
+<!-- COVER EN -->
+<section class="cover">
+  <p class="cover-label">Residential Market Report &nbsp;·&nbsp; Q1 2026 &nbsp;·&nbsp; June 2026 Edition</p>
+  <h1>Luxembourg Real Estate Intelligence<br><strong>Hunting for Opportunity</strong></h1>
+  <p class="cover-verdict">
+    Luxembourg’s residential market is completing its correction phase and entering a period of selective stabilisation. VEFA volumes remain depressed, secondary market prices are holding better than expected, and negotiation margins have reached their most buyer-friendly level since 2018. This is the informed buyer’s moment.
+  </p>
+  <p class="cover-meta">Analysed exclusively from the buyer’s perspective &nbsp;·&nbsp; B-side — Buyer’s Real Estate Agents in Luxembourg</p>
+</section>
+
+<!-- 2. AT A GLANCE STATS EN -->
+<section class="section">
+  <p class="section-subtitle">Summary</p>
+  <h2 class="section-title">At a Glance</h2>
+  <div class="rule-teal"></div>
+  <div class="stat-grid">
+
+    <div class="stat-tile">
+      <div class="stat-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#1E3A5F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline>
+        </svg>
+      </div>
+      <span class="stat-number">7,764 €</span>
+      <span class="stat-label">Avg. price/m²<br>existing apartment</span>
+      <p class="stat-sub">Secondary market — Q4 2025<br><em>Source: Observatoire de l’Habitat</em></p>
+    </div>
+
+    <div class="stat-tile">
+      <div class="stat-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#1E3A5F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="22 17 13.5 8.5 8.5 13.5 2 7"></polyline><polyline points="16 17 22 17 22 11"></polyline>
+        </svg>
+      </div>
+      <span class="stat-number">+1.7%</span>
+      <span class="stat-label">Annual change<br>notarial index</span>
+      <p class="stat-sub">Hedonic aggregate index Q1 2026<br><em>Source: Observatoire de l’Habitat / LISER</em><br><small style="color:#aaa">Portal listing prices: −2.3% (Immotop)</small></p>
+    </div>
+
+    <div class="stat-tile">
+      <div class="stat-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#1E3A5F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="18" height="18" rx="2"></rect><path d="M3 9h18M9 21V9"></path>
+        </svg>
+      </div>
+      <span class="stat-number">207</span>
+      <span class="stat-label">VEFA sales (Q1 2026)</span>
+      <p class="stat-sub">−18.2% year-on-year — decline continuing but easing<br><em>Source: Observatoire de l’Habitat, June 2026</em></p>
+    </div>
+
+    <div class="stat-tile">
+      <div class="stat-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#1E3A5F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle><path d="M16 8l-4 4-4-4m8 8l-4-4-4 4"></path>
+        </svg>
+      </div>
+      <span class="stat-number">4–8%</span>
+      <span class="stat-label">Negotiation margin<br>below asking price</span>
+      <p class="stat-sub">Gap between listed price and notarial deed<br><em>Source: Investropa, market analyses</em></p>
+    </div>
+
+    <div class="stat-tile">
+      <div class="stat-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#1E3A5F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line>
+        </svg>
+      </div>
+      <span class="stat-number">3.30–3.90%</span>
+      <span class="stat-label">Fixed rate 15–20 years</span>
+      <p class="stat-sub">Range across Luxembourg banks<br><em>Source: Locco.lu, Switchr.lu — March 2026</em></p>
+    </div>
+
+    <div class="stat-tile">
+      <div class="stat-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#1E3A5F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+        </svg>
+      </div>
+      <span class="stat-number">80–95 days</span>
+      <span class="stat-label">Avg. time to sell<br>national</span>
+      <p class="stat-sub">Vs 55–70 days in Luxembourg City<br><em>Source: Investropa — Q1 2026</em></p>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider-teal"></div>
+
+<!-- 3. MARKET OVERVIEW EN -->
+<div class="dark-section">
+  <div class="inner">
+    <p class="section-subtitle" style="color:var(--gold)">National Analysis</p>
+    <h2 class="section-title-white">Market Overview</h2>
+    <div class="rule-gold"></div>
+
+    <p>
+      Q1 2026 officially marks the entry into a normalisation phase. According to the <strong style="color:#fff">Observatoire de l’Habitat (LISER) report published 25 June 2026</strong>, the hedonic aggregate index of notarially registered sale prices rose by <span class="keyword-gold">+1.7% year-on-year</span> — of which +0.9% for existing apartments, +3.0% for houses and +0.9% for off-plan (VEFA) apartments. These are actual prices recorded with a notary: they are the market reference, not portal asking prices. On property portals (listed prices, not notarised), the Immotop index shows −2.3% over twelve months — a gap that illustrates sellers revising their initial expectations downward, but does not reflect a fall in transaction prices.
+    </p>
+    <p>
+      The most positive signal is the <span class="keyword-gold">return of buyers</span>: existing apartment transactions rose +9.4% year-on-year (968 sales in Q1 2026), houses +11.5% (650 sales). The VEFA segment remains the weak link with only 207 sales in Q1 2026 (−18.2% YoY), a marked improvement over Q4 2025 (149 sales, −62.4% YoY) but still far from equilibrium. This decoupling between VEFA volumes and the secondary market is structural: the developer pipeline remains under cost and financing pressure, but end-buyer demand has regained momentum in the resale market.
+    </p>
+    <p>
+      The effective negotiation margin — between the portal asking price and the notarially registered price — is estimated at <span class="keyword-gold">5% to 8%</span> depending on segment and commune, with a documented maximum of <span class="keyword-gold">12.5%</span> on low-energy-performance properties (EPC E/F/G). On a property listed at €800,000, the negotiation margin represents between €40,000 and €64,000 — before any buyer’s agent involvement.
+    </p>
+
+    <div class="buyer-box">
+      <p class="buyer-box-label">What this means for the buyer</p>
+      <p style="color:var(--dark)">Notarial transaction prices have risen slightly (+1.7%), but portal asking prices have fallen (−2.3%). This gap is your leverage: sellers are lowering their asking prices, but still hold expectations. Offer 5–7% below the listed price on existing apartments and 8–12% on EPC E/F/G properties. On peri-urban houses (Bertrange, Hesperange), the market is firmer — do not expect more than 3–5% discount. Any offer made without first checking notarial reference prices remains a risky offer.</p>
+    </div>
+
+    <!-- Chart: Average prices by region -->
+    <div class="chart-wrap" style="margin-top:40px">
+      <p class="section-subtitle" style="color:var(--gold);margin-bottom:8px">Average listed prices by region — Q1 2026 (€/m²)</p>
+      <svg class="chart" width="700" height="280" viewBox="0 0 700 280">
+        <line x1="80" y1="20" x2="80" y2="220" stroke="#334f6e" stroke-width="1"></line>
+        <line x1="80" y1="220" x2="680" y2="220" stroke="#334f6e" stroke-width="1"></line>
+        <line x1="80" y1="170" x2="680" y2="170" stroke="#334f6e" stroke-width="0.5" stroke-dasharray="4,4"></line>
+        <line x1="80" y1="120" x2="680" y2="120" stroke="#334f6e" stroke-width="0.5" stroke-dasharray="4,4"></line>
+        <line x1="80" y1="70" x2="680" y2="70" stroke="#334f6e" stroke-width="0.5" stroke-dasharray="4,4"></line>
+        <line x1="80" y1="20" x2="680" y2="20" stroke="#334f6e" stroke-width="0.5" stroke-dasharray="4,4"></line>
+        <text x="74" y="224" fill="#aac" font-size="11" text-anchor="end">0</text>
+        <text x="74" y="174" fill="#aac" font-size="11" text-anchor="end">2,500</text>
+        <text x="74" y="124" fill="#aac" font-size="11" text-anchor="end">5,000</text>
+        <text x="74" y="74" fill="#aac" font-size="11" text-anchor="end">7,500</text>
+        <text x="74" y="24" fill="#aac" font-size="11" text-anchor="end">10,000</text>
+        <rect x="100" y="20" width="80" height="200" fill="#51B49B"></rect>
+        <text x="140" y="15" fill="#D3AF3C" font-size="12" text-anchor="middle" font-weight="700">10,500</text>
+        <text x="140" y="240" fill="#aac" font-size="11" text-anchor="middle">Centre</text>
+        <text x="140" y="252" fill="#aac" font-size="11" text-anchor="middle">LU-City</text>
+        <rect x="205" y="70" width="80" height="150" fill="#51B49B"></rect>
+        <text x="245" y="65" fill="#D3AF3C" font-size="12" text-anchor="middle" font-weight="700">7,500</text>
+        <text x="245" y="240" fill="#aac" font-size="11" text-anchor="middle">West</text>
+        <text x="245" y="252" fill="#aac" font-size="11" text-anchor="middle">−1.1% YoY</text>
+        <rect x="310" y="80" width="80" height="140" fill="#51B49B"></rect>
+        <text x="350" y="75" fill="#D3AF3C" font-size="12" text-anchor="middle" font-weight="700">7,000</text>
+        <text x="350" y="240" fill="#aac" font-size="11" text-anchor="middle">East</text>
+        <text x="350" y="252" fill="#aac" font-size="11" text-anchor="middle">+0.5% QoQ</text>
+        <rect x="415" y="90" width="80" height="130" fill="#51B49B" opacity="0.75"></rect>
+        <text x="455" y="85" fill="#D3AF3C" font-size="12" text-anchor="middle" font-weight="700">6,500</text>
+        <text x="455" y="240" fill="#aac" font-size="11" text-anchor="middle">South</text>
+        <text x="455" y="252" fill="#aac" font-size="11" text-anchor="middle">Esch −1.5%</text>
+        <rect x="520" y="110" width="80" height="110" fill="#51B49B" opacity="0.65"></rect>
+        <text x="560" y="105" fill="#D3AF3C" font-size="12" text-anchor="middle" font-weight="700">5,500</text>
+        <text x="560" y="240" fill="#aac" font-size="11" text-anchor="middle">North</text>
+        <text x="560" y="252" fill="#aac" font-size="11" text-anchor="middle">−5.5% YoY ▼</text>
+        <rect x="85" y="265" width="14" height="10" fill="#51B49B"></rect>
+        <text x="104" y="274" fill="#aac" font-size="11">Avg. price existing apartments (€/m²)</text>
+        <rect x="340" y="265" width="14" height="10" fill="#D3AF3C"></rect>
+        <text x="359" y="274" fill="#aac" font-size="11">Only region with annual increase</text>
+      </svg>
+      <p style="font-size:12px;color:rgba(255,255,255,0.45);margin-top:8px;">Sources: Promovillas.lu, Observatoire de l’Habitat — portal listing prices, Q1 2026. Indicative prices.</p>
+    </div>
+  </div>
+</div>
+
+<div class="divider-navy"></div>
+
+<!-- 4. PRICES BY COMMUNE EN -->
+<section class="section">
+  <p class="section-subtitle">Price Geography</p>
+  <h2 class="section-title">Prices by Commune</h2>
+  <div class="rule-teal"></div>
+
+  <p>The prices below combine registered sale data (Observatoire de l’Habitat, Land Registry) and listed prices (Immotop.lu, Tevaxia.lu). The <em>Listed Price</em> column reflects portals; the actual transaction price is 4–8% lower. YoY changes calculated Q1 2026 vs Q1 2025. VEFA (new-build) data are separate and systematically higher.</p>
+
+  <div class="info-box">
+    <p><strong>Important:</strong> listed prices ≠ notarially registered sale prices. The “Listed Price” column comes from property portals (Immotop, Athome, Tevaxia). The price actually entered in the deed is lower. B-side systematically compares both before any offer.</p>
+  </div>
+
+  <div class="table-wrap">
+    <table id="commune-table-en">
+      <thead>
+        <tr>
+          <th onclick="sortTableEN(0)">Commune / District <span class="sort-arrow">↕</span></th>
+          <th onclick="sortTableEN(1)">Region <span class="sort-arrow">↕</span></th>
+          <th onclick="sortTableEN(2)">Listed Price (€/m²) <span class="sort-arrow">↕</span></th>
+          <th onclick="sortTableEN(3)">YoY Change <span class="sort-arrow">↕</span></th>
+          <th onclick="sortTableEN(4)">Segment</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="highlight-row"><td>Belair</td><td>Luxembourg City</td><td>12,864</td><td><span class="badge-down">−2.5%</span></td><td>Apartments, top-end</td></tr>
+        <tr><td>Kirchberg</td><td>Luxembourg City</td><td>11,500</td><td><span class="badge-down">−4.0%</span></td><td>New/recent apartments</td></tr>
+        <tr><td>Limpertsberg</td><td>Luxembourg City</td><td>11,000</td><td><span class="badge-down">−2.0%</span></td><td>Apartments, family</td></tr>
+        <tr><td>Merl</td><td>Luxembourg City</td><td>10,500</td><td><span class="badge-flat">~0%</span></td><td>Mixed residential</td></tr>
+        <tr><td>Gasperich</td><td>Luxembourg City</td><td>9,200</td><td><span class="badge-down">−1.8%</span></td><td>Transitional neighbourhood</td></tr>
+        <tr><td>Bonnevoie</td><td>Luxembourg City</td><td>8,500</td><td><span class="badge-flat">−0.5%</span></td><td>Popular, strong rental yield</td></tr>
+        <tr><td>Hollerich</td><td>Luxembourg City</td><td>8,200</td><td><span class="badge-flat">−1.0%</span></td><td>Urban regeneration</td></tr>
+        <tr><td>Cents / Hamm</td><td>Luxembourg City</td><td>8,800</td><td><span class="badge-flat">−0.8%</span></td><td>Eastern residential, houses</td></tr>
+        <tr><td>Gare</td><td>Luxembourg City</td><td>8,000</td><td><span class="badge-flat">−1.2%</span></td><td>Mixed, buy-to-let investment</td></tr>
+        <tr><td>Strassen</td><td>Western belt</td><td>9,500</td><td><span class="badge-down">−2.2%</span></td><td>Premium residential, houses</td></tr>
+        <tr><td>Bertrange</td><td>Western belt</td><td>9,000</td><td><span class="badge-down">−1.5%</span></td><td>Family residential</td></tr>
+        <tr><td>Mamer</td><td>Western belt</td><td>8,200</td><td><span class="badge-flat">−0.9%</span></td><td>Mixed residential</td></tr>
+        <tr><td>Hesperange</td><td>Southern belt</td><td>8,500</td><td><span class="badge-flat">−1.0%</span></td><td>Family residential, gardens</td></tr>
+        <tr><td>Leudelange</td><td>Southern belt</td><td>7,800</td><td><span class="badge-flat">−0.7%</span></td><td>Residential, offices</td></tr>
+        <tr><td>Sandweiler / Contern</td><td>Eastern belt</td><td>8,000</td><td><span class="badge-flat">−0.5%</span></td><td>Peri-urban, houses</td></tr>
+        <tr><td>Esch-sur-Alzette</td><td>South</td><td>6,200</td><td><span class="badge-down">−1.5%</span></td><td>Slight price decline (Locco.lu); Belval/Sanem more resilient</td></tr>
+        <tr class="highlight-row"><td>Sanem / Belval</td><td>South</td><td>6,300</td><td><span class="badge-flat">~0%</span></td><td>New mixed use, Science City campus — best hold in the South</td></tr>
+        <tr><td>Dudelange</td><td>South</td><td>6,400</td><td><span class="badge-down">−1.8%</span></td><td>Affordable residential</td></tr>
+        <tr><td>Differdange</td><td>South</td><td>6,100</td><td><span class="badge-down">−2.1%</span></td><td>Large supply, correction ongoing</td></tr>
+        <tr><td>Bettembourg</td><td>South</td><td>6,600</td><td><span class="badge-down">−2.5%</span></td><td>Residential, Belgian cross-border workers</td></tr>
+        <tr><td>Mersch</td><td>Centre</td><td>7,100</td><td><span class="badge-down">−2.9%</span></td><td>Central country residential</td></tr>
+        <tr><td>Diekirch</td><td>North</td><td>5,900</td><td><span class="badge-down">−4.5%</span></td><td>Canton capital</td></tr>
+        <tr><td>Ettelbruck</td><td>North</td><td>5,900</td><td><span class="badge-down">−5.5%</span></td><td>Northern residential, prices declining</td></tr>
+        <tr><td>Wiltz</td><td>North</td><td>4,500</td><td><span class="badge-down">−4.8%</span></td><td>Ardennes, low prices, low liquidity</td></tr>
+        <tr><td>Clervaux</td><td>North</td><td>4,750</td><td><span class="badge-down">−3.2%</span></td><td>Rural, secondary residences</td></tr>
+        <tr><td>Grevenmacher</td><td>East / Moselle</td><td>6,500</td><td><span class="badge-flat">−0.3%</span></td><td>Viticulture, German cross-border workers</td></tr>
+        <tr><td>Remich</td><td>East / Moselle</td><td>6,200</td><td><span class="badge-flat">+0.2%</span></td><td>Residential, Moselle tourism</td></tr>
+        <tr><td>Echternach</td><td>East / Moselle</td><td>6,000</td><td><span class="badge-flat">+0.3%</span></td><td>Heritage, secondary residences</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="mover-grid" style="margin-top:48px">
+    <div class="mover-card">
+      <h3>▲ Top 5 — Rising Communes</h3>
+      <div class="mover-item">
+        <div>
+          <div class="mover-name">Hesperange / Leudelange</div>
+          <div class="mover-why">Family houses, Cloche d’Or proximity effect, land scarcity. National house prices +3.0% YoY (Observatoire) — these zones lead the gains.</div>
+        </div>
+        <div class="mover-pct up">+2.8%</div>
+      </div>
+      <div class="mover-item">
+        <div>
+          <div class="mover-name">Bertrange / Strassen</div>
+          <div class="mover-why">Strong family demand, international schools, premium residences. Very active house segment, historically low turnover rate.</div>
+        </div>
+        <div class="mover-pct up">+2.5%</div>
+      </div>
+      <div class="mover-item">
+        <div>
+          <div class="mover-name">Belair (LU-City)</div>
+          <div class="mover-why">Absolute land scarcity. Prime apartments — structural under-supply, no significant new deliveries in sight.</div>
+        </div>
+        <div class="mover-pct up">+2.4%</div>
+      </div>
+      <div class="mover-item">
+        <div>
+          <div class="mover-name">Sanem / Belval</div>
+          <div class="mover-why">New mixed-use employment/residential district. Demand sustained by researchers and cross-border workers. Holds better than the rest of the South.</div>
+        </div>
+        <div class="mover-pct up">~0%</div>
+      </div>
+      <div class="mover-item">
+        <div>
+          <div class="mover-name">Remich / Echternach</div>
+          <div class="mover-why">Moselle / East — cross-border appeal, very limited stock, prices stable to slightly rising in notarial transactions.</div>
+        </div>
+        <div class="mover-pct up">+0.2–0.3%</div>
+      </div>
+    </div>
+
+    <div class="mover-card down">
+      <h3>▼ Top 5 — Declining Communes</h3>
+      <div class="mover-item">
+        <div>
+          <div class="mover-name">Ettelbruck</div>
+          <div class="mover-why">North under demographic pressure, lack of major employers, long commute to capital. Excess supply.</div>
+        </div>
+        <div class="mover-pct down">−5.5%</div>
+      </div>
+      <div class="mover-item">
+        <div>
+          <div class="mover-name">Diekirch</div>
+          <div class="mover-why">Same dynamics as Ettelbruck. Unsold VEFA units, time-to-sell &gt;120 days. Strong buyer negotiation power.</div>
+        </div>
+        <div class="mover-pct down">−4.5%</div>
+      </div>
+      <div class="mover-item">
+        <div>
+          <div class="mover-name">Wiltz</div>
+          <div class="mover-why">Rural Ardennes zone, low liquidity, very few active buyers. Structural discount vs. listed prices.</div>
+        </div>
+        <div class="mover-pct down">−4.8%</div>
+      </div>
+      <div class="mover-item">
+        <div>
+          <div class="mover-name">Kirchberg (LU-City)</div>
+          <div class="mover-why">Post-institutional euphoria correction. Many similar new apartments competing, buyer’s choice.</div>
+        </div>
+        <div class="mover-pct down">−4.0%</div>
+      </div>
+      <div class="mover-item">
+        <div>
+          <div class="mover-name">Differdange</div>
+          <div class="mover-why">Large supply, low liquidity, correction of 2021–2022 over-valuation. Opportunities for patient investors.</div>
+        </div>
+        <div class="mover-pct down">−2.1%</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="buyer-box">
+    <p class="buyer-box-label">What this means for the buyer</p>
+    <p style="color:var(--dark)">Kirchberg shows the most expensive apartments with the worst YoY performance: too many comparable properties competing. Bonnevoie, Hollerich and Gare offer the best entry-price/rental-yield ratio. In the South, Esch centre is in slight decline (−1.5%, Locco.lu): that is where negotiation margins are highest. Belval/Sanem holds better thanks to employment and infrastructure. For peri-urban houses (Bertrange, Hesperange, Strassen), the market is firm — house prices rose +3.0% YoY officially. Avoid Ettelbruck and Wiltz without expert guidance: resale timelines exceed 6 months.</p>
+  </div>
+</section>
+
+<div class="divider-teal-rev"></div>
+
+<!-- 5. SUPPLY & PIPELINE EN -->
+<div class="teal-section">
+  <div class="inner">
+    <p class="section-subtitle" style="color:var(--navy);">Supply Side</p>
+    <h2 class="section-title-white">Supply &amp; Pipeline</h2>
+    <div class="rule-gold"></div>
+
+    <p>The most important signal to watch is not price — it is volume. The <span style="color:var(--gold);font-weight:600">149 VEFA sales</span> recorded in Q4 2025 (−62.4% year-on-year, Observatoire de l’Habitat) represent the lowest level since the 2009 financial crisis. The cause is systemic: developers, facing rising construction costs and bank reluctance to finance new-builds, have suspended or deferred a significant portion of their pipeline. The STATEC residential construction price index (Note SNT03-26, October 2025) shows an upward trend that weighs on developer margins and mechanically increases the cost of new-builds.</p>
+
+    <p>In the secondary market, the stock of properties for sale on portals has grown compared to 2023, but the number of properties matching actual demand (size, floor, energy performance) remains limited. Properties rated D, E or below in energy class face an additional estimated discount of 5–10% according to surveyed buyers. The <span style="color:var(--gold);font-weight:600">average time-to-sell</span> has reached 80 to 95 days nationally, versus 30 to 45 days at the 2021 peak. This is a buyer’s market in terms of decision time.</p>
+
+    <p>The government announced the <strong style="color:#fff">“Booster fir de Wunnengsbau”</strong> (16 July 2026), mobilising an additional €300M through the state programme to purchase VEFA units, on top of the €480M previously committed (€780M total for ~830 secured affordable homes). A €250M housing bond drawing on citizen savings is planned for early 2027. These measures support demand but do not immediately create supply on the open market.</p>
+
+    <div class="buyer-box" style="background:rgba(255,255,255,0.15);border-left-color:var(--navy)">
+      <p class="buyer-box-label" style="color:var(--navy)">What this means for the buyer</p>
+      <p style="color:#fff">The compression of the VEFA pipeline is your medium-term ally: there will be no wave of new deliveries in 2026–2027 to weigh on prices. But in the short term, new-builds still offer opportunities: developers needing liquidity are granting discounts or add-ons (fitted kitchen, parking included, notary fees covered) not visible in the listed price. Always ask what the developer can include before negotiating the price.</p>
+    </div>
+  </div>
+</div>
+
+<div class="divider-navy"></div>
+
+<!-- 6. FINANCING EN -->
+<div class="dark-section">
+  <div class="inner">
+    <p class="section-subtitle" style="color:var(--gold)">Credit &amp; Purchasing Power</p>
+    <h2 class="section-title-white">Financing &amp; Purchasing Power</h2>
+    <div class="rule-gold"></div>
+
+    <div class="two-col">
+      <div>
+        <p>The ECB has maintained accommodative policy rates since mid-2025. According to BCL data from January 2026 (Expatica / BCL), the average variable rate stands at <span class="keyword-gold">3.07%</span>, in a range of 2.80% to 3.25% (EURIBOR + 1.0–1.5% margin), and <span class="keyword-gold">15–20 year fixed rates between 3.27% and 3.92%</span> depending on borrower profile and LTV (Locco.lu, Expatica/BCL — January 2026). Contrary to a common misconception, the variable rate is structurally <em>lower</em> than the long fixed rate; any offer showing a variable rate &gt;3.90% in this market would warrant questioning.</p>
+
+        <p>The BCL and CSSF maintain their macroprudential framework: LTV ranges from <strong style="color:#fff">80% (investors)</strong> to <strong style="color:#fff">90–100% (first-time buyers depending on profile)</strong>. The recommended debt service-to-income ratio (DSTI) <strong style="color:#fff">ranges from 35% to 45%</strong> of net monthly income, with 35–40% as the banking norm and 45% granted only to strong applications (source: Expatica/BCL, CSSF). Standard maturity is 25–30 years, some banks accepting 35 years for borrowers under 35.</p>
+      </div>
+      <div>
+        <svg class="chart" width="320" height="200" viewBox="0 0 320 200">
+          <text x="160" y="18" fill="#fff" font-size="13" text-anchor="middle" font-weight="600">Luxembourg mortgage rates (March 2026)</text>
+          <rect x="30" y="50" width="70" height="100" fill="#D3AF3C"></rect>
+          <text x="65" y="44" fill="#D3AF3C" font-size="11" text-anchor="middle" font-weight="700">2.80–3.25%</text>
+          <text x="65" y="162" fill="#aac" font-size="11" text-anchor="middle">Variable</text>
+          <rect x="125" y="38" width="70" height="112" fill="#51B49B"></rect>
+          <text x="160" y="32" fill="#D3AF3C" font-size="11" text-anchor="middle" font-weight="700">3.10–3.65%</text>
+          <text x="160" y="162" fill="#aac" font-size="11" text-anchor="middle">Fixed 10yr</text>
+          <rect x="220" y="26" width="70" height="124" fill="#51B49B" opacity="0.75"></rect>
+          <text x="255" y="20" fill="#D3AF3C" font-size="11" text-anchor="middle" font-weight="700">3.30–3.90%</text>
+          <text x="255" y="162" fill="#aac" font-size="11" text-anchor="middle">Fixed 15–20yr</text>
+          <line x1="20" y1="150" x2="300" y2="150" stroke="#334f6e" stroke-width="1"></line>
+          <text x="160" y="185" fill="#aac" font-size="10" text-anchor="middle">Source: Locco.lu, Switchr.lu — March 2026</text>
+        </svg>
+      </div>
+    </div>
+
+    <div style="margin-top:24px">
+      <p>In terms of <span class="keyword-gold">real estate purchasing power</span>, a median Luxembourg household (net income ~€5,200/month per STATEC 2024) can borrow approximately €390,000–€430,000 over 25 years at 3.50% with a 40% DSTI. At an average €7,764/m², this represents roughly 50–55 m² of financeable floor area — versus 65–70 m² in 2020 when rates were at 1.5%. Accessible floor area has shrunk 20–25% over five years under the combined effect of rising prices and rates.</p>
+    </div>
+
+    <div class="buyer-box">
+      <p class="buyer-box-label">What this means for the buyer</p>
+      <p style="color:var(--dark)">Always compare fixed and variable rates with a 5-year simulation: the variable at ~3.07% is advantageous short-term if the ECB cuts again by end-2026. For a horizon &gt;10 years, the fixed rate at 3.30–3.90% provides visibility. A DSTI of 35–40% is the norm; banks can go to 45% on a solid application, but beyond that you lose flexibility if rates rise. Banks negotiate: a deposit &gt;30% can cut the rate by 20–30 basis points. Never sign without at least 3 competing offers.</p>
+    </div>
+  </div>
+</div>
+
+<div class="divider-teal"></div>
+
+<!-- 7. TAX & LEGAL EN -->
+<section class="section">
+  <p class="section-subtitle">Regulation &amp; Taxation</p>
+  <h2 class="section-title">Tax &amp; Legal Framework</h2>
+  <div class="rule-teal"></div>
+  <p>This quarter marks a significant fiscal turning point — the best incentive package for buyers since 2015. Each measure is quantified below.</p>
+
+  <div class="stat-grid" style="grid-template-columns:repeat(auto-fit,minmax(220px,1fr));margin-bottom:32px">
+    <div class="stat-tile">
+      <span class="stat-number" style="font-size:28px">€40,000</span>
+      <span class="stat-label">Bëllegen Akt per person</span>
+      <p class="stat-sub">Confirmed at €40,000 per person (€80,000 per couple) for Q1 2026 — Guichet.lu, Tevaxia.lu, Sellect.lu. <em>Increase to €45,000 announced in “Booster” July 2026, pending legislative vote.</em></p>
+    </div>
+    <div class="stat-tile">
+      <span class="stat-number" style="font-size:28px">0%</span>
+      <span class="stat-label">Registration duty on VEFA construction portion</span>
+      <p class="stat-sub">For any VEFA ≤80% complete at signing. Duties only on land value. In effect from 16 July 2026 (3 years). <em>Source: Selfhome.lu — July 2026 law</em></p>
+    </div>
+    <div class="stat-tile">
+      <span class="stat-number" style="font-size:28px">8%</span>
+      <span class="stat-label">VAT on social rental housing</span>
+      <p class="stat-sub">Reduced from 17% to 8% for rental properties ≤120 m² with a rent ceiling (Observatoire median). <em>Source: Gouvernement.lu — July 2026</em></p>
+    </div>
+    <div class="stat-tile">
+      <span class="stat-number" style="font-size:28px">6%/yr × 6 yrs</span>
+      <span class="stat-label">Accelerated depreciation “3×6”</span>
+      <p class="stat-sub">36% of property value over 6 years. Cap: €600,000. Mandatory from January 2027; 2026 purchases can opt in. <em>Source: Selfhome.lu — 2026–2027 scheme</em></p>
+    </div>
+    <div class="stat-tile">
+      <span class="stat-number" style="font-size:28px">€300,000</span>
+      <span class="stat-label">Max. state aid ≤35 yrs</span>
+      <p class="stat-sub">Access-to-ownership aid ceiling for first-time buyers under 35 (at least one borrower). General ceiling raised to €250,000. <em>Source: Gouvernement.lu — July 2026</em></p>
+    </div>
+    <div class="stat-tile">
+      <span class="stat-number" style="font-size:28px">4%</span>
+      <span class="stat-label">Landlord yield cap (tenancy law)</span>
+      <p class="stat-sub">Residential tenancy reform: rent capped at 4% of invested capital (VAT included). Indexation on STATEC tranche. <em>Source: Gouvernement.lu — tenancy regulations</em></p>
+    </div>
+  </div>
+
+  <div class="buyer-box">
+    <p class="buyer-box-label">What this means for the buyer</p>
+    <p style="color:var(--dark)">The Bëllegen Akt at €40,000 per person (€80,000 for a couple) wipes out registration duties on a primary purchase up to ~€480,000. If the increase to €45,000 announced in July 2026 is passed, the threshold rises to ~€640,000. Check the status of the legislation before signing the preliminary agreement and include a suspensive clause if necessary. The VEFA construction-portion exemption (July 2026) makes new-builds significantly more competitive for the first time in 3 years: compare the total cost of new vs. existing with these new parameters before deciding.</p>
+  </div>
+</section>
+
+<div class="divider-teal-rev"></div>
+
+<!-- 8. RENTAL MARKET EN -->
+<div class="dark-section">
+  <div class="inner">
+    <p class="section-subtitle" style="color:var(--gold)">Rental Market</p>
+    <h2 class="section-title-white">Rental Market &amp; Yields</h2>
+    <div class="rule-gold"></div>
+
+    <p>The rental market is structurally under pressure: <span class="keyword-gold">€30.94/m²/month</span> national average (March 2026, Locco.lu), up 6.65 to 7.23% over twelve months. Demand is mainly driven by net professional immigration (~10,000 people/year) and sustained household formation. A well-positioned listing receives 15 to 20 applications within 48 hours — effective letting time is 2 to 8 weeks.</p>
+
+    <div class="two-col">
+      <div>
+        <p><strong style="color:#fff">Rents by sector (€/m²/month):</strong></p>
+        <p>Luxembourg City: €35.61/m² (Locco.lu). Kirchberg and Limpertsberg/Belair: €45–48/m² for recent residences. Bonnevoie, Eich, Gare: €28–32/m² — affordable segment, high turnover. Central region outside capital: €33.97/m². Northern country: €19.76/m².</p>
+        <p>Outside the capital, Esch-sur-Alzette runs around €1,300–1,700/month for a studio, Differdange at €1,400–1,800/month (demand sustained by Belval employment).</p>
+      </div>
+      <div>
+        <svg class="chart" width="300" height="220" viewBox="0 0 300 220">
+          <text x="150" y="16" fill="#fff" font-size="12" text-anchor="middle" font-weight="600">Average rents (€/m²/month)</text>
+          <line x1="50" y1="190" x2="280" y2="190" stroke="#334f6e" stroke-width="1"></line>
+          <rect x="55" y="17" width="38" height="173" fill="#D3AF3C"></rect>
+          <text x="74" y="12" fill="#D3AF3C" font-size="11" text-anchor="middle">48 €</text>
+          <text x="74" y="203" fill="#aac" font-size="9.5" text-anchor="middle">Kirchberg</text>
+          <rect x="105" y="62" width="38" height="128" fill="#51B49B"></rect>
+          <text x="124" y="57" fill="#D3AF3C" font-size="11" text-anchor="middle">35.6 €</text>
+          <text x="124" y="203" fill="#aac" font-size="9.5" text-anchor="middle">LU-City</text>
+          <rect x="155" y="82" width="38" height="108" fill="#51B49B" opacity="0.75"></rect>
+          <text x="174" y="77" fill="#D3AF3C" font-size="11" text-anchor="middle">30 €</text>
+          <text x="174" y="203" fill="#aac" font-size="9.5" text-anchor="middle">Bonnevoie</text>
+          <rect x="205" y="111" width="38" height="79" fill="#51B49B" opacity="0.55"></rect>
+          <text x="224" y="106" fill="#D3AF3C" font-size="11" text-anchor="middle">22 €</text>
+          <text x="224" y="203" fill="#aac" font-size="9.5" text-anchor="middle">Esch-A.</text>
+          <rect x="255" y="119" width="30" height="71" fill="#51B49B" opacity="0.4"></rect>
+          <text x="270" y="114" fill="#D3AF3C" font-size="11" text-anchor="middle">19.8 €</text>
+          <text x="270" y="203" fill="#aac" font-size="9.5" text-anchor="middle">North</text>
+        </svg>
+      </div>
+    </div>
+
+    <p style="margin-top:20px"><strong style="color:#fff">Gross yields</strong> (annual rent / purchase price): sectors offering the best yields in 2026 are Bonnevoie, Eich, Rollingergrund and Gare, with <span class="keyword-gold">gross yields of 5.0 to 6.0%</span>. Kirchberg and Belair do not exceed 3.5–4.5% due to high entry prices. The legal rent cap at 4% of invested capital (residential tenancy) is not an obstacle in most current cases, but limits future yields on properties purchased at peak 2021–2022 prices. Purchases made at a 10–15% discount can structurally exceed this cap.</p>
+
+    <div class="buyer-box">
+      <p class="buyer-box-label">What this means for the buyer</p>
+      <p style="color:var(--dark)">Buy-to-let remains viable in affordable sectors: Bonnevoie, Gare and Eich offer &gt;5% gross yields at entry prices of €8,000–9,000/m². Kirchberg at €11,500/m² with a rent of €45/m² generates less than 4.7% — insufficient to compensate for vacancy risk and costs. The calculation must factor in energy class: an F/G property will face renovation obligations (EU EPBD directive) that can absorb 3–4 years of rental income.</p>
+    </div>
+  </div>
+</div>
+
+<div class="divider-navy"></div>
+
+<!-- 9. CROSS-BORDER EN -->
+<section class="section">
+  <p class="section-subtitle">Greater Region Market</p>
+  <h2 class="section-title">Cross-Border Context</h2>
+  <div class="rule-teal"></div>
+
+  <p>Approximately <span class="keyword-teal">220,000 cross-border workers</span> cross the border daily to work in Luxembourg (of whom ~120,000 French, ~50,000 Belgian, ~50,000 German — BCL/STATEC 2025 estimates). Their purchasing power — Luxembourg salaries, taxed in Luxembourg, applied to foreign property prices — creates a structural demand shift that caps prices in Luxembourg’s southern and western belt.</p>
+
+  <div class="chart-wrap">
+    <svg class="chart" width="700" height="260" viewBox="0 0 700 260">
+      <text x="350" y="18" fill="#1E3A5F" font-size="14" text-anchor="middle" font-weight="600">Comparative property prices — Greater Region (€/m²) — 2026</text>
+      <line x1="60" y1="30" x2="60" y2="210" stroke="#ccc" stroke-width="1"></line>
+      <line x1="60" y1="210" x2="660" y2="210" stroke="#ccc" stroke-width="1"></line>
+      <line x1="60" y1="135" x2="660" y2="135" stroke="#eee" stroke-width="1" stroke-dasharray="4"></line>
+      <line x1="60" y1="65" x2="660" y2="65" stroke="#eee" stroke-width="1" stroke-dasharray="4"></line>
+      <text x="54" y="214" fill="#999" font-size="10" text-anchor="end">0</text>
+      <text x="54" y="139" fill="#999" font-size="10" text-anchor="end">5,000</text>
+      <text x="54" y="69" fill="#999" font-size="10" text-anchor="end">10,000</text>
+      <rect x="80" y="42" width="60" height="168" fill="#1E3A5F"></rect>
+      <text x="110" y="37" fill="#D3AF3C" font-size="11" text-anchor="middle" font-weight="700">11,500</text>
+      <text x="110" y="226" fill="#555" font-size="11" text-anchor="middle">LU-City</text>
+      <rect x="160" y="108" width="60" height="102" fill="#1E3A5F" opacity="0.7"></rect>
+      <text x="190" y="103" fill="#D3AF3C" font-size="11" text-anchor="middle" font-weight="700">7,000</text>
+      <text x="190" y="226" fill="#555" font-size="11" text-anchor="middle">LU-South</text>
+      <rect x="240" y="173" width="60" height="37" fill="#51B49B"></rect>
+      <text x="270" y="168" fill="#51B49B" font-size="11" text-anchor="middle" font-weight="700">2,500</text>
+      <text x="270" y="226" fill="#555" font-size="11" text-anchor="middle">Arlon (BE)</text>
+      <rect x="320" y="181" width="60" height="29" fill="#51B49B" opacity="0.7"></rect>
+      <text x="350" y="176" fill="#51B49B" font-size="11" text-anchor="middle" font-weight="700">2,000</text>
+      <text x="350" y="226" fill="#555" font-size="11" text-anchor="middle">Thionville (FR)</text>
+      <rect x="400" y="178" width="60" height="32" fill="#51B49B" opacity="0.55"></rect>
+      <text x="430" y="173" fill="#51B49B" font-size="11" text-anchor="middle" font-weight="700">2,200</text>
+      <text x="430" y="226" fill="#555" font-size="11" text-anchor="middle">Metz (FR)</text>
+      <rect x="480" y="171" width="60" height="39" fill="#51B49B" opacity="0.4"></rect>
+      <text x="510" y="166" fill="#51B49B" font-size="11" text-anchor="middle" font-weight="700">2,700</text>
+      <text x="510" y="226" fill="#555" font-size="11" text-anchor="middle">Trier (DE)</text>
+      <rect x="560" y="191" width="60" height="19" fill="#51B49B" opacity="0.35"></rect>
+      <text x="590" y="186" fill="#51B49B" font-size="11" text-anchor="middle" font-weight="700">1,300</text>
+      <text x="590" y="226" fill="#555" font-size="11" text-anchor="middle">Longwy (FR)</text>
+      <rect x="80" y="240" width="12" height="10" fill="#1E3A5F"></rect>
+      <text x="97" y="249" fill="#555" font-size="11">Luxembourg</text>
+      <rect x="190" y="240" width="12" height="10" fill="#51B49B"></rect>
+      <text x="207" y="249" fill="#555" font-size="11">Neighbouring countries</text>
+      <text x="350" y="249" fill="#999" font-size="10">Sources: lesfrontaliers.lu, kazaki.fr, Immotop.lu — 2026</text>
+    </svg>
+  </div>
+
+  <p style="margin-top:20px">The price differential between Luxembourg South (~€7,000/m²) and Thionville (€2,000/m²) remains a <span class="keyword-teal">moderating pressure</span> on Luxembourg border communes: a buyer working in Belval can choose Thionville with a saving of 60–70% on the purchase price, at the cost of a 25–35 minute commute. This arbitrage structurally caps the appreciation of extreme southern Luxembourg communes (Pétange, Differdange). Conversely, Arlon (~€2,500/m²) and Trier (~€2,700/m²) continue to benefit from the attractiveness of Luxembourg cross-border workers — which sustains their rental markets with 6–8% gross yields on the French side.</p>
+
+  <div class="buyer-box">
+    <p class="buyer-box-label">What this means for the buyer</p>
+    <p style="color:var(--dark)">If your workplace is in the southern part of the country (Belval, Esch, Pétange), objectively compare Luxembourg border communes with the Thionville or Longwy market before deciding. The calculation includes: taxation of cross-border workers, commute time, quality of life and resale liquidity. For a pure investor, Thionville offers 6–8% yields with a premium tenant base (solvent cross-border workers) unachievable in Luxembourg.</p>
+  </div>
+</section>
+
+<div class="divider-gold-tri"></div>
+
+<!-- 10. OUTLOOK EN -->
+<section class="section">
+  <p class="section-subtitle">Outlook 6–12 months</p>
+  <h2 class="section-title">Outlook</h2>
+  <div class="rule-teal"></div>
+  <p>Three scenarios for the next 6 to 12 months, with the triggers to monitor.</p>
+
+  <div class="scenario-grid">
+    <div class="scenario-card base">
+      <div class="scenario-label">Base Scenario · Probability ~60%</div>
+      <h3>Selective Stabilisation</h3>
+      <p>Existing prices hold at ±2% over twelve months, driven by expat demand and shortage of quality stock. New-builds complete their adjustment: VEFA recovers to 250–350 transactions/quarter thanks to the July 2026 fiscal measures. Mortgage rates remain between 3.0 and 3.8% (20yr fixed).</p>
+      <p>Energy-efficient (EPC A/B) and well-located capital apartments record +1 to +3%. Belt-area and northern houses struggle, time-to-sell 90–120 days.</p>
+      <div class="scenario-trigger">🔍 Signal to watch: VEFA transaction volumes Q3 2026 — if &gt;250, base scenario confirmed.</div>
+    </div>
+    <div class="scenario-card up">
+      <div class="scenario-label">Upside Scenario · Probability ~20%</div>
+      <h3>Accelerated Rebound</h3>
+      <p>An additional 50 bp ECB cut in late 2026 brings variable rates below 2.5% and 20yr fixed rates below 3.0%. Combined with new fiscal incentives (Bëllegen Akt + VEFA exemption), two years of pent-up demand releases rapidly. Prices +4 to +6% in Luxembourg City, first purchases decided within 3 weeks.</p>
+      <div class="scenario-trigger">🔍 Signal to watch: ECB decision November 2026 — cut &gt;50 bp triggers this scenario.</div>
+    </div>
+    <div class="scenario-card down">
+      <div class="scenario-label">Downside Scenario · Probability ~20%</div>
+      <h3>Prolonged Correction</h3>
+      <p>An external shock — eurozone recession, rising Luxembourg unemployment, ECB credit tightening — triggers a wave of forced sales. Unsold VEFA weighs further, some developers face difficulties, banks tighten lending. An additional −5 to −8% in secondary communes. Luxembourg City holds better (−2 to −3%).</p>
+      <div class="scenario-trigger">🔍 Signal to watch: Luxembourg unemployment rate &gt;6% (STATEC) or decline in finance and IT hiring.</div>
+    </div>
+  </div>
+
+  <div class="buyer-box" style="margin-top:32px">
+    <p class="buyer-box-label">What this means for the buyer</p>
+    <p style="color:var(--dark)">In all scenarios, a well-negotiated primary residential purchase (−5 to −8% below the listed price) made in Q2–Q3 2026 is defensible. Additional downside risk is limited to −5% at worst on prime assets; it is higher on northern belt houses. Do not delay a purchase decision waiting for a better price — the opportunity cost of rent paid during the wait generally exceeds the hypothetical gain.</p>
+  </div>
+</section>
+
+<div class="divider-teal"></div>
+
+<!-- 11. B-SIDE PLAYBOOK EN -->
+<div class="dark-section">
+  <div class="inner">
+    <p class="section-subtitle" style="color:var(--gold)">Q1–Q2 2026 Playbook</p>
+    <h2 class="section-title-white">The B-side Read</h2>
+    <div class="rule-gold"></div>
+
+    <p style="font-size:17px;color:#fff;line-height:1.7;max-width:800px;margin-bottom:28px">
+      <strong>Where is the negotiation leverage this quarter?</strong>
+    </p>
+
+    <p>On existing apartments in Luxembourg City — except Belair and Limpertsberg where sellers hold firm — an offer at 5–7% below the listed price is today acceptable, even expected. On Kirchberg, where the stock of comparable properties is substantial, <span class="keyword-gold">7 to 10% negotiation</span> is realistic. Sellers in a constrained situation (inheritance, relocation abroad, divorce) can come down 10–12% — identify them through properties on the market for &gt;90 days.</p>
+
+    <p>On houses in the western belt (Strassen, Bertrange, Hesperange), listed prices remain 8–10% above the latest notarial reference transactions. Do not buy at the first price: request land registry comparables. In northern communes (Ettelbruck, Diekirch), liquidity is low — what you save on the purchase, you may lose on resale. Reserve these areas for buyers with a horizon &gt;10 years.</p>
+
+    <p><strong style="color:#fff">What to include in an offer:</strong> a personalised letter of motivation (sellers often choose the buyer, not just the price), a bank financing certificate, a firm notarial signing date within 3 months. These three elements are often worth as much as an additional 2% discount.</p>
+
+    <p><strong style="color:#fff">What to refuse:</strong> a property with EPC rating F or G without an explicit agreement on a renovation discount or a suspensive renovation clause. EPBD 2030–2033 obligations are real and quantifiable. Do not buy an energy problem at the price of a sound asset.</p>
+
+    <p>The <span class="keyword-gold">Bëllegen Akt at €40,000</span> (increase to €45,000 announced, pending vote) already changes the total acquisition cost calculation: incorporate it when comparing new-build vs. existing. And if you are under 35, the enhanced state aid (up to €300,000) is worth requesting from your bank even before signing the preliminary agreement.</p>
+  </div>
+</div>
+
+<div class="divider-navy"></div>
+
+<!-- 12. SOURCES EN -->
+<div class="sources-section">
+  <div class="inner">
+    <p class="section-subtitle">Transparency</p>
+    <h2 class="section-title">Sources &amp; Methodology</h2>
+    <div class="rule-teal"></div>
+    <p>Every figure in this report is sourced and dated below. B-side systematically distinguishes <strong>listed prices</strong> (portals, asking prices) from <strong>notarially registered sale prices</strong> (deed registered). The two series measure different things — the former are a marketing tool, the latter are transactional reality. Never compare them without making the distinction.</p>
+
+    <ul class="sources-list">
+      <li><strong>Observatoire de l’Habitat / LISER</strong> — Report “Le marché immobilier résidentiel au 1er trimestre 2026”, published June 2026, logement.public.lu. Reference data: notarial sale prices, VEFA and existing transaction volumes. <a href="https://logement.public.lu/fr/observatoire-habitat/prix-de-vente.html" target="_blank">Sale prices (Logement.lu)</a></li>
+      <li><strong>STATEC Luxembourg</strong> — Residential construction price index, Note SNT03-26 (October 2025). Demographic data and index tranche. <a href="https://statistiques.public.lu/fr/actualites/2026/stn03-26-construction.html" target="_blank">statistiques.public.lu</a></li>
+      <li><strong>Immotop.lu</strong> — National and commune listed prices, Q1 2026 (portal asking prices). Annual changes. <a href="https://www.immotop.lu/en/prix-immobilier/" target="_blank">immotop.lu</a></li>
+      <li><strong>Tevaxia.lu / Indices</strong> — Price per m² by commune, trends across 98 Luxembourg communes, March 2026. <a href="https://tevaxia.lu/indices" target="_blank">tevaxia.lu</a></li>
+      <li><strong>Selfhome.lu</strong> — Luxembourg property price analysis 2026; New 2026 housing tax measures (Bëllegen Akt, VEFA, VAT, depreciation). <a href="https://www.selfhome.lu/en/prix-immobilier-luxembourg-2026/" target="_blank">selfhome.lu</a></li>
+      <li><strong>Investropa</strong> — Luxembourg Real Estate Market Analysis 2026; time-to-sell, negotiation margins. <a href="https://investropa.com/blogs/news/luxembourg-real-estate-market" target="_blank">investropa.com</a></li>
+      <li><strong>Locco.lu</strong> — Average rent by neighbourhood, Luxembourg 2026; Luxembourg mortgage guide 2026. <a href="https://locco.lu/en/blog/average-rent-by-neighborhood-2026" target="_blank">locco.lu</a></li>
+      <li><strong>Switchr.lu / Locco.lu</strong> — Bank mortgage rates, March 2026 (fixed and variable rates, ranges). <a href="https://locco.lu/en/blog/luxembourg-mortgage-guide-2026" target="_blank">locco.lu — mortgage guide</a></li>
+      <li><strong>Promovillas.lu</strong> — Regional price analysis by zone Q1 2026. <a href="https://promovillas.lu/en/news/26231" target="_blank">promovillas.lu</a></li>
+      <li><strong>Sellect.lu</strong> — Price by commune, complete guide 2026. <a href="https://sellect.lu/en/news/property-prices-municipality-luxembourg-2026" target="_blank">sellect.lu</a></li>
+      <li><strong>Gouvernement.lu / Ministry of Housing</strong> — “Booster fir de Wunnengsbau” (July 2026); Bëllegen Akt; first-time buyer support. <a href="https://gouvernement.lu/fr/actualites/toutes_actualites/communiques/2026/07-juillet/16-meisch-roth-booster-wunnengsbau2.html" target="_blank">gouvernement.lu</a></li>
+      <li><strong>Netimmo.be / Lesfrontaliers.lu</strong> — Luxembourg rental market 2026; Greater Region property comparison. <a href="https://www.lesfrontaliers.lu/societe/comparatif-des-couts-immobiliers-ou-se-loger-aux-frontieres/" target="_blank">lesfrontaliers.lu</a></li>
+      <li><strong>Kazaki.fr</strong> — Thionville and the Luxembourg cross-border effect, prices and yields 2026. <a href="https://www.kazaki.fr/blog/investir-thionville-2026-marche-immobilier" target="_blank">kazaki.fr</a></li>
+      <li><strong>Guichet.lu / Logement.lu</strong> — Official tax parameters: Bëllegen Akt, VAT on housing, subsidised loans. <a href="https://guichet.public.lu/fr/citoyens/aides/logement-construction/aides-indirectes/credit-impot-actes-notaries.html" target="_blank">guichet.lu</a></li>
+    </ul>
+
+    <p class="sources-note">
+      <strong>Methodological note:</strong> “Listed” prices (Immotop, Athome, Tevaxia portals) overestimate by 4 to 8% the sale prices registered in notarial deeds, as published by the Observatoire de l’Habitat and the Land Registry. This report explicitly cites the source for each data point. Where notarial data is unavailable for a commune in Q1 2026 (land registry data published with a one-quarter lag), portal prices are used with an indication. VEFA figures and transaction volumes come exclusively from the Observatoire de l’Habitat. Projections are estimates based on available indicators and do not constitute investment advice.
+    </p>
+  </div>
+</div>
+
+<!-- 13. CTA EN -->
+<section class="cta-section">
+  <div class="logo-wrap" style="margin-bottom:24px">
+    <svg version="1.1" viewBox="0 0 92.1 56.7" height="40" xmlns="http://www.w3.org/2000/svg" xml:space="preserve">
+      <style>.c0{fill:#335C80}.c1{fill:#218D9A}.c2{fill:#D3AF3C}.c3{fill:#36A9E1}.c4{fill:#51B49B}</style>
+      <g><polygon class="c0" points="23.4,0.7 21.9,14.3 6.1,4.2"></polygon><polygon class="c1" points="24,0.2 23.3,17.4 6.6,0.9"></polygon><polyline class="c2" points="39.8,16 25.8,27.1 22.9,17 39.8,16"></polyline><polygon class="c0" points="42,6.7 48.2,11.8 40.1,14.2"></polygon><path class="c1" d="M42,6.7c0,0.2-2.2,9.3-2.2,9.3l-7-6.5L42,6.7z"></path><polygon class="c0" points="39.8,16 39.6,18.4 26.7,26.4"></polygon><polygon class="c0" points="20.1,36.5 22.9,17 27.4,28.2"></polygon><polygon class="c4" points="39.8,16 24,0.2 22.9,17"></polygon></g>
+      <circle class="c2" cx="50.1" cy="30.8" r="1.5"></circle>
+      <g><path class="c0" d="M5.5,33.3c0.5,0,1,0.1,1.6,0.2c0.5,0.1,1.1,0.3,1.6,0.5c0.6,0.2,1.2,0.5,1.7,0.8c0.5,0.3,1,0.8,1.5,1.3c0.3,0.4,0.5,0.8,0.7,1.3s0.2,0.9,0.2,1.4c0,0.5-0.1,1-0.2,1.5c-0.1,0.5-0.2,1-0.4,1.4c0,0,0,0.1,0,0.2c0,0.1,0,0.1,0,0.2l0,0h-0.8V42c0.3-0.9,0.5-1.6,0.7-2.3c0.1-0.7,0.1-1.3-0.1-1.9c-0.2-0.6-0.5-1.1-0.9-1.6c-0.5-0.5-1.1-0.9-1.9-1.3c-0.6-0.3-1.3-0.5-2-0.6c-0.7-0.1-1.4-0.2-2.1-0.2h-4v22H0.1V33.3H5.5z"></path><path class="c0" d="M30.2,48.1v1h-10v-1H30.2z"></path><path class="c0" d="M50.5,39.1v17h-0.7v-17H50.5z"></path></g>
+    </svg>
+  </div>
+  <p class="cta-text">
+    This report gave you the framework. B-side gives you the leverage.<br>Tell us about your project — commune, budget, use — and we will analyse the market for you, exclusively on your side.
+  </p>
+  <a href="https://b-side.lu" target="_blank" class="cta-btn">DESCRIBE YOUR SEARCH</a>
+</section>
+
+<footer>
+  <span>+352 XX XX XX &nbsp;·&nbsp; <a href="mailto:contact@b-side.lu">contact@b-side.lu</a> &nbsp;·&nbsp; <a href="https://b-side.lu" target="_blank">b-side.lu</a> &nbsp;·&nbsp; B-side — Buyer’s Real Estate Agents in Luxembourg</span>
+</footer>
+
+</div><!-- end en-version -->
+
+<!-- Sortable table script -->
+<script>
+
+  function toggleLang() {
+    const frDiv = document.getElementById('fr-version');
+    const enDiv = document.getElementById('en-version');
+    const btn = document.getElementById('lang-btn');
+    if (frDiv.classList.contains('hidden')) {
+      frDiv.classList.remove('hidden');
+      enDiv.classList.add('hidden');
+      btn.textContent = 'EN';
+    } else {
+      frDiv.classList.add('hidden');
+      enDiv.classList.remove('hidden');
+      btn.textContent = 'FR';
+    }
+    window.scrollTo(0, 0);
+  }
+
+  function sortTableEN(col) {
+    const table = document.getElementById('commune-table-en');
+    if (!table) return;
+    const tbody = table.tBodies[0];
+    const rows = Array.from(tbody.rows);
+    const key = 'en_' + col;
+    sortDir[key] = !sortDir[key];
+    rows.sort((a, b) => {
+      let aVal = a.cells[col].innerText.trim();
+      let bVal = b.cells[col].innerText.trim();
+      const aNum = parseFloat(aVal.replace(/[^0-9.\-]/g, ''));
+      const bNum = parseFloat(bVal.replace(/[^0-9.\-]/g, ''));
+      if (!isNaN(aNum) && !isNaN(bNum)) {
+        return sortDir[key] ? aNum - bNum : bNum - aNum;
+      }
+      return sortDir[key] ? aVal.localeCompare(bVal, 'en') : bVal.localeCompare(aVal, 'en');
+    });
+    rows.forEach(r => tbody.appendChild(r));
+  }
+
+  const progressBar = document.getElementById('scroll-progress');
+  const backToTop = document.getElementById('back-to-top');
+  window.addEventListener('scroll', () => {
+    const h = document.documentElement;
+    const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+    if (progressBar) progressBar.style.width = pct + '%';
+    if (backToTop) backToTop.classList.toggle('visible', h.scrollTop > 600);
+  }, { passive: true });
+
+  let sortDir = {};
+  function sortTable(col) {
+    const table = document.getElementById('commune-table');
+    const tbody = table.tBodies[0];
+    const rows = Array.from(tbody.rows);
+    sortDir[col] = !sortDir[col];
+    rows.sort((a, b) => {
+      let aVal = a.cells[col].innerText.trim();
+      let bVal = b.cells[col].innerText.trim();
+      // Extract number for numeric cols
+      const aNum = parseFloat(aVal.replace(/[^0-9.\-]/g, ''));
+      const bNum = parseFloat(bVal.replace(/[^0-9.\-]/g, ''));
+      if (!isNaN(aNum) && !isNaN(bNum)) {
+        return sortDir[col] ? aNum - bNum : bNum - aNum;
+      }
+      return sortDir[col] ? aVal.localeCompare(bVal, 'fr') : bVal.localeCompare(aVal, 'fr');
+    });
+    rows.forEach(r => tbody.appendChild(r));
+  }
+</script>
+
+
+</body></html>
