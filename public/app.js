@@ -97,6 +97,9 @@ function renderDetail() {
     `;
     list.appendChild(row);
   }
+  // "New draft" only makes sense when there isn't one already - once a draft exists, use its
+  // own Edit button above instead of creating a second one.
+  $("#btn-new-draft").hidden = r.versions.some(v => v.status === "draft");
 }
 
 /* ---------- editor ---------- */
@@ -180,19 +183,32 @@ async function publishVersion() {
   await openReport(state.report.slug);
 }
 
+async function createDraft() {
+  const data = await api(`/api/reports/${state.report.slug}/draft`, { method: "POST" });
+  await openReport(state.report.slug);
+  await openEditor(state.report.slug, data.version.n);
+}
+
 async function runFactCheck() {
   const btn = $("#btn-run-factcheck");
   btn.disabled = true;
   const original = btn.textContent;
   btn.textContent = "Running fact-check…";
+  let failed = null;
   try {
     await api(`/api/reports/${state.report.slug}/fact-check`, { method: "POST" });
-    await openReport(state.report.slug);
   } catch (e) {
-    alert("Fact-check failed: " + e.message);
+    failed = e;
   } finally {
     btn.disabled = false;
     btn.textContent = original;
+  }
+  // The server always opens/reuses a draft BEFORE calling the AI, specifically so a failed
+  // fact-check still leaves something editable behind - refresh regardless of outcome so that
+  // draft (and its Edit button) actually shows up, instead of only on the success path.
+  await openReport(state.report.slug);
+  if (failed) {
+    alert("Fact-check failed: " + failed.message + "\n\nA draft was still created from the published version (without AI corrections) - you can edit it directly below.");
   }
 }
 
@@ -239,6 +255,7 @@ function wireEvents() {
     await openReport(state.report.slug);
   });
 
+  $("#btn-new-draft").addEventListener("click", createDraft);
   $("#btn-run-factcheck").addEventListener("click", runFactCheck);
   $("#btn-bold").addEventListener("click", () => state.editor.toggleBold());
   $("#btn-italic").addEventListener("click", () => state.editor.toggleItalic());

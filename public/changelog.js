@@ -1,5 +1,13 @@
 window.CHANGELOG = [
   {
+    version: "1.1",
+    date: "2026-08-20",
+    changes: [
+      "New \"New draft (no AI)\" action: creates an editable draft directly from the published version without calling the fact-check engine, so editing is never blocked on Gemini being reachable (its consumer API currently rejects requests from some server regions, including this app's production host).",
+      "\"Run fact-check\" now always refreshes the version list after it finishes, even if the AI call fails - a draft is created either way (the server always did this; the browser just wasn't showing it), so a failed fact-check no longer looks like a dead end.",
+    ],
+  },
+  {
     version: "1.0",
     date: "2026-08-20",
     changes: [

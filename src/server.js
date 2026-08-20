@@ -72,11 +72,7 @@ app.post("/api/reports/:slug/fact-check", requireRole("admin", "hunter"), async 
   const published = q.getPublished.get(req.params.slug);
   if (!published) return res.status(400).json({ ok: false, error: "no published version to check against" });
 
-  let draft = report.versions.find(v => v.status === "draft");
-  if (!draft) draft = q.addVersion.run(req.params.slug, {
-    html: published.html, status: "draft", note: "", fact_check: null,
-    source: "fact-check", author: req.user.email || "system",
-  });
+  const draft = getOrCreateDraft(req.params.slug, report, published, req.user);
 
   factCheckBusy = true;
   try {
@@ -88,6 +84,27 @@ app.post("/api/reports/:slug/fact-check", requireRole("admin", "hunter"), async 
   } finally {
     factCheckBusy = false;
   }
+});
+
+// Creates (or returns the existing) draft cloned from the published version, with no AI
+// involved at all - so editing is never blocked on the fact-check engine being reachable
+// (e.g. Gemini's consumer API currently rejects requests from this server's region).
+function getOrCreateDraft(slug, report, published, user) {
+  const existing = report.versions.find(v => v.status === "draft");
+  if (existing) return existing;
+  return q.addVersion.run(slug, {
+    html: published.html, status: "draft", note: "", fact_check: null,
+    source: "manual", author: user.email || "system",
+  });
+}
+
+app.post("/api/reports/:slug/draft", requireRole("admin", "hunter"), (req, res) => {
+  const report = q.getReport.get(req.params.slug);
+  if (!report) return res.status(404).json({ ok: false, error: "not found" });
+  const published = q.getPublished.get(req.params.slug);
+  if (!published) return res.status(400).json({ ok: false, error: "no published version to draft from" });
+  const draft = getOrCreateDraft(req.params.slug, report, published, req.user);
+  res.json({ ok: true, version: draft });
 });
 
 /* ---------- Standalone report rendering (published page + version history) ---------- */
