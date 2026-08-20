@@ -1,6 +1,11 @@
 import "dotenv/config";
+import Anthropic from "@anthropic-ai/sdk";
 
-const MODEL = process.env.GEMINI_MODEL || "gemini-2.5-flash";
+// Migrated from Gemini: Google's consumer Generative Language API rejects requests from EEA/UK
+// server IPs (confirmed in production - this app's OVH host got "User location is not supported
+// for the API use"). Anthropic's API has no equivalent restriction, so this fixes the fact-check
+// engine being unusable from a European server, not just a preference swap.
+const MODEL = process.env.ANTHROPIC_MODEL || "claude-sonnet-5";
 
 const SOURCE_HIERARCHY = `
 Source hierarchy (highest to lowest trust) for Luxembourg real-estate figures:
@@ -11,45 +16,62 @@ Source hierarchy (highest to lowest trust) for Luxembourg real-estate figures:
 Never present asking/listed prices as completed notarial transaction prices - they measure different things.
 `.trim();
 
-async function callGemini({ system, prompt, maxTokens, useSearch }) {
-  const key = process.env.GEMINI_API_KEY;
-  if (!key) throw new Error("GEMINI_API_KEY missing - copy .env.example to .env and set it.");
+let _client = null;
+function client() {
+  if (_client) return _client;
+  const key = process.env.ANTHROPIC_API_KEY;
+  if (!key) throw new Error("ANTHROPIC_API_KEY missing - copy .env.example to .env and set it.");
+  _client = new Anthropic({ apiKey: key });
+  return _client;
+}
 
-  const generationConfig = { maxOutputTokens: maxTokens };
-  if (MODEL.includes("2.5-flash")) generationConfig.thinkingConfig = { thinkingBudget: 0 };
-
-  const body = {
-    ...(system ? { systemInstruction: { parts: [{ text: system }] } } : {}),
-    contents: [{ role: "user", parts: [{ text: prompt }] }],
-    generationConfig,
-  };
-  // Google Search grounding lets the model check today's actual sources instead of answering
-  // from stale training data - the whole point of a fact-check feature. Field name reflects the
-  // current (v1beta) Gemini REST API for 2.x models; this has not been exercised against a real
-  // key in this environment, so if it errors, check https://ai.google.dev/gemini-api/docs/grounding
-  // for the current tool shape before assuming the rest of the pipeline is broken.
-  if (useSearch) body.tools = [{ google_search: {} }];
-
-  const res = await fetch(
-    `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent`,
-    {
-      method: "POST",
-      headers: { "content-type": "application/json", "x-goog-api-key": key },
-      body: JSON.stringify(body),
-    }
-  );
-  if (!res.ok) {
-    const errBody = await res.text();
-    throw new Error(`Gemini API ${res.status}: ${errBody.slice(0, 300)}`);
+// Web search is a server-side tool - Claude issues and reads searches on Anthropic's own
+// infrastructure, so this one call can involve many searches with no client-side loop needed.
+// It caps itself at 10 search iterations per turn and returns stop_reason "pause_turn" if that
+// cap is hit mid-research; resending the same user turn plus the partial assistant response
+// (which already carries the accumulated search history) resumes it automatically - the API
+// detects the trailing server-tool-use block, so no extra "continue" message is needed.
+//
+// `schema` is passed as output_config.format (structured outputs): unlike Gemini, Claude
+// narrates its research process in plain text alongside web searches ("Let me check X... now
+// searching Y...") even when told "return JSON only" - verified against a real run, where that
+// narration was mistaken for the ledger by a naive "find the first [ or {" parser. Structured
+// outputs constrains generated text to the schema at the token level, so the narration can't
+// happen in the first place, rather than trying to strip it out afterwards.
+async function callClaude({ system, prompt, maxTokens, schema }) {
+  const c = client();
+  const userMessage = { role: "user", content: prompt };
+  let messages = [userMessage];
+  let response;
+  const maxRounds = 5;
+  for (let round = 0; round < maxRounds; round++) {
+    const stream = c.messages.stream({
+      model: MODEL,
+      max_tokens: maxTokens,
+      system,
+      tools: [{ type: "web_search_20260209", name: "web_search" }],
+      output_config: { format: { type: "json_schema", schema } },
+      messages,
+    });
+    response = await stream.finalMessage();
+    if (response.stop_reason !== "pause_turn") break;
+    messages = [userMessage, { role: "assistant", content: response.content }];
   }
-  const data = await res.json();
-  const parts = data.candidates?.[0]?.content?.parts || [];
-  const text = parts.map(p => p.text || "").join("\n").trim();
-  if (!text) throw new Error("Gemini returned no text: " + JSON.stringify(data).slice(0, 300));
+
+  if (response.stop_reason === "refusal") {
+    throw new Error("Claude declined the fact-check request (safety refusal).");
+  }
+
+  const text = response.content
+    .filter(block => block.type === "text")
+    .map(block => block.text)
+    .join("\n")
+    .trim();
+  if (!text) throw new Error("Claude returned no text: " + JSON.stringify(response).slice(0, 300));
   return text;
 }
 
-// Gemini (like most LLMs) sometimes emits a raw, unescaped newline/tab inside a JSON string
+// Claude (like most LLMs) sometimes emits a raw, unescaped newline/tab inside a JSON string
 // value - readable, but invalid per strict JSON. Rather than reject the whole response, walk
 // the text tracking whether we're inside a string literal (respecting \" escapes) and escape
 // any raw control character (0x00-0x1F) found there.
@@ -107,6 +129,38 @@ function extractText(html) {
     .trim();
 }
 
+// JSON Schema for one ledger entry, enforced via output_config.format (see callClaude above).
+// Nullable fields use anyOf per the API's documented JSON Schema subset - a bare
+// `"type": ["string", "null"]` array is not in that subset.
+const LEDGER_SCHEMA = {
+  type: "array",
+  items: {
+    type: "object",
+    properties: {
+      claim: { type: "string", description: "Short description of what is being checked" },
+      report_value: {
+        type: "string",
+        description: "The EXACT verbatim phrase or figure as it appears in the source text, character-for-character, so it can be located with a plain string search",
+      },
+      verdict: { type: "string", enum: ["confirmed", "updated", "uncertain"] },
+      current_value: {
+        anyOf: [{ type: "string" }, { type: "null" }],
+        description: "The up-to-date figure/wording, only when verdict is 'updated'; null otherwise",
+      },
+      disclaimer: {
+        anyOf: [{ type: "string" }, { type: "null" }],
+        description: "A short French caveat sentence, only when verdict is 'uncertain'; null otherwise",
+      },
+      source_name: { type: "string" },
+      source_url: { type: "string" },
+      checked_date: { type: "string" },
+      note: { type: "string", description: "One sentence explaining the verdict" },
+    },
+    required: ["claim", "report_value", "verdict", "current_value", "disclaimer", "source_name", "source_url", "checked_date", "note"],
+    additionalProperties: false,
+  },
+};
+
 /**
  * Ask the model to fact-check every checkable claim in the report against live sources.
  * Returns a ledger only (small, reliable JSON) - applying edits to the html is done
@@ -119,33 +173,20 @@ export async function checkFacts(html, { today = new Date().toISOString().slice(
   const system = `You are a fact-checking analyst for a Luxembourg real-estate market report. ${SOURCE_HIERARCHY}
 Today's date is ${today}. Use live web search for every checkable figure - do not rely on memory alone, and never invent a source or URL.`;
 
-  const prompt = `Below is the plain-text content of a Luxembourg residential real-estate market report (French/English, duplicated). Fact-check every material, checkable figure: prices, indices, transaction volumes, mortgage rates, tax thresholds, government measures and their legislative status, and any other quantitative claim.
-
-For each checked claim return one ledger entry as JSON:
-{
-  "claim": "short description of what is being checked",
-  "report_value": "the EXACT verbatim phrase or figure as it appears in the text below (needed to locate it programmatically - copy it exactly, including punctuation)",
-  "verdict": "confirmed" | "updated" | "uncertain",
-  "current_value": "the up-to-date figure/wording to use if verdict is updated (omit or null otherwise)",
-  "disclaimer": "a short French sentence to append as a caveat if verdict is uncertain (omit or null otherwise)",
-  "source_name": "publisher name",
-  "source_url": "URL of the specific source used",
-  "checked_date": "${today}",
-  "note": "one sentence explaining the verdict"
-}
+  const prompt = `Below is the plain-text content of a Luxembourg residential real-estate market report (French/English, duplicated). Fact-check every material, checkable figure: prices, indices, transaction volumes, mortgage rates, tax thresholds, government measures and their legislative status, and any other quantitative claim. Return one ledger entry per checked claim.
 
 Rules:
 - Only mark "updated" when a reputable source (see hierarchy) clearly gives a different current figure - never guess.
 - Mark "uncertain" (with a disclaimer) rather than "updated" when sources conflict or nothing newer could be found - do not silently change a figure without a source backing the change.
-- "report_value" must match the text below character-for-character so it can be found with a plain string search.
-- Return JSON only: an array of ledger entries, nothing else.
+- "report_value" must match the text below character-for-character.
+- Use "${today}" as checked_date on every entry.
 
 REPORT TEXT:
 """
 ${text.slice(0, 60000)}
 """`;
 
-  const raw = await callGemini({ system, prompt, maxTokens: 24000, useSearch: true });
+  const raw = await callClaude({ system, prompt, maxTokens: 32000, schema: LEDGER_SCHEMA });
   if (process.env.FACTCHECK_DEBUG) {
     console.error(`[factcheck debug] raw response length: ${raw.length}`);
     console.error(`[factcheck debug] tail: ${JSON.stringify(raw.slice(-400))}`);

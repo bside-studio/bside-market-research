@@ -88,7 +88,8 @@ app.post("/api/reports/:slug/fact-check", requireRole("admin", "hunter"), async 
 
 // Creates (or returns the existing) draft cloned from the published version, with no AI
 // involved at all - so editing is never blocked on the fact-check engine being reachable
-// (e.g. Gemini's consumer API currently rejects requests from this server's region).
+// (an AI provider being unreachable from this server's region, rate-limited, or simply down
+// should never be a reason a reviewer can't get a draft to hand-edit).
 function getOrCreateDraft(slug, report, published, user) {
   const existing = report.versions.find(v => v.status === "draft");
   if (existing) return existing;

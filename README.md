@@ -3,10 +3,10 @@
 Fact-check, edit and publish B-Side market reports. Sibling service to `bside-hunter`, same
 architecture (Express + JSON-file store + hand-written static frontend, shared cookie auth).
 
-**Status: wired into the B-Side Universe portal catalogue and `docker-compose.prod.yml` at the
-code level; not yet deployed to the production server.** See
-`bside-universe/README.md` → "Rolling out Market Research to production" for the one-time
-SSH/deploy-key checklist still needed to actually bring it up on OVH.
+**Status: live in production** at `http://57.130.73.22:3400`, wired into the B-Side Universe
+portal catalogue. See `bside-universe/README.md` → "Rolling out Market Research to production"
+for the deploy-key/`.env` setup this rollout used, and § 12 for day-to-day operations
+(redeploying, checking logs, rotating secrets).
 
 ## Setup
 
@@ -18,17 +18,21 @@ npm start               # http://localhost:3400
 
 On first boot with an empty `data/reports.json`, the app imports the original supplied report
 (`src/seed/report-v1-original.html`) as published v1, then tries to run the AI fact-check engine
-once to generate the seeded draft v2. That step needs `GEMINI_API_KEY` set in `.env` — without
-it, the server still starts fine with just v1 published; use the "Run fact-check" button in the
-app once a key is configured to generate the first draft.
+once to generate the seeded draft v2. That step needs `ANTHROPIC_API_KEY` set in `.env` — get one
+at [console.anthropic.com](https://console.anthropic.com) (a separate product/billing from a
+claude.ai chat subscription, which does not include API access). Without it, the server still
+starts fine with just v1 published; use the "Run fact-check" button in the app once a key is
+configured to generate the first draft.
 
 ## How it works
 
-- **Fact-check** (`src/factcheck.js`): calls Gemini with Google Search grounding to check every
-  material figure in the report against live sources, following the source hierarchy in
-  `bside-universe/B-SIDE-APPS-GUIDELINES.md`. Returns a cited ledger; a plain-code step then
-  applies "updated" figures and inserts "uncertain" disclaimers into the html. Always produces a
-  new **draft** — never publishes on its own.
+- **Fact-check** (`src/factcheck.js`): calls Claude (`claude-sonnet-5` by default) with its
+  built-in web search tool to check every material figure in the report against live sources,
+  following the source hierarchy in `bside-universe/B-SIDE-APPS-GUIDELINES.md`. Returns a cited
+  ledger; a plain-code step then applies "updated" figures and inserts "uncertain" disclaimers
+  into the html. Always produces a new **draft** — never publishes on its own. (Originally built
+  on Gemini; migrated after Google's consumer API turned out to reject requests from this app's
+  EU-hosted production server — Anthropic's API has no such restriction.)
 - **Editor** (`public/editor.js`): a constrained WYSIWYG editor. The report renders in an
   isolated same-origin iframe carrying its own stylesheet, so editing is pixel-identical to the
   published page. Styling is limited to a fixed whitelist of the report's own CSS classes — no

@@ -1,5 +1,13 @@
 window.CHANGELOG = [
   {
+    version: "1.2",
+    date: "2026-08-20",
+    changes: [
+      "Fact-check engine migrated from Gemini to Claude (claude-sonnet-5 by default), using Claude's built-in web search tool. Gemini's consumer API was rejecting every request from this app's EU-hosted production server; Anthropic's API has no such restriction. \"Run fact-check\" now actually works in production.",
+      "Requires an ANTHROPIC_API_KEY instead of GEMINI_API_KEY - see the README for how to get one (it's a separate product/billing from a claude.ai chat subscription).",
+    ],
+  },
+  {
     version: "1.1",
     date: "2026-08-20",
     changes: [
