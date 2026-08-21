@@ -1,0 +1,60 @@
+/* B-Side shared design tokens — copied identically into bside-universe, bside-hunter,
+   bside-market-research, bside-settings. Edit in one place, then re-sync the others.
+   Flat/architectural system: single accent (no second hue), zero radius, hard elevation. */
+
+:root {
+  /* ---- core ---- */
+  --bg: #f3f2f2;
+  --surface: #ffffff;
+  --ink: #201e1d;
+  --accent: #ec3013;
+
+  /* ---- ink ramp (neutral greys, anchored on --ink) ---- */
+  --ink-100: #f3f2f2;
+  --ink-200: #e3e1e0;
+  --ink-300: #c9c6c4;
+  --ink-400: #a7a3a0;
+  --ink-500: #86817d;
+  --ink-600: #66615d;
+  --ink-700: #4a4643;
+  --ink-800: #302d2b;
+  --ink-900: #201e1d;
+
+  /* ---- accent ramp (the ONLY hue in the system) ---- */
+  --accent-100: #fde4de;
+  --accent-200: #fac3b6;
+  --accent-300: #f5a08c;
+  --accent-400: #f27a5c;
+  --accent-500: #ec3013;
+  --accent-600: #d32a10;
+  --accent-700: #b0230d;
+  --accent-800: #8c1c0a;
+  --accent-900: #691508;
+
+  /* ---- spacing scale ---- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+
+  /* ---- type ---- */
+  --font-heading: "Archivo", system-ui, sans-serif;
+  --font-body: "Archivo", system-ui, sans-serif;
+
+  /* ---- shape ---- */
+  --radius: 0;
+  --border-hairline: 1px;
+  --border-rule: 2px;
+
+  /* ---- elevation: hard offset shadows, no blur ---- */
+  --shadow-sm: 2px 2px 0 rgba(32, 30, 29, 0.14);
+  --shadow-md: 4px 4px 0 rgba(32, 30, 29, 0.18);
+  --shadow-lg: 8px 8px 0 rgba(32, 30, 29, 0.22);
+
+  /* ---- nav ---- */
+  --nav-height: 64px;
+}

@@ -5,25 +5,22 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>B-Side Market Research &amp; Property Intelligence</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="components.css">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-<header class="top">
-  <div class="brand">
-    <img src="bside-logo.svg" alt="B-side" class="brand-logo">
-    <div>
-      <h1>Market Research <em>&amp; Property Intelligence</em></h1>
-      <p class="sub">Fact-check, edit and publish B-Side market reports</p>
-    </div>
-    <div class="version-wrap">
-      <span class="version-badge" id="version-badge"></span>
-      <button id="btn-changelog" class="changelog-btn" title="Version history">?</button>
-    </div>
+<header class="nav">
+  <div class="nav-brand">
+    <img src="bside-logo.svg" alt="B-side" class="nav-brand-mark">
+    <span class="nav-brand-word">Market Research <em class="nav-brand-sub">&amp; Property Intelligence</em></span>
+    <span class="version-badge" id="version-badge"></span>
+    <button id="btn-changelog" class="btn-icon" title="Version history" aria-label="Version history"></button>
   </div>
-  <div class="actions">
-    <button id="btn-back-universe" class="ghost">&larr; B-Side Universe</button>
+  <div class="nav-right">
+    <button id="btn-back-universe" class="btn btn-ghost btn-sm">&larr; B-Side Universe</button>
     <div id="user-badge" class="user-badge"></div>
   </div>
 </header>
@@ -74,17 +71,18 @@
   </div>
 </main>
 
-<!-- ===== Changelog modal ===== -->
-<div id="modal-changelog" class="modal" hidden>
-  <div class="modal-card">
-    <div class="modal-head">
+<!-- ===== Changelog dialog ===== -->
+<div id="modal-changelog" class="dialog-backdrop" hidden>
+  <div class="dialog dialog-sm">
+    <div class="dialog-head">
       <h3>Version history</h3>
-      <button class="modal-close" aria-label="Close">&times;</button>
+      <button class="btn-icon modal-close" aria-label="Close">&times;</button>
     </div>
-    <div id="changelog-body" class="modal-body"></div>
+    <div id="changelog-body" class="dialog-body"></div>
   </div>
 </div>
 
+<script src="icons.js"></script>
 <script src="changelog.js"></script>
 <script type="module" src="app.js"></script>
 </body>

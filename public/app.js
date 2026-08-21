@@ -33,8 +33,8 @@ function showView(name) {
 /* ---------- reports list ---------- */
 
 function statusPill(status) {
-  const map = { published: "st-published", superseded: "st-superseded", draft: "st-draft" };
-  return `<span class="pill ${map[status] || ""}">${status}</span>`;
+  const map = { published: "tag-accent", superseded: "tag-neutral", draft: "tag-neutral" };
+  return `<span class="tag ${map[status] || "tag-neutral"}">${status}</span>`;
 }
 
 function renderReportsGrid() {
@@ -42,11 +42,11 @@ function renderReportsGrid() {
   grid.innerHTML = "";
   for (const r of state.reports) {
     const card = document.createElement("div");
-    card.className = "report-card";
+    card.className = "card report-card";
     card.innerHTML = `
       <h3>${r.title}</h3>
       <div class="report-card-meta">
-        ${r.published ? `${statusPill("published")} v${r.published.n} · ${new Date(r.published.published_at).toLocaleDateString()}` : `<span class="pill">no published version yet</span>`}
+        ${r.published ? `${statusPill("published")} v${r.published.n} · ${new Date(r.published.published_at).toLocaleDateString()}` : `<span class="tag tag-neutral">no published version yet</span>`}
         ${r.draft ? statusPill("draft") + ` v${r.draft.n}` : ""}
       </div>
       <div class="report-card-meta">${r.versionCount} version${r.versionCount === 1 ? "" : "s"} total</div>
@@ -88,7 +88,7 @@ function renderDetail() {
         <b>v${v.n}</b> ${statusPill(v.status)}
         <span class="version-note">${v.note || ""}</span>
         <span class="version-date">${new Date(v.created_at).toLocaleString()} · ${v.author || ""}</span>
-        ${v.hasFactCheck ? `<span class="pill st-factcheck">fact-checked</span>` : ""}
+        ${v.hasFactCheck ? `<span class="tag tag-neutral">fact-checked</span>` : ""}
       </div>
       <div class="version-row-actions">
         <a class="ghost btn-sm" href="/reports/${r.slug}/v/${v.n}" target="_blank">View</a>
@@ -129,14 +129,14 @@ function renderFactCheckSidebar(version) {
     aside.innerHTML = `<p class="sidebar-empty">No fact-check ledger for this version yet. Click "Run fact-check" to generate one.</p>`;
     return;
   }
-  const verdictClass = { confirmed: "st-published", updated: "st-draft", uncertain: "st-superseded" };
+  const verdictClass = { confirmed: "tag-accent", updated: "tag-neutral", uncertain: "tag-neutral" };
   const needsManualApply = e => (e.current_value || e.disclaimer) && !e.applied;
   const passLabel = { initial: "Initial rewrite", verification: "Independent verification" };
   aside.innerHTML = `<h4>Fact-check ledger</h4>` + ledger.map(e => `
     <div class="ledger-entry">
       <div class="ledger-claim">${e.claim || ""}</div>
-      <span class="pill ${verdictClass[e.verdict] || ""}">${e.verdict || "unknown"}</span>
-      ${needsManualApply(e) ? `<span class="pill st-manual" title="The exact wording wasn't found uniquely in the text, so this wasn't auto-applied - edit it in manually if it checks out.">needs manual apply</span>` : ""}
+      <span class="tag ${verdictClass[e.verdict] || "tag-neutral"}">${e.verdict || "unknown"}</span>
+      ${needsManualApply(e) ? `<span class="tag tag-accent" title="The exact wording wasn't found uniquely in the text, so this wasn't auto-applied - edit it in manually if it checks out.">needs manual apply</span>` : ""}
       ${e.current_value ? `<div class="ledger-detail"><b>Now:</b> ${e.current_value}</div>` : ""}
       ${e.note ? `<div class="ledger-detail">${e.note}</div>` : ""}
       ${e.source_url ? `<div class="ledger-detail"><a href="${e.source_url}" target="_blank" rel="noopener">${e.source_name || e.source_url}</a> · ${e.checked_date || ""}</div>` : ""}
@@ -283,6 +283,7 @@ function renderUserBadge() {
 /* ---------- changelog modal ---------- */
 
 function renderChangelog() {
+  $("#btn-changelog").innerHTML = ICONS.history;
   const el = $("#changelog-body");
   el.innerHTML = window.CHANGELOG.map(v => `
     <div class="changelog-entry">
