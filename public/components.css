@@ -78,14 +78,23 @@ a { color: var(--accent); }
 }
 
 .btn-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font: inherit;
   padding: 0;
   width: 36px;
   height: 36px;
-  justify-content: center;
-  border-color: var(--ink-300);
+  border: var(--border-rule) solid var(--ink-300);
+  border-radius: var(--radius);
+  cursor: pointer;
+  background: transparent;
   color: var(--ink);
+  text-decoration: none;
   flex: none;
+  transition: background-color .1s, border-color .1s, color .1s;
 }
+.btn-icon:disabled { opacity: .45; cursor: not-allowed; }
 .btn-icon:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); background: var(--accent-100); }
 .btn-icon:active:not(:disabled) { background: var(--accent-200); }
 .btn-icon svg { width: 18px; height: 18px; }
