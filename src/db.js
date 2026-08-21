@@ -130,8 +130,9 @@ export const q = {
     return v;
   } },
 
-  // Replaces a draft's html/fact_check wholesale - used after a "Run fact-check" pass.
-  setDraftFactCheck: { run(slug, n, { html, ledger }) {
+  // Replaces a draft's html/fact_check wholesale - used after a "Run fact-check" or "Regenerate
+  // report" pass (source distinguishes which in the version history).
+  setDraftFactCheck: { run(slug, n, { html, ledger, source }) {
     const r = findReport(slug);
     if (!r) throw new Error(`report "${slug}" not found`);
     const v = findVersion(r, Number(n));
@@ -139,7 +140,7 @@ export const q = {
     if (v.status !== "draft") throw new Error("only a draft version can be fact-checked");
     v.html = html;
     v.fact_check = ledger;
-    v.source = "fact-check";
+    v.source = source || "fact-check";
     v.updated_at = now();
     save();
     return v;

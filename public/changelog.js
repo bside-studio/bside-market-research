@@ -1,5 +1,13 @@
 window.CHANGELOG = [
   {
+    version: "1.3",
+    date: "2026-08-21",
+    changes: [
+      "New \"Regenerate report\" action: a comprehensive fact-check across the whole document (figures AND narrative/dated language, not just headline numbers), followed by a fully independent second fact-check pass that re-verifies the result from scratch. Still never touches document structure/markup and never auto-publishes - always lands as a draft, same as \"Run fact-check\", just deeper and self-verifying.",
+      "Regenerate runs as a background job with progress polling (like Hunter's scans), not a blocking request - a real run takes 15-25 minutes (two full passes of live web research), so the button starts it and you can navigate away; editing/publishing the report is locked until it finishes so a manual edit can't be silently overwritten when it completes.",
+    ],
+  },
+  {
     version: "1.2",
     date: "2026-08-20",
     changes: [

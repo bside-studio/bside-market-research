@@ -3,7 +3,7 @@ import express from "express";
 import path from "path";
 import { fileURLToPath } from "url";
 import { q } from "./db.js";
-import { runFactCheck } from "./factcheck.js";
+import { runFactCheck, regenerateReport } from "./factcheck.js";
 import { seedIfEmpty } from "./seed/seed.js";
 import { requireAuth, requireRole } from "./authMiddleware.js";
 
@@ -12,7 +12,13 @@ const app = express();
 app.use(express.json({ limit: "10mb" })); // report html round-trips through PUT bodies
 app.use(express.static(path.join(__dirname, "..", "public")));
 
-let factCheckBusy = false;
+// Shared across /fact-check and /regenerate - both call the paid AI API and both write to the
+// same draft version, so they must never run concurrently (for either report or across reports).
+// Also guards manual edit/publish while set (see PUT .../versions/:n below) - /regenerate runs in
+// the background for up to ~20 minutes (see aiProgress), so without this a manual edit made mid-
+// run would get silently overwritten when the background job finishes and saves its result.
+let aiBusy = false;
+let aiProgress = null;
 
 /* ---------- API ---------- */
 
@@ -43,6 +49,7 @@ app.get("/api/reports/:slug/versions/:n", (req, res) => {
 });
 
 app.put("/api/reports/:slug/versions/:n", requireRole("admin", "hunter"), (req, res) => {
+  if (aiBusy) return res.status(409).json({ ok: false, error: "An AI operation is running against this report's draft - wait for it to finish before editing, so it doesn't get overwritten." });
   const { html, note } = req.body;
   try {
     const version = q.updateDraft.run(req.params.slug, req.params.n, { html, note });
@@ -53,6 +60,7 @@ app.put("/api/reports/:slug/versions/:n", requireRole("admin", "hunter"), (req, 
 });
 
 app.post("/api/reports/:slug/versions/:n/publish", requireRole("admin", "hunter"), (req, res) => {
+  if (aiBusy) return res.status(409).json({ ok: false, error: "An AI operation is running against this report's draft - wait for it to finish before publishing." });
   try {
     const result = q.publishVersion.run(req.params.slug, req.params.n);
     res.json({ ok: true, ...result });
@@ -66,7 +74,7 @@ app.post("/api/reports/:slug/versions/:n/publish", requireRole("admin", "hunter"
 // click can't overlap a run already in flight - mirrors Hunter's /api/scan busy-flag pattern.
 // Never publishes anything; the result always lands as a draft for human review.
 app.post("/api/reports/:slug/fact-check", requireRole("admin", "hunter"), async (req, res) => {
-  if (factCheckBusy) return res.status(409).json({ ok: false, error: "A fact-check is already running - please wait." });
+  if (aiBusy) return res.status(409).json({ ok: false, error: "An AI operation is already running - please wait." });
   const report = q.getReport.get(req.params.slug);
   if (!report) return res.status(404).json({ ok: false, error: "not found" });
   const published = q.getPublished.get(req.params.slug);
@@ -74,16 +82,64 @@ app.post("/api/reports/:slug/fact-check", requireRole("admin", "hunter"), async 
 
   const draft = getOrCreateDraft(req.params.slug, report, published, req.user);
 
-  factCheckBusy = true;
+  aiBusy = true;
   try {
     const { html, ledger } = await runFactCheck(published.html);
-    const version = q.setDraftFactCheck.run(req.params.slug, draft.n, { html, ledger });
+    const version = q.setDraftFactCheck.run(req.params.slug, draft.n, { html, ledger, source: "fact-check" });
     res.json({ ok: true, version });
   } catch (e) {
     res.status(500).json({ ok: false, error: e.message });
   } finally {
-    factCheckBusy = false;
+    aiBusy = false;
   }
+});
+
+// "Totally update" the document: a deep, comprehensive fact-check-and-apply pass (not just
+// headline figures - covers narrative/trend language too), followed by a fully independent
+// second fact-check of the result to verify it. Document structure/markup is never rewritten -
+// only the same uniqueness-checked text surgery runFactCheck already uses - so this differs from
+// "Run fact-check" in thoroughness and in adding an independent verification pass, not in risk
+// to the document's structure. Always lands as a draft; never publishes.
+//
+// Measured against the real seed report: this genuinely takes 15-25 minutes (two full passes,
+// each doing many live web searches). A single blocking HTTP request that long is a bad idea -
+// browser/proxy timeouts aside, a dropped connection would lose the whole run. So this route
+// starts the job and returns immediately (like Hunter's /api/scan + /api/scan-progress); the
+// frontend polls /regenerate-progress and only refreshes once aiProgress.active is false.
+app.post("/api/reports/:slug/regenerate", requireRole("admin", "hunter"), (req, res) => {
+  if (aiBusy) return res.status(409).json({ ok: false, error: "An AI operation is already running - please wait." });
+  const { slug } = req.params;
+  const report = q.getReport.get(slug);
+  if (!report) return res.status(404).json({ ok: false, error: "not found" });
+  const published = q.getPublished.get(slug);
+  if (!published) return res.status(400).json({ ok: false, error: "no published version to regenerate from" });
+
+  const draft = getOrCreateDraft(slug, report, published, req.user);
+
+  aiBusy = true;
+  aiProgress = { active: true, slug, stage: "initial", startedAt: new Date().toISOString(), error: null };
+  res.json({ ok: true, started: true, version: draft });
+
+  // The response above has already been sent - this runs detached, so it must never throw
+  // uncaught (there's no request left to reject); outcome is recorded in aiProgress instead.
+  (async () => {
+    try {
+      const { html, ledger } = await regenerateReport(published.html, {
+        onProgress: (p) => { aiProgress = { ...aiProgress, ...p }; },
+      });
+      q.setDraftFactCheck.run(slug, draft.n, { html, ledger, source: "regenerate" });
+      aiProgress = { active: false, slug, stage: "done", error: null, finishedAt: new Date().toISOString() };
+    } catch (e) {
+      aiProgress = { active: false, slug, stage: "error", error: e.message, finishedAt: new Date().toISOString() };
+    } finally {
+      aiBusy = false;
+    }
+  })();
+});
+
+app.get("/api/reports/:slug/regenerate-progress", (req, res) => {
+  if (aiProgress && aiProgress.slug !== req.params.slug) return res.json({ ok: true, active: false });
+  res.json({ ok: true, ...(aiProgress || { active: false }) });
 });
 
 // Creates (or returns the existing) draft cloned from the published version, with no AI

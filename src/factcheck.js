@@ -38,35 +38,78 @@ function client() {
 // narration was mistaken for the ledger by a naive "find the first [ or {" parser. Structured
 // outputs constrains generated text to the schema at the token level, so the narration can't
 // happen in the first place, rather than trying to strip it out afterwards.
-async function callClaude({ system, prompt, maxTokens, schema }) {
+//
+// Transient server-side failures (Anthropic momentarily overloaded, 5xx, rate limit) are worth
+// retrying with backoff rather than failing the whole call outright - verified against a real
+// "overloaded_error" hit during testing of the two-call regenerateReport() pipeline below, which
+// makes a transient mid-chain failure twice as likely as a single fact-check call.
+function isTransientError(e) {
+  const type = e?.error?.type;
+  if (type === "overloaded_error" || type === "api_error" || type === "rate_limit_error") return true;
+  return typeof e?.status === "number" && (e.status === 429 || e.status >= 500);
+}
+
+async function withRetry(fn, { attempts = 3, baseDelayMs = 2000 } = {}) {
+  for (let i = 0; i < attempts; i++) {
+    try {
+      return await fn();
+    } catch (e) {
+      if (i === attempts - 1 || !isTransientError(e)) throw e;
+      await new Promise(r => setTimeout(r, baseDelayMs * 2 ** i));
+    }
+  }
+}
+
+// maxRounds bounds how many times a pause_turn (hit the 10-searches-per-turn cap) gets resumed;
+// maxSearchUses caps total searches per turn directly via the tool's own `max_uses`. Both default
+// to the original unbounded-ish values (5 rounds, no cap) for normal fact-check calls, which were
+// already fast in practice - deep mode (see checkFacts) passes tighter values because its wider
+// claim scope was verified to run 15-20+ minutes per pass otherwise (real timing, not a guess).
+async function callClaude({ system, prompt, maxTokens, schema, maxRounds = 5, maxSearchUses }) {
   const c = client();
   const userMessage = { role: "user", content: prompt };
   let messages = [userMessage];
   let response;
-  const maxRounds = 5;
+  const searchTool = { type: "web_search_20260209", name: "web_search" };
+  if (maxSearchUses) searchTool.max_uses = maxSearchUses;
   for (let round = 0; round < maxRounds; round++) {
-    const stream = c.messages.stream({
-      model: MODEL,
-      max_tokens: maxTokens,
-      system,
-      tools: [{ type: "web_search_20260209", name: "web_search" }],
-      output_config: { format: { type: "json_schema", schema } },
-      messages,
+    response = await withRetry(async () => {
+      const stream = c.messages.stream({
+        model: MODEL,
+        max_tokens: maxTokens,
+        system,
+        tools: [searchTool],
+        output_config: { format: { type: "json_schema", schema } },
+        messages,
+      });
+      return stream.finalMessage();
     });
-    response = await stream.finalMessage();
     if (response.stop_reason !== "pause_turn") break;
     messages = [userMessage, { role: "assistant", content: response.content }];
+  }
+
+  // A response still mid-research (paused, wanting more searches) when maxRounds runs out is NOT
+  // a finished answer - its text block(s) can be an interim placeholder emitted before the model
+  // resumed searching, not the real result. Verified against a real run: a capped deep pass
+  // returned an empty "[]" this way, which would have silently looked like "nothing to check"
+  // rather than "ran out of search budget." Fail loudly instead of returning a hollow ledger.
+  if (response.stop_reason === "pause_turn") {
+    throw new Error(`Fact-check ran out of research rounds (maxRounds=${maxRounds}) while still searching - the result would be incomplete. Try again, or raise maxRounds/maxSearchUses.`);
   }
 
   if (response.stop_reason === "refusal") {
     throw new Error("Claude declined the fact-check request (safety refusal).");
   }
 
-  const text = response.content
-    .filter(block => block.type === "text")
-    .map(block => block.text)
-    .join("\n")
-    .trim();
+  // Under output_config's schema constraint, EVERY text block Claude emits must independently be
+  // schema-valid on its own - not just the final one - so when web search interleaves multiple
+  // separate text utterances (e.g. the model revises its answer between searches), each one is a
+  // complete, self-contained instance of the schema, not a fragment meant to be concatenated.
+  // Verified against a real run where a re-verification pass emitted three sequential text blocks
+  // ("[]", "[]", " []") - naively joining them produced invalid JSON ("[]\n[]\n []"); only the
+  // last one (the model's final, most-informed answer) should be used.
+  const textBlocks = response.content.filter(block => block.type === "text");
+  const text = (textBlocks[textBlocks.length - 1]?.text || "").trim();
   if (!text) throw new Error("Claude returned no text: " + JSON.stringify(response).slice(0, 300));
   return text;
 }
@@ -168,25 +211,45 @@ const LEDGER_SCHEMA = {
  * 100KB+ document verbatim (unreliable and expensive for an LLM, and exactly the kind of
  * mechanical text surgery plain code should own instead).
  */
-export async function checkFacts(html, { today = new Date().toISOString().slice(0, 10) } = {}) {
+export async function checkFacts(html, { today = new Date().toISOString().slice(0, 10), deep = false } = {}) {
   const text = extractText(html);
   const system = `You are a fact-checking analyst for a Luxembourg real-estate market report. ${SOURCE_HIERARCHY}
 Today's date is ${today}. Use live web search for every checkable figure - do not rely on memory alone, and never invent a source or URL.`;
 
-  const prompt = `Below is the plain-text content of a Luxembourg residential real-estate market report (French/English, duplicated). Fact-check every material, checkable figure: prices, indices, transaction volumes, mortgage rates, tax thresholds, government measures and their legislative status, and any other quantitative claim. Return one ledger entry per checked claim.
+  // "deep" backs the "totally update the document" regenerate feature (see regenerateReport
+  // below): it widens the check from "material, checkable figures" to every claim including
+  // narrative/trend language and dated phrasing, and drops the 60k-char truncation so a full
+  // report is reviewed end to end, not just its first ~60k characters.
+  const scopeLine = deep
+    ? `Fact-check EVERY checkable claim in this report, comprehensively: prices, indices, transaction volumes, mortgage rates, tax thresholds, government measures and their legislative status, any other quantitative claim, AND narrative/trend statements ("the market is stabilizing", "volumes remain depressed", etc.) and dated phrasing (e.g. a reference to "Q1 2026" or "as of [date]") that may now be stale. Err on the side of checking more claims, not fewer - this is a full review, not a headline-figures pass.`
+    : `Fact-check every material, checkable figure: prices, indices, transaction volumes, mortgage rates, tax thresholds, government measures and their legislative status, and any other quantitative claim.`;
+
+  const prompt = `Below is the plain-text content of a Luxembourg residential real-estate market report (French/English, duplicated). ${scopeLine} Return one ledger entry per checked claim.
 
 Rules:
 - Only mark "updated" when a reputable source (see hierarchy) clearly gives a different current figure - never guess.
 - Mark "uncertain" (with a disclaimer) rather than "updated" when sources conflict or nothing newer could be found - do not silently change a figure without a source backing the change.
 - "report_value" must match the text below character-for-character.
-- Use "${today}" as checked_date on every entry.
+- Use "${today}" as checked_date on every entry.${deep ? `
+- Search efficiently: group related claims (e.g. several figures from the same source/page) into as few searches as possible rather than one search per claim.` : ""}
 
 REPORT TEXT:
 """
-${text.slice(0, 60000)}
+${deep ? text : text.slice(0, 60000)}
 """`;
 
-  const raw = await callClaude({ system, prompt, maxTokens: 32000, schema: LEDGER_SCHEMA });
+  // Deep mode's wider scope genuinely needs more research than a tight round/search cap can
+  // finish within (verified: capping at maxRounds=2 caused a real run to exhaust its budget
+  // mid-research and fail outright, without meaningfully reducing total time - the round-trip
+  // cost is dominated by search latency either way). regenerateReport (the only deep caller) now
+  // runs as a background job with progress polling specifically so a 15-25 minute reliable run is
+  // an acceptable trade, rather than a fast-but-unreliable one. maxTokens stays the same as the
+  // normal pass - ledger JSON output was never the bottleneck (even the widest real run produced
+  // ~25K characters, well under a 32000-token budget).
+  const raw = await callClaude({
+    system, prompt, schema: LEDGER_SCHEMA, maxTokens: 32000,
+    maxRounds: deep ? 8 : 5,
+  });
   if (process.env.FACTCHECK_DEBUG) {
     console.error(`[factcheck debug] raw response length: ${raw.length}`);
     console.error(`[factcheck debug] tail: ${JSON.stringify(raw.slice(-400))}`);
@@ -261,4 +324,29 @@ export async function runFactCheck(html, opts = {}) {
     console.warn(`[factcheck] ${unappliedCount} ledger entr${unappliedCount === 1 ? "y" : "ies"} could not be located unambiguously in the html and were left unapplied - flagged in the ledger for manual review.`);
   }
   return { html: updatedHtml, ledger };
+}
+
+/**
+ * "Totally update" pass: a deep, comprehensive fact-check-and-apply (not just headline figures -
+ * see the `deep` flag on checkFacts) followed by a second, fully independent fact-check of the
+ * result. Structure/markup is never touched by either call - only applyLedger's uniqueness-
+ * checked string surgery ever edits the html (see applyLedger above), so "keep the document
+ * structure" is guaranteed by construction rather than by asking the model to reproduce the
+ * whole document verbatim (which would risk both corrupting markup and blowing the output token
+ * budget on a report this size).
+ *
+ * The second pass is a genuinely separate API call with no memory of the first pass's reasoning
+ * - it re-checks the *already-updated* html against live sources from scratch, so it can catch a
+ * wrong "confirmed" or "updated" verdict from pass one, not just rubber-stamp it.
+ */
+export async function regenerateReport(html, { onProgress = () => {}, ...opts } = {}) {
+  onProgress({ stage: "initial" });
+  const initial = await runFactCheck(html, { ...opts, deep: true });
+  onProgress({ stage: "verification" });
+  const verified = await runFactCheck(initial.html, { ...opts, deep: true });
+  const ledger = [
+    ...initial.ledger.map(e => ({ ...e, pass: "initial" })),
+    ...verified.ledger.map(e => ({ ...e, pass: "verification" })),
+  ];
+  return { html: verified.html, ledger };
 }

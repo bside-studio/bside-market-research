@@ -131,6 +131,7 @@ function renderFactCheckSidebar(version) {
   }
   const verdictClass = { confirmed: "st-published", updated: "st-draft", uncertain: "st-superseded" };
   const needsManualApply = e => (e.current_value || e.disclaimer) && !e.applied;
+  const passLabel = { initial: "Initial rewrite", verification: "Independent verification" };
   aside.innerHTML = `<h4>Fact-check ledger</h4>` + ledger.map(e => `
     <div class="ledger-entry">
       <div class="ledger-claim">${e.claim || ""}</div>
@@ -139,6 +140,7 @@ function renderFactCheckSidebar(version) {
       ${e.current_value ? `<div class="ledger-detail"><b>Now:</b> ${e.current_value}</div>` : ""}
       ${e.note ? `<div class="ledger-detail">${e.note}</div>` : ""}
       ${e.source_url ? `<div class="ledger-detail"><a href="${e.source_url}" target="_blank" rel="noopener">${e.source_name || e.source_url}</a> · ${e.checked_date || ""}</div>` : ""}
+      ${e.pass ? `<div class="ledger-detail"><b>Pass:</b> ${passLabel[e.pass] || e.pass}</div>` : ""}
     </div>
   `).join("");
 }
@@ -164,9 +166,15 @@ function setSaveIndicator(text) { $("#save-indicator").textContent = text; }
 async function saveDraft() {
   if (!state.version) return;
   const html = state.editor.getHtml();
-  await api(`/api/reports/${state.report.slug}/versions/${state.version.n}`, {
-    method: "PUT", body: JSON.stringify({ html }),
-  });
+  try {
+    await api(`/api/reports/${state.report.slug}/versions/${state.version.n}`, {
+      method: "PUT", body: JSON.stringify({ html }),
+    });
+  } catch (e) {
+    setSaveIndicator("Not saved");
+    alert("Could not save: " + e.message);
+    throw e;
+  }
   state.dirty = false;
   setSaveIndicator("Saved");
 }
@@ -178,8 +186,13 @@ async function discardChanges() {
 
 async function publishVersion() {
   if (!confirm(`Publish v${state.version.n}? The current published version will be kept in history as "superseded".`)) return;
-  if (state.dirty) await saveDraft();
-  await api(`/api/reports/${state.report.slug}/versions/${state.version.n}/publish`, { method: "POST" });
+  try {
+    if (state.dirty) await saveDraft();
+    await api(`/api/reports/${state.report.slug}/versions/${state.version.n}/publish`, { method: "POST" });
+  } catch (e) {
+    alert("Could not publish: " + e.message);
+    return;
+  }
   await openReport(state.report.slug);
 }
 
@@ -209,6 +222,50 @@ async function runFactCheck() {
   await openReport(state.report.slug);
   if (failed) {
     alert("Fact-check failed: " + failed.message + "\n\nA draft was still created from the published version (without AI corrections) - you can edit it directly below.");
+  }
+}
+
+const STAGE_LABEL = { initial: "Initial deep pass…", verification: "Independent verification…" };
+
+async function regenerateReportAction() {
+  if (!confirm("This runs a full, comprehensive fact-check across the entire document (figures AND narrative language, not just headline numbers), then an independent second pass to verify the result. It genuinely takes 15-25 minutes - you can navigate away and come back, it keeps running on the server. Editing and publishing this report are locked while it runs, so it can't be overwritten mid-run. Continue?")) return;
+  const slug = state.report.slug; // captured now - the user may navigate to a different report while this polls
+  const btn = $("#btn-regenerate");
+  btn.disabled = true;
+  const original = btn.textContent;
+  btn.textContent = "Starting…";
+  try {
+    await api(`/api/reports/${slug}/regenerate`, { method: "POST" });
+  } catch (e) {
+    btn.disabled = false;
+    btn.textContent = original;
+    alert("Could not start regenerate: " + e.message);
+    return;
+  }
+  await pollRegenerateProgress(slug, btn, original);
+}
+
+async function pollRegenerateProgress(slug, btn, original) {
+  while (true) {
+    let data;
+    try {
+      data = await api(`/api/reports/${slug}/regenerate-progress`);
+    } catch {
+      break; // e.g. logged out mid-poll - stop silently, the background job keeps running server-side regardless
+    }
+    if (!data.active) {
+      btn.disabled = false;
+      btn.textContent = original;
+      // Only refresh the view if the user is still looking at this report - if they navigated
+      // elsewhere while this was running, the result is already saved server-side regardless.
+      if (state.report && state.report.slug === slug) await openReport(slug);
+      if (data.error) {
+        alert(`Regenerate failed for "${slug}": ${data.error}\n\nThe draft was not changed by this run - you can edit it directly, or try again.`);
+      }
+      return;
+    }
+    btn.textContent = STAGE_LABEL[data.stage] || "Working…";
+    await new Promise(r => setTimeout(r, 5000));
   }
 }
 
@@ -257,6 +314,7 @@ function wireEvents() {
 
   $("#btn-new-draft").addEventListener("click", createDraft);
   $("#btn-run-factcheck").addEventListener("click", runFactCheck);
+  $("#btn-regenerate").addEventListener("click", regenerateReportAction);
   $("#btn-bold").addEventListener("click", () => state.editor.toggleBold());
   $("#btn-italic").addEventListener("click", () => state.editor.toggleItalic());
   $("#btn-clear-format").addEventListener("click", () => state.editor.clearFormatting());
