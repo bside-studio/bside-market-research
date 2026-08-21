@@ -15,12 +15,12 @@ button.ghost, button.primary, select.ghost {
   font: inherit; font-weight: 600; border-radius: var(--radius); cursor: pointer;
   padding: 9px 16px; border: var(--border-rule) solid transparent; font-size: 13.5px;
 }
-button.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+button.primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
 button.primary:hover:not(:disabled) { background: var(--accent-600); border-color: var(--accent-600); }
 button.primary:active:not(:disabled) { background: var(--accent-700); border-color: var(--accent-700); }
 button.primary:disabled { opacity: .45; cursor: not-allowed; }
 button.ghost, select.ghost { background: transparent; border-color: var(--ink-300); color: var(--ink); }
-button.ghost:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); background: var(--accent-100); }
+button.ghost:hover:not(:disabled) { border-color: var(--accent-700); color: var(--accent-700); background: var(--accent-100); }
 .nav button.ghost { color: #fff; border-color: rgba(255, 255, 255, .4); }
 .nav button.ghost:hover:not(:disabled) { border-color: var(--accent-300); color: var(--accent-300); background: rgba(255, 255, 255, .08); }
 .btn-sm { padding: 6px 12px; font-size: 13px; }
@@ -57,7 +57,7 @@ button.ghost:hover:not(:disabled) { border-color: var(--accent); color: var(--ac
 .ledger-entry { padding: var(--space-3) 0; border-bottom: var(--border-hairline) solid var(--ink-200); }
 .ledger-claim { font-size: 13.5px; font-weight: 600; margin-bottom: 4px; }
 .ledger-detail { font-size: 12.5px; color: var(--ink-600); margin-top: 3px; }
-.ledger-detail a { color: var(--accent); }
+.ledger-detail a { color: var(--accent-700); }
 
 /* ---- changelog dialog inner typography ---- */
 #changelog-body { gap: 0; }

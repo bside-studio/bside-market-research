@@ -7,7 +7,8 @@
   --bg: #f3f2f2;
   --surface: #ffffff;
   --ink: #201e1d;
-  --accent: #ec3013;
+  --accent: #d3af3c;
+  --on-accent: var(--ink); /* text color for solid-accent fills - gold needs dark text, not white */
 
   /* ---- ink ramp (neutral greys, anchored on --ink) ---- */
   --ink-100: #f3f2f2;
@@ -21,15 +22,15 @@
   --ink-900: #201e1d;
 
   /* ---- accent ramp (the ONLY hue in the system) ---- */
-  --accent-100: #fde4de;
-  --accent-200: #fac3b6;
-  --accent-300: #f5a08c;
-  --accent-400: #f27a5c;
-  --accent-500: #ec3013;
-  --accent-600: #d32a10;
-  --accent-700: #b0230d;
-  --accent-800: #8c1c0a;
-  --accent-900: #691508;
+  --accent-100: #fbf1da;
+  --accent-200: #f4e7cf;
+  --accent-300: #ead9ae;
+  --accent-400: #ddc574;
+  --accent-500: #d3af3c;
+  --accent-600: #b8962e;
+  --accent-700: #8c7222;
+  --accent-800: #6f5719;
+  --accent-900: #4a3a10;
 
   /* ---- spacing scale ---- */
   --space-1: 4px;
