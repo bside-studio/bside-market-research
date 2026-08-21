@@ -315,6 +315,8 @@ a { color: var(--accent); }
 .banner-close { background: none; border: none; cursor: pointer; color: var(--accent-800); padding: 0; line-height: 1; flex: none; }
 .banner-close svg { width: 16px; height: 16px; }
 
+.client-fields { display: flex; flex-direction: column; gap: var(--space-4); }
+
 /* ================= checkbox list (shared modal helper) ================= */
 .checkbox-list { display: flex; flex-direction: column; gap: var(--space-2); max-height: 160px; overflow-y: auto; }
 .checkbox-list label { display: flex; flex-direction: row; align-items: center; gap: var(--space-2); font-weight: 400; font-size: 13.5px; color: var(--ink); }
