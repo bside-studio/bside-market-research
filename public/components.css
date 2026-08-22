@@ -313,16 +313,23 @@ a { color: var(--accent-700); }
 
 /* ================= banner (dismissible error) ================= */
 .banner {
-  display: flex; align-items: flex-start; gap: var(--space-3);
+  display: flex; align-items: center; gap: var(--space-3);
   padding: var(--space-3) var(--space-4);
-  border: var(--border-rule) solid var(--accent);
-  background: var(--accent-100);
-  color: var(--accent-800);
+  border: var(--border-rule) solid var(--ink-200);
+  background: var(--ink-100);
+  color: var(--ink);
   font-size: 13.5px; font-weight: 600;
 }
 .banner-message { flex: 1; }
-.banner-close { background: none; border: none; cursor: pointer; color: var(--accent-800); padding: 0; line-height: 1; flex: none; }
-.banner-close svg { width: 16px; height: 16px; }
+.banner-close {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 26px; height: 26px; flex: none; padding: 0;
+  background: var(--surface); border: 1px solid var(--ink-300);
+  color: var(--ink); cursor: pointer;
+  transition: background-color .1s, border-color .1s, color .1s;
+}
+.banner-close:hover { border-color: var(--accent-700); color: var(--accent-700); background: var(--accent-100); }
+.banner-close svg { width: 14px; height: 14px; }
 
 .client-fields { display: flex; flex-direction: column; gap: var(--space-4); }
 
