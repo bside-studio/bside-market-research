@@ -9,6 +9,12 @@ import { requireAuth, requireRole } from "./authMiddleware.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
+// Behind Caddy (see bside-universe/infra/Caddyfile) - only Caddy can reach this container at all
+// (it has no host-published port of its own), so trusting the proxy here just means trusting
+// Caddy, not an arbitrary client. Needed so req.protocol correctly reports "https" (Caddy sets
+// x-forwarded-proto) instead of always "http", which is what the actual container-to-Caddy
+// connection uses internally.
+app.set("trust proxy", true);
 app.use(express.json({ limit: "10mb" })); // report html round-trips through PUT bodies
 app.use(express.static(path.join(__dirname, "..", "public")));
 
