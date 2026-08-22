@@ -5,7 +5,7 @@
    never touched by this file - it renders inside its own iframe. */
 
 .nav-brand-mark { height: 32px; width: auto; flex: none; display: block; }
-.nav-brand-sub { font-style: normal; font-weight: 500; font-size: 15px; color: rgba(255, 255, 255, .7); margin-left: 4px; }
+.nav-brand-sub { font-style: normal; font-weight: 500; font-size: 15px; color: var(--ink-600); margin-left: 4px; }
 
 body[data-role="client"] .admin-only { display: none !important; }
 
@@ -21,8 +21,6 @@ button.primary:active:not(:disabled) { background: var(--accent-700); border-col
 button.primary:disabled { opacity: .45; cursor: not-allowed; }
 button.ghost, select.ghost { background: transparent; border-color: var(--ink-300); color: var(--ink); }
 button.ghost:hover:not(:disabled) { border-color: var(--accent-700); color: var(--accent-700); background: var(--accent-100); }
-.nav button.ghost { color: #fff; border-color: rgba(255, 255, 255, .4); }
-.nav button.ghost:hover:not(:disabled) { border-color: var(--accent-300); color: var(--accent-300); background: rgba(255, 255, 255, .08); }
 .btn-sm { padding: 6px 12px; font-size: 13px; }
 .spacer { flex: 1; }
 
