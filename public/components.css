@@ -1,5 +1,6 @@
 /* B-Side shared component library — copied identically into bside-universe, bside-hunter,
-   bside-market-research, bside-settings. Edit in one place, then re-sync the others.
+   bside-market-research, bside-settings, bside-property-screening. Edit in one place, then
+   re-sync the others.
    Requires tokens.css to be loaded first. Every component below pulls from tokens only —
    no hardcoded hex/px in here beyond 0/1px/2px structural values. */
 

@@ -1,5 +1,6 @@
 /* B-Side shared design tokens — copied identically into bside-universe, bside-hunter,
-   bside-market-research, bside-settings. Edit in one place, then re-sync the others.
+   bside-market-research, bside-settings, bside-property-screening. Edit in one place, then
+   re-sync the others.
    Flat/architectural system: single accent (no second hue), zero radius, hard elevation. */
 
 :root {
