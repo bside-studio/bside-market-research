@@ -1,6 +1,6 @@
 /* B-Side shared component library — copied identically into bside-universe, bside-hunter,
-   bside-market-research, bside-settings, bside-property-screening. Edit in one place, then
-   re-sync the others.
+   bside-market-research, bside-settings, bside-client-onboarding, bside-communication-hub,
+   and every future B-Side application. Edit in one place, then re-sync the others.
    Requires tokens.css to be loaded first. Every component below pulls from tokens only —
    no hardcoded hex/px in here beyond 0/1px/2px structural values. */
 
@@ -347,6 +347,37 @@ fieldset.bordered legend { font-size: 11.5px; font-weight: 700; text-transform: 
 .slide-down { display: grid; grid-template-rows: 1fr; transition: grid-template-rows .2s ease; }
 .slide-down > * { overflow: hidden; }
 .slide-down.is-collapsed { grid-template-rows: 0fr; }
+
+/* ================= help (inline tooltips + "About this screen" dialog) =================
+   Two triggers share the same small icon look (.help-icon-btn, ICONS.info):
+   - [data-help="short text"]                 -> hover/focus/tap bubble (.help-tip), for a
+     button, filter or data element that isn't self-explanatory.
+   - [data-help-title][data-help-body]        -> click opens #modal-help, for a full
+     screen-level "what is this screen / how do I use it" explanation, or any help text
+     too long for a bubble. data-help-body paragraphs are separated by a blank line.
+   Behaviour lives in help.js; requires a #modal-help dialog in the page markup. */
+.help-icon-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 20px; height: 20px; flex: none; padding: 0;
+  border: 1px solid var(--ink-300); border-radius: var(--radius);
+  background: var(--surface); color: var(--ink-500);
+  cursor: pointer; line-height: 1;
+  transition: background-color .1s, border-color .1s, color .1s;
+}
+.help-icon-btn:hover, .help-icon-btn:focus-visible {
+  border-color: var(--accent-700); color: var(--accent-700); background: var(--accent-100);
+}
+.help-icon-btn svg { width: 13px; height: 13px; }
+
+.help-label { display: inline-flex; align-items: center; gap: 5px; }
+
+.help-tip {
+  position: fixed; z-index: 300; max-width: 280px;
+  background: var(--ink); color: var(--surface);
+  font-size: 12.5px; font-weight: 400; line-height: 1.45;
+  padding: 8px 10px; border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+}
 
 /* ================= responsive ================= */
 @media (max-width: 720px) {

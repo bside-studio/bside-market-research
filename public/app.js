@@ -132,7 +132,10 @@ function renderFactCheckSidebar(version) {
   const verdictClass = { confirmed: "tag-accent", updated: "tag-neutral", uncertain: "tag-neutral" };
   const needsManualApply = e => (e.current_value || e.disclaimer) && !e.applied;
   const passLabel = { initial: "Initial rewrite", verification: "Independent verification" };
-  aside.innerHTML = `<h4>Fact-check ledger</h4>` + ledger.map(e => `
+  const ledgerHead = `<h4 class="help-label">Fact-check ledger
+    <button type="button" class="help-icon-btn" aria-label="More info" data-help="Confirmed = left as-is. Updated = figure corrected automatically. Uncertain = a short caveat was inserted. &quot;Needs manual apply&quot; means the exact wording wasn't found uniquely in the text, so review that one by hand.">${ICONS.info}</button>
+  </h4>`;
+  aside.innerHTML = ledgerHead + ledger.map(e => `
     <div class="ledger-entry">
       <div class="ledger-claim">${e.claim || ""}</div>
       <span class="tag ${verdictClass[e.verdict] || "tag-neutral"}">${e.verdict || "unknown"}</span>
@@ -282,6 +285,13 @@ function renderUserBadge() {
 
 /* ---------- changelog modal ---------- */
 
+function renderHelpButtons() {
+  for (const id of ["btn-help-reports", "btn-help-detail", "btn-help-editor"]) {
+    const btn = $(`#${id}`);
+    if (btn) btn.innerHTML = ICONS.info;
+  }
+}
+
 function renderChangelog() {
   $("#btn-changelog").innerHTML = ICONS.history;
   const el = $("#changelog-body");
@@ -346,6 +356,7 @@ function wireEvents() {
 async function init() {
   buildStyleDropdown();
   renderChangelog();
+  renderHelpButtons();
   wireEvents();
   await loadReportsList();
 }

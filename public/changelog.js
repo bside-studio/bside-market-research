@@ -1,5 +1,12 @@
 window.CHANGELOG = [
   {
+    version: "1.4",
+    date: "2026-08-25",
+    changes: [
+      "Added the shared in-app contextual help system: a \"?\" button on each of the three screens (Reports, Version History, Editor) opens an \"About this screen\" dialog, and small (i) icons now sit next to Run fact-check, Regenerate report, New draft (no AI), the style picker, Publish this version, and the fact-check ledger heading, each with a short hover/focus explanation.",
+    ],
+  },
+  {
     version: "1.3",
     date: "2026-08-21",
     changes: [

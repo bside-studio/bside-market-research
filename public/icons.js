@@ -1,7 +1,7 @@
 /* B-Side shared icon set — copied identically into bside-universe, bside-hunter,
-   bside-market-research, bside-settings, bside-property-screening. Hand-authored
-   Lucide-style inline SVGs (stroke=currentColor) since there is no bundler here
-   to pull the npm package.
+   bside-market-research, bside-settings, bside-client-onboarding, bside-communication-hub,
+   and every future B-Side application. Hand-authored Lucide-style inline SVGs
+   (stroke=currentColor) since there is no bundler here to pull the npm package.
    Usage: ICONS.plus (etc.) returns an <svg> markup string, 24x24 viewBox. */
 const ICONS = {
   plus: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>',

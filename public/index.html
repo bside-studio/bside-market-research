@@ -29,6 +29,11 @@
 <main id="view-reports">
   <section class="toolbar">
     <h2>Reports</h2>
+    <button id="btn-help-reports" class="btn-icon" aria-label="About this screen"
+      data-help-title="Reports"
+      data-help-body="This is the list of every market report tracked by this app. Each card shows the report's title, its currently published version (with the date it was published) or &quot;no published version yet&quot; if none has been published, whether a newer draft is waiting, and the total number of versions the report has had.
+
+Click Open to see the report's full version history, where you can review fact-check results, edit a draft, or publish it."></button>
   </section>
   <div id="reports-grid" class="reports-grid"></div>
 </main>
@@ -38,10 +43,36 @@
   <section class="toolbar">
     <button id="btn-back-reports" class="ghost">&larr; All reports</button>
     <h2 id="detail-title"></h2>
+    <button id="btn-help-detail" class="btn-icon" aria-label="About this screen"
+      data-help-title="Version History"
+      data-help-body="This is the version history for one market report. Publishing a draft never deletes the version it replaces — the previous published version is kept in history, marked &quot;superseded&quot;, and stays viewable.
+
+Run fact-check asks AI to check this report's material figures (prices, indices, rates, government measures) against live sources, then creates a new draft with corrections applied automatically and uncertain items flagged with a short caveat. It never publishes on its own.
+
+Regenerate report runs the same check across the entire document — including narrative and dated language, not just figures — then re-verifies the result with a fully independent second pass. It takes 15–25 minutes in the background; editing and publishing are locked while it runs.
+
+New draft (no AI) creates an editable draft copied from the current published version without calling the AI at all.
+
+The &quot;fact-checked&quot; tag on a version means it has a fact-check ledger attached — open it in the editor to review. Click View to see any version exactly as published, or Edit to open a draft."></button>
     <span class="spacer"></span>
-    <button id="btn-new-draft" class="ghost admin-only" hidden>New draft (no AI)</button>
-    <button id="btn-run-factcheck" class="primary admin-only">Run fact-check</button>
-    <button id="btn-regenerate" class="primary admin-only">Regenerate report</button>
+    <span class="help-label">
+      <button id="btn-new-draft" class="ghost admin-only" hidden>New draft (no AI)</button>
+      <button type="button" class="help-icon-btn admin-only" aria-label="More info" data-help="Creates a new draft copied from the current published version without calling the AI fact-check — for when you just want to edit text directly.">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+      </button>
+    </span>
+    <span class="help-label">
+      <button id="btn-run-factcheck" class="primary admin-only">Run fact-check</button>
+      <button type="button" class="help-icon-btn admin-only" aria-label="More info" data-help="Checks this report's material figures (prices, indices, rates, government measures) against live sources and creates a new draft with the results applied. Never publishes automatically.">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+      </button>
+    </span>
+    <span class="help-label">
+      <button id="btn-regenerate" class="primary admin-only">Regenerate report</button>
+      <button type="button" class="help-icon-btn admin-only" aria-label="More info" data-help="Runs a full fact-check across the entire document, including narrative language, then re-verifies the result with an independent second pass. Takes 15–25 minutes in the background; editing and publishing are locked while it runs.">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+      </button>
+    </span>
   </section>
   <div id="version-list" class="version-list"></div>
 </main>
@@ -51,10 +82,22 @@
   <section class="editor-toolbar">
     <button id="btn-editor-back" class="ghost btn-sm">&larr; Versions</button>
     <span class="editor-title" id="editor-report-title"></span>
+    <button id="btn-help-editor" class="btn-icon" aria-label="About this screen"
+      data-help-title="Editor"
+      data-help-body="This is the editor for one report draft. It edits the actual report page inside an isolated frame, so what you see here is pixel-identical to what gets published. Styling is limited to a fixed set of the report's own classes — no free colour or font choices — and pasted text is stripped down to plain text so outside formatting can't be smuggled in.
+
+The fact-check ledger on the right lists every claim AI checked against live sources for this version: confirmed (left as-is), updated (figure corrected automatically), or uncertain (a short caveat inserted). &quot;Needs manual apply&quot; means the exact wording wasn't found uniquely in the text, so that one needs a manual look.
+
+Save draft keeps your edits without changing what's publicly visible. Publish this version makes it the one people see live — the current published version is kept in history as &quot;superseded&quot;, never deleted. Discard changes reloads this version from the server, dropping anything unsaved."></button>
     <span class="toolbar-divider"></span>
     <button id="btn-bold" class="ghost btn-sm" title="Bold"><b>B</b></button>
     <button id="btn-italic" class="ghost btn-sm" title="Italic"><i>I</i></button>
-    <select id="style-select" class="ghost btn-sm"></select>
+    <span class="help-label">
+      <select id="style-select" class="ghost btn-sm"></select>
+      <button type="button" class="help-icon-btn" aria-label="More info" data-help="Applies one of the report's own predefined style classes (keyword highlights, up/down badges, info boxes, etc.) to the current selection or block. There's no free-form colour or font control — only these fixed styles.">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+      </button>
+    </span>
     <button id="btn-clear-format" class="ghost btn-sm">Clear formatting</button>
     <span class="toolbar-divider"></span>
     <button id="btn-duplicate-block" class="ghost btn-sm" title="Duplicate the row/card/tile under the cursor">Duplicate block</button>
@@ -63,7 +106,12 @@
     <span id="save-indicator" class="save-indicator"></span>
     <button id="btn-discard" class="ghost btn-sm">Discard changes</button>
     <button id="btn-save-draft" class="ghost btn-sm">Save draft</button>
-    <button id="btn-publish" class="primary btn-sm">Publish this version</button>
+    <span class="help-label">
+      <button id="btn-publish" class="primary btn-sm">Publish this version</button>
+      <button type="button" class="help-icon-btn" aria-label="More info" data-help="Makes this version the one people see live. The current published version is kept in history as &quot;superseded&quot;, never deleted, and a fresh draft opens automatically afterwards.">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+      </button>
+    </span>
   </section>
   <div class="editor-body">
     <iframe id="editor-frame" class="editor-frame" title="Report editor"></iframe>
@@ -82,7 +130,19 @@
   </div>
 </div>
 
+<!-- ===== Help dialog ===== -->
+<div id="modal-help" class="dialog-backdrop" hidden>
+  <div class="dialog dialog-md">
+    <div class="dialog-head">
+      <h2 id="help-modal-title">Help</h2>
+      <button id="btn-help-close" class="btn-icon" aria-label="Close">✕</button>
+    </div>
+    <div id="help-modal-body" class="dialog-body"></div>
+  </div>
+</div>
+
 <script src="icons.js"></script>
+<script src="help.js"></script>
 <script src="changelog.js"></script>
 <script type="module" src="app.js"></script>
 </body>
