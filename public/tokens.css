@@ -1,7 +1,7 @@
 /* B-Side shared design tokens — copied identically into bside-universe, bside-hunter,
    bside-market-research, bside-settings, bside-client-onboarding, bside-communication-hub,
    and every future B-Side application. Edit in one place, then re-sync the others.
-   Flat/architectural system: single accent (no second hue), zero radius, hard elevation. */
+   Flat/architectural system: single accent (no second hue), soft radius, hard elevation. */
 
 :root {
   /* ---- core ---- */
@@ -48,7 +48,7 @@
   --font-body: "Archivo", system-ui, sans-serif;
 
   /* ---- shape ---- */
-  --radius: 0;
+  --radius: 10px;
   --border-hairline: 1px;
   --border-rule: 2px;
 

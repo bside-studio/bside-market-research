@@ -203,6 +203,7 @@ a { color: var(--accent-700); }
 .user-badge .user-email { font-weight: 600; color: var(--ink); }
 .user-badge .user-role {
   padding: 2px 8px; border: 1px solid var(--ink-300);
+  border-radius: var(--radius);
   text-transform: uppercase; letter-spacing: .04em; font-size: 10px;
 }
 .user-badge .user-logout { color: var(--accent-700); text-decoration: none; }
@@ -224,9 +225,11 @@ a { color: var(--accent-700); }
 .dialog {
   background: var(--surface);
   border: var(--border-rule) solid var(--ink);
+  border-radius: var(--radius);
   box-shadow: var(--shadow-md);
   width: 100%; max-width: 560px;
   display: flex; flex-direction: column;
+  overflow: hidden;
 }
 .dialog-sm { max-width: 420px; }
 .dialog-md { max-width: 640px; }
@@ -282,7 +285,7 @@ a { color: var(--accent-700); }
 .toolbar-spacer { flex: 1; }
 
 /* ================= .seg (segmented control) ================= */
-.seg { display: flex; border: var(--border-rule) solid var(--ink); width: fit-content; }
+.seg { display: flex; border: var(--border-rule) solid var(--ink); border-radius: var(--radius); width: fit-content; overflow: hidden; }
 .seg-option {
   font: inherit; font-weight: 600; font-size: 13.5px;
   padding: 9px 18px; background: var(--surface); color: var(--ink);
@@ -318,6 +321,7 @@ a { color: var(--accent-700); }
   display: flex; align-items: center; gap: var(--space-3);
   padding: var(--space-3) var(--space-4);
   border: var(--border-rule) solid var(--ink-200);
+  border-radius: var(--radius);
   background: var(--ink-100);
   color: var(--ink);
   font-size: 13.5px; font-weight: 600;
@@ -327,6 +331,7 @@ a { color: var(--accent-700); }
   display: inline-flex; align-items: center; justify-content: center;
   width: 26px; height: 26px; flex: none; padding: 0;
   background: var(--surface); border: 1px solid var(--ink-300);
+  border-radius: var(--radius);
   color: var(--ink); cursor: pointer;
   transition: background-color .1s, border-color .1s, color .1s;
 }
@@ -388,7 +393,9 @@ fieldset.bordered legend { font-size: 11.5px; font-weight: 700; text-transform: 
     display: flex; flex-direction: column; align-items: flex-start; gap: 0;
     position: absolute; top: var(--nav-height); left: 0; right: 0;
     background: var(--surface); border-top: var(--border-rule) solid var(--accent);
+    border-radius: 0 0 var(--radius) var(--radius);
     box-shadow: var(--shadow-md);
+    overflow: hidden;
     z-index: 50;
   }
   .nav.is-open .nav-link { height: auto; padding: var(--space-3) var(--space-4); width: 100%; border-bottom: var(--border-hairline) solid var(--ink-200); }
