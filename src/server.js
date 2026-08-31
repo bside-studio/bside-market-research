@@ -42,6 +42,23 @@ app.get("/api/reports", (_req, res) => {
   res.json({ ok: true, reports: q.listReports.all(), user: { email: _req.user.email, role: _req.user.role } });
 });
 
+// Aggregate stats for this app's tile on the B-Side Universe portal - the most recent version
+// (draft or published) across every report lineage, whichever was touched last.
+app.get("/api/stats", requireRole("admin", "hunter"), (_req, res) => {
+  let latest = null;
+  for (const r of q.listReports.all()) {
+    for (const v of [r.published, r.draft]) {
+      if (v && (!latest || v.created_at > latest.created_at)) latest = { ...v, title: r.title };
+    }
+  }
+  res.json({
+    ok: true,
+    latestReportAt: latest?.created_at || null,
+    latestReportStatus: latest?.status || null,
+    latestReportTitle: latest?.title || null,
+  });
+});
+
 app.get("/api/reports/:slug", (req, res) => {
   const report = q.getReport.get(req.params.slug);
   if (!report) return res.status(404).json({ ok: false, error: "not found" });
