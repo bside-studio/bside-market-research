@@ -5,7 +5,7 @@ import { fileURLToPath } from "url";
 import { q } from "./db.js";
 import { runFactCheck, regenerateReport } from "./factcheck.js";
 import { seedIfEmpty } from "./seed/seed.js";
-import { requireAuth, requireRole } from "./authMiddleware.js";
+import { requireAuth, requireRole, getLastAccessAt } from "./authMiddleware.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
@@ -56,6 +56,7 @@ app.get("/api/stats", requireRole("admin", "hunter"), (_req, res) => {
     latestReportAt: latest?.created_at || null,
     latestReportStatus: latest?.status || null,
     latestReportTitle: latest?.title || null,
+    lastAccessAt: getLastAccessAt(),
   });
 });
 

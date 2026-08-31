@@ -8,11 +8,15 @@ function loginUrlFor(req) {
   return `${SETTINGS_URL}/?return=${encodeURIComponent(returnUrl)}`;
 }
 
+let lastAccessAt = null;
+export function getLastAccessAt() { return lastAccessAt; }
+
 export function requireAuth(req, res, next) {
   const bearer = (req.headers.authorization || "").replace(/^Bearer\s+/i, "");
   const cookieTok = parseCookies(req.headers.cookie).bside_session;
   const user = verifyToken(bearer, SECRET) || verifyToken(cookieTok, SECRET);
   if (!user) return res.status(401).json({ ok: false, error: "auth required", loginUrl: loginUrlFor(req) });
+  if (user.role !== "system") lastAccessAt = new Date().toISOString();
   req.user = user;
   next();
 }
