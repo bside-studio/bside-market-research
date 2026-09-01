@@ -351,6 +351,8 @@ function wireEvents() {
     const cfg = await api("/api/config");
     window.location.href = `${cfg.universeUrl}/?refresh=1`;
   });
+
+  $(".nav-brand-mark").addEventListener("click", () => $("#btn-back-universe").click());
 }
 
 async function init() {

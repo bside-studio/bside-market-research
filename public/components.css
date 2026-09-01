@@ -180,6 +180,7 @@ a { color: var(--accent-700); }
 }
 .nav-brand { display: flex; align-items: center; gap: var(--space-3); flex: none; }
 .nav-brand img { height: 32px; width: auto; display: block; }
+.nav-brand-mark { cursor: pointer; }
 .nav-brand-word { font-family: var(--font-heading); font-size: 20px; font-weight: 700; letter-spacing: .2px; color: var(--ink); }
 .nav-links { display: flex; align-items: center; gap: var(--space-5); flex: 1; }
 .nav-link {
