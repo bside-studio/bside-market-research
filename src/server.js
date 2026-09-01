@@ -60,6 +60,13 @@ app.get("/api/stats", requireRole("admin", "hunter"), (_req, res) => {
   });
 });
 
+// B-Side Settings' "history" view pulls this from every app - one entry per user per calendar
+// day this app was used. requireRole("admin") also lets Settings' own system-token calls through
+// (see requireRole's role==="system" bypass in authMiddleware.js).
+app.get("/api/access-log", requireRole("admin"), (_req, res) => {
+  res.json({ ok: true, log: q.allAccessLog.all() });
+});
+
 app.get("/api/reports/:slug", (req, res) => {
   const report = q.getReport.get(req.params.slug);
   if (!report) return res.status(404).json({ ok: false, error: "not found" });

@@ -1,4 +1,5 @@
 import { verifyToken, parseCookies } from "./auth.js";
+import { q } from "./db.js";
 
 const SECRET = process.env.AUTH_SECRET;
 const SETTINGS_URL = process.env.BSIDE_SETTINGS_URL || "http://localhost:3300";
@@ -16,7 +17,10 @@ export function requireAuth(req, res, next) {
   const cookieTok = parseCookies(req.headers.cookie).bside_session;
   const user = verifyToken(bearer, SECRET) || verifyToken(cookieTok, SECRET);
   if (!user) return res.status(401).json({ ok: false, error: "auth required", loginUrl: loginUrlFor(req) });
-  if (user.role !== "system") lastAccessAt = new Date().toISOString();
+  if (user.role !== "system") {
+    lastAccessAt = new Date().toISOString();
+    q.recordAccess.run(user.uid);
+  }
   req.user = user;
   next();
 }

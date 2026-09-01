@@ -27,6 +27,7 @@ if (fs.existsSync(FILE)) {
   }
 }
 if (!D.seq) D.seq = { reports: 0, versions: 0 };
+if (!D.accessLog) D.accessLog = [];
 
 function writeNow() {
   const tmp = FILE + ".tmp";
@@ -171,6 +172,18 @@ export const q = {
     save();
     return { published: v, newDraft: nextDraft };
   } },
+
+  // Per-user access history for B-Side Settings' "history" view - one entry per user per
+  // calendar day (not per request), so an active session doesn't flood the log. Capped so the
+  // file can't grow unbounded over years of use.
+  recordAccess: { run(uid) {
+    const date = new Date().toISOString().slice(0, 10);
+    if (D.accessLog.some(e => e.uid === uid && e.date === date)) return;
+    D.accessLog.push({ uid, date, at: new Date().toISOString() });
+    if (D.accessLog.length > 3000) D.accessLog = D.accessLog.slice(-3000);
+    save();
+  } },
+  allAccessLog: { all: () => D.accessLog },
 };
 
 export default { data: D };
