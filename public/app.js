@@ -349,7 +349,7 @@ function wireEvents() {
 
   $("#btn-back-universe").addEventListener("click", async () => {
     const cfg = await api("/api/config");
-    window.location.href = cfg.universeUrl;
+    window.location.href = `${cfg.universeUrl}/?refresh=1`;
   });
 }
 
