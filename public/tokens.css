@@ -33,6 +33,12 @@
   --accent-800: #6f5719;
   --accent-900: #4a3a10;
 
+  /* ---- theme-invariant swatch: always this exact dark value regardless of light/dark mode.
+     For "solid dark chip, light text" components (tooltips, toasts, active-state pills, icon
+     badges) that should look the same in both themes rather than inverting with --ink. Never
+     redefined below - if you're tempted to theme it, you want --ink instead. */
+  --ink-solid: #201e1d;
+
   /* ---- spacing scale ---- */
   --space-1: 4px;
   --space-2: 8px;
@@ -59,4 +65,46 @@
 
   /* ---- nav ---- */
   --nav-height: 64px;
+}
+
+/* ---- dark mode: an explicit per-user account setting (see bside-settings), never
+   prefers-color-scheme - applied by each app's own JS setting data-theme="dark" on <html>
+   once it knows the signed-in user's saved preference. Every value below is a redefinition of
+   a token already declared above; nothing above this block changes, so light mode (the
+   default, and every currently signed-out/unset case) is completely unaffected.
+   Every ink-N/accent-N role keeps its NAME but the ramp direction flips (ink-100 is a "light
+   fill" role in light mode, so in dark mode it resolves to a dark fill instead) - this is what
+   lets every existing component that already uses these tokens render correctly in dark mode
+   with zero changes to components.css or any app's own styles.css. All text/background pairs
+   below were checked against WCAG 2.1 contrast minimums (4.5:1 text, 3:1 UI boundaries) - see
+   the component list in each app's dark-mode commit for the exact ratios. */
+[data-theme="dark"] {
+  --bg: #181615;
+  --surface: #221f1d;
+  --ink: #f2ece5;
+  --on-accent: #201e1d; /* fixed - the gold accent stays equally light in both themes, so its text must stay dark in both too */
+
+  --ink-100: #211e1c;
+  --ink-200: #35312d;
+  --ink-300: #746c65;
+  --ink-400: #8a8179;
+  --ink-500: #9a9189;
+  --ink-600: #b8afa6;
+  --ink-700: #cec5bb;
+  --ink-800: #e3dbd2;
+  --ink-900: #f2ece5;
+
+  --accent-100: #332912;
+  --accent-200: #3f331a;
+  --accent-300: #8a7439;
+  --accent-400: #b89a4f;
+  /* --accent/--accent-500 and --accent-600 stay the same gold in both themes - already checked
+     against a fixed --on-accent above, so no dark redefinition needed for either. */
+  --accent-700: #e8c869;
+  --accent-800: #f0d788;
+  --accent-900: #f7e6ae;
+
+  --shadow-sm: 2px 2px 0 rgba(0, 0, 0, 0.45);
+  --shadow-md: 4px 4px 0 rgba(0, 0, 0, 0.5);
+  --shadow-lg: 8px 8px 0 rgba(0, 0, 0, 0.55);
 }

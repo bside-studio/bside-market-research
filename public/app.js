@@ -274,8 +274,18 @@ async function pollRegenerateProgress(slug, btn, original) {
 
 /* ---------- user badge / role gating ---------- */
 
+// Dark mode: an explicit per-account preference (see bside-settings), not prefers-color-scheme.
+// localStorage is only a same-browser flash-of-wrong-theme guard for next load (see the inline
+// <head> script in index.html) - state.user.theme, fetched fresh every load, is authoritative.
+function applyTheme(theme) {
+  const t = theme === "dark" ? "dark" : "light";
+  document.documentElement.setAttribute("data-theme", t);
+  try { localStorage.setItem("bside-theme", t); } catch (e) {}
+}
+
 function renderUserBadge() {
   if (!state.user) return;
+  applyTheme(state.user.theme);
   document.body.dataset.role = state.user.role;
   $("#user-badge").innerHTML = `
     <span class="user-email">${state.user.email}</span>

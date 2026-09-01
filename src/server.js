@@ -39,7 +39,7 @@ app.get("/api/config", (_req, res) => {
 app.use("/api", requireAuth);
 
 app.get("/api/reports", (_req, res) => {
-  res.json({ ok: true, reports: q.listReports.all(), user: { email: _req.user.email, role: _req.user.role } });
+  res.json({ ok: true, reports: q.listReports.all(), user: { email: _req.user.email, role: _req.user.role, theme: _req.user.theme || "light" } });
 });
 
 // Aggregate stats for this app's tile on the B-Side Universe portal - the most recent version

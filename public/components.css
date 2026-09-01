@@ -75,7 +75,10 @@ a { color: var(--accent-700); }
   color: #ffffff;
 }
 .btn-ghost-inverse:hover:not(:disabled) {
-  border-color: var(--accent-300); color: var(--accent-300); background: rgba(255, 255, 255, .08);
+  /* Literal, not var(--accent-300) - this is always on a dark surface by design (see above),
+     so it must stay this exact light gold in both themes, not flip dark with the rest of the
+     accent ramp the way accent-300's more common border-on-light-fill role does. */
+  border-color: #ead9ae; color: #ead9ae; background: rgba(255, 255, 255, .08);
 }
 
 .btn-icon {
@@ -101,7 +104,7 @@ a { color: var(--accent-700); }
 .btn-icon svg { width: 18px; height: 18px; }
 .btn-icon-inverse { border-color: rgba(255, 255, 255, .4); color: #ffffff; }
 .btn-icon-inverse:hover:not(:disabled) {
-  border-color: var(--accent-300); color: var(--accent-300); background: rgba(255, 255, 255, .08);
+  border-color: #ead9ae; color: #ead9ae; background: rgba(255, 255, 255, .08);
 }
 
 .btn-block { display: flex; width: 100%; justify-content: center; text-align: center; }
@@ -379,7 +382,7 @@ fieldset.bordered legend { font-size: 11.5px; font-weight: 700; text-transform: 
 
 .help-tip {
   position: fixed; z-index: 300; max-width: 280px;
-  background: var(--ink); color: var(--surface);
+  background: var(--ink-solid); color: #ffffff;
   font-size: 12.5px; font-weight: 400; line-height: 1.45;
   padding: 8px 10px; border-radius: var(--radius);
   box-shadow: var(--shadow-sm);

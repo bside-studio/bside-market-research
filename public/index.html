@@ -4,6 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>B-Side Market Research &amp; Property Intelligence</title>
+<script>
+// Runs before first paint to avoid a flash of the wrong theme. Only a per-browser hint -
+// the authenticated /api/reports response's user.theme is the source of truth and corrects this.
+try {
+  if (localStorage.getItem("bside-theme") === "dark") document.documentElement.setAttribute("data-theme", "dark");
+} catch (e) {}
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="tokens.css">
